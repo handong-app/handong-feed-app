@@ -78,7 +78,7 @@ export default function FeedCard({ loading, item, watchSeen = false }) {
     <>
       <HistoryModal openState={historyOpenState} item={item} />
       <ShareModal openState={openState} item={item} />
-      <Card ref={cardRef} className="FeedCard" sx={{ my: 2 }}>
+      <Card ref={cardRef} className="FeedCard" sx={{ my: 1 }}>
         {loading ? (
           <>
             <CardHeader

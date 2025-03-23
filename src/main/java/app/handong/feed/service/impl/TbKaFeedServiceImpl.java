@@ -5,9 +5,11 @@ import app.handong.feed.dto.TbmessageDto;
 import app.handong.feed.exception.NotFoundException;
 import app.handong.feed.mapper.TbmessageMapper;
 import app.handong.feed.repository.TbKaFeedRepository;
+import app.handong.feed.repository.TbUserSearchRepository;
 import app.handong.feed.service.FirebaseService;
 import app.handong.feed.service.ShortHashService;
 import app.handong.feed.service.TbKaFeedService;
+import app.handong.feed.service.TbLoggerService;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -20,15 +22,19 @@ public class TbKaFeedServiceImpl implements TbKaFeedService {
     private final TbKaFeedRepository tbKaFeedRepository;
     private final TbmessageMapper tbmessageMapper;
     private final FirebaseService firebaseService;
+    private final TbUserSearchRepository tbUserSearchRepository;
+    private final TbLoggerService tbLoggerService;
 
     public TbKaFeedServiceImpl(
             TbKaFeedRepository tbKaFeedRepository,
             TbmessageMapper tbmessageMapper,
-            FirebaseService firebaseService
-    ) {
+            FirebaseService firebaseService,
+            TbUserSearchRepository tbUserSearchRepository, TbLoggerService tbLoggerService) {
         this.tbKaFeedRepository = tbKaFeedRepository;
         this.tbmessageMapper = tbmessageMapper;
         this.firebaseService = firebaseService;
+        this.tbUserSearchRepository = tbUserSearchRepository;
+        this.tbLoggerService = tbLoggerService;
     }
 
     public Map<String, Object> create(Map<String, Object> param) {
@@ -73,12 +79,17 @@ public class TbKaFeedServiceImpl implements TbKaFeedService {
         return result;
     }
 
-    public List<TbmessageDto.Detail> scrollList(String type, String userId) {
-        return scrollList(type, Integer.MAX_VALUE, userId);
+    public List<TbmessageDto.Detail> scrollList(String type, String userId, String search) {
+        return scrollList(type, Integer.MAX_VALUE, userId, search);
     }
 
-    public List<TbmessageDto.Detail> scrollList(String type, int afterSentAt, String userId) {
-        List<TbmessageDto.Detail> result = tbmessageMapper.scrollList(type, afterSentAt, userId);
+    public List<TbmessageDto.Detail> scrollList(String type, int afterSentAt, String userId, String search) {
+        String squery = search;
+        if(squery == null) squery = "";
+        else if(!squery.isEmpty()){
+            tbLoggerService.logSearchAsync(userId, type, search);
+        }
+        List<TbmessageDto.Detail> result = tbmessageMapper.scrollList(type, afterSentAt, userId, search);
 
         // Process each TbmessageDto.Detail asynchronously
         List<CompletableFuture<TbmessageDto.Detail>> futures = result.stream()

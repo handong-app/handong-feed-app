@@ -4,44 +4,66 @@
 
     <!---->
     <select id="scrollList" parameterType="map" resultType="app.handong.feed.dto.TbmessageDto$Detail">
-        SELECT subject.id AS subjectId,
-        message.id AS id,
-        message.last_sent_at AS sentAt,
-        message.message AS message,
+        SELECT
+        m.subject_id AS subjectId,
+        m.id AS id,
+        m.last_sent_at AS sentAt,
+        m.message AS message,
         CASE WHEN likeDB.deleted = 'n' THEN 1 ELSE 0 END AS `like`,
-        (SELECT COUNT(*) FROM TbKaMessage m WHERE m.subject_id = subject.id) AS messageCount
-        FROM (
-        SELECT *
-        FROM TbSubject s
-        WHERE last_sent_at &lt; #{afterSentAt}
-        <if test="fetchType == 'unseen' and userId != null and userId != ''">
-            AND NOT EXISTS (
-            SELECT 1
-            FROM mydb_TbUserInteraction m
-            WHERE s.id = m.subjectId
-            AND #{userId} = m.userId)
-        </if>
-        <if test="fetchType == 'like' and userId != null and userId != ''">
-            AND EXISTS (
-            SELECT 1
-            FROM mydb_TbUserLike m
-            WHERE s.id = m.subjectId
-            AND #{userId} = m.userId)
-        </if>
-        ORDER BY last_sent_at DESC
-        LIMIT 15
-        ) AS subject
-        JOIN TbKaMessage AS message ON message.chat_id = subject.last_sent_chat_id
-        LEFT JOIN mydb_TbUserLike AS likeDB ON subject.id = likeDB.subjectId AND #{userId} = likeDB.userId
-        <if test="fetchType == 'unseen'">
-            WHERE (SELECT MIN(last_sent_at)
-            FROM TbKaMessage
-            WHERE subject_id = subject.id)
-            > (SELECT COALESCE(MAX(read_last_sent_at), 0)
-            FROM mydb_TbUserReadAll
-            WHERE id = #{userId})
-        </if>
+        (SELECT COUNT(*) FROM TbKaMessage m2 WHERE m2.subject_id = m.subject_id) AS messageCount
+        FROM TbKaMessage m
+        INNER JOIN (
+        SELECT subject_id, MAX(last_sent_at) AS max_sent_at
+        FROM TbKaMessage
+        GROUP BY subject_id
+        ) latest
+        ON m.subject_id = latest.subject_id AND m.last_sent_at = latest.max_sent_at
 
+        LEFT JOIN mydb_TbUserLike likeDB
+        ON m.subject_id = likeDB.subjectId AND #{userId} = likeDB.userId
+
+        <where>
+            <!-- afterSentAt 필터링 -->
+            <if test="afterSentAt != null">
+                AND m.last_sent_at &lt; #{afterSentAt}
+            </if>
+
+            <!-- search 필터링 -->
+            <if test="search != null and search != ''">
+                AND m.message LIKE CONCAT('%', #{search}, '%')
+            </if>
+
+            <!-- unseen 조건 -->
+            <if test="fetchType == 'unseen' and userId != null and userId != ''">
+                AND NOT EXISTS (
+                SELECT 1 FROM mydb_TbUserInteraction i
+                WHERE i.subjectId = m.subject_id AND i.userId = #{userId}
+                )
+                AND (
+                SELECT MIN(last_sent_at)
+                FROM TbKaMessage
+                WHERE subject_id = m.subject_id
+                ) > COALESCE(
+                (SELECT MAX(read_last_sent_at)
+                FROM mydb_TbUserReadAll
+                WHERE id = #{userId}),
+                0
+                )
+            </if>
+
+            <!-- like 조건 -->
+            <if test="fetchType == 'like' and userId != null and userId != ''">
+                AND EXISTS (
+                SELECT 1
+                FROM mydb_TbUserLike l
+                WHERE l.subjectId = m.subject_id
+                AND l.userId = #{userId}
+                )
+            </if>
+        </where>
+
+        ORDER BY m.last_sent_at DESC
+        LIMIT 15
     </select>
 
     <select id="countAll" parameterType="map" resultType="java.lang.Integer">
