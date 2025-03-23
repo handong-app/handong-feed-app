@@ -8,7 +8,7 @@ import java.util.concurrent.CompletableFuture;
 
 public interface TbmessageMapper {
     /**/
-    List<TbmessageDto.Detail> scrollList(String fetchType, int afterSentAt, String userId);
+    List<TbmessageDto.Detail> scrollList(String fetchType, int afterSentAt, String userId, String search);
 
     int countAll(int afterSentAt, String userId);
 

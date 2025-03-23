@@ -73,12 +73,14 @@ public class TbKaFeedServiceImpl implements TbKaFeedService {
         return result;
     }
 
-    public List<TbmessageDto.Detail> scrollList(String type, String userId) {
-        return scrollList(type, Integer.MAX_VALUE, userId);
+    public List<TbmessageDto.Detail> scrollList(String type, String userId, String search) {
+        return scrollList(type, Integer.MAX_VALUE, userId, search);
     }
 
-    public List<TbmessageDto.Detail> scrollList(String type, int afterSentAt, String userId) {
-        List<TbmessageDto.Detail> result = tbmessageMapper.scrollList(type, afterSentAt, userId);
+    public List<TbmessageDto.Detail> scrollList(String type, int afterSentAt, String userId, String search) {
+        String squery = search;
+        if(squery == null) squery = "";
+        List<TbmessageDto.Detail> result = tbmessageMapper.scrollList(type, afterSentAt, userId, search);
 
         // Process each TbmessageDto.Detail asynchronously
         List<CompletableFuture<TbmessageDto.Detail>> futures = result.stream()

@@ -44,10 +44,11 @@ public class TbKaFeedController {
         String reqUserId = request.getAttribute("reqUserId").toString();
         final String afterSentAt = param.get("afterSentAt");
         String type = param.get("type");
+        String search = param.get("search");
 
         if (afterSentAt != null && !afterSentAt.equals("-1"))
-            return tbKaFeedService.scrollList(type, Integer.parseInt(afterSentAt), reqUserId);
-        else return tbKaFeedService.scrollList(type, reqUserId);
+            return tbKaFeedService.scrollList(type, Integer.parseInt(afterSentAt), reqUserId, search);
+        else return tbKaFeedService.scrollList(type, reqUserId, search);
     }
 
     @GetMapping("/get/{messageId}")
