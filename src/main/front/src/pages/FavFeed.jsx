@@ -3,14 +3,17 @@ import FeedCard from "../components/FeedCard";
 import InfiniteScroll from "react-infinite-scroller";
 import useLoadData from "../hooks/useLoadData";
 import { Card, CardContent, Typography } from "@mui/material";
+import ToolBar from "../components/ToolBar";
+import { useState } from "react";
 
 function FavFeed() {
-  const [allFeeds, hasMore, loadData] = useLoadData({ type: "like" });
+  const [allFeeds, hasMore, loadData, doSearch] = useLoadData({ type: "like" });
 
   return (
     <MainDisplay>
+      <ToolBar doSearch={doSearch} />
       {!hasMore && allFeeds.length === 0 && (
-        <Card sx={{ my: 2 }}>
+        <Card sx={{ my: 1 }}>
           <CardContent>
             <Typography variant="h5" component="div" align="center">
               피드에 좋아요를 눌러보세요

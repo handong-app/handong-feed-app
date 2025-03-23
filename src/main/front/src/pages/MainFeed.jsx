@@ -19,12 +19,15 @@ import {
 } from "@mui/material";
 import MarkEmailReadOutlinedIcon from "@mui/icons-material/MarkEmailReadOutlined";
 import { useNavigate } from "react-router-dom";
+import ToolBar from "../components/ToolBar";
 
 function MainFeed() {
   const fetch = useFetchBe();
   const navigate = useNavigate();
   const setFeedCount = useSetRecoilState(feedCountAtom);
-  const [allFeeds, hasMore, loadData] = useLoadData({ type: "unseen" });
+  const [allFeeds, hasMore, loadData, doSearch] = useLoadData({
+    type: "unseen",
+  });
   const [feedNumber] = useFeedCount();
   const [doingBulkDelete, setDoingBulkDelete] = useState(false);
 
@@ -114,8 +117,9 @@ function MainFeed() {
           <MarkEmailReadOutlinedIcon />
         </Fab>
       </Tooltip>
+      <ToolBar doSearch={doSearch} />
       {!hasMore && allFeeds.length === 0 && (
-        <Card sx={{ my: 2 }}>
+        <Card sx={{ my: 1 }}>
           <CardContent>
             <Typography variant="h5" component="div" align="center">
               모든 피드를 읽었어요!

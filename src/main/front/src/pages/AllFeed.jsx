@@ -2,12 +2,14 @@ import MainDisplay from "../components/MainDisplay";
 import FeedCard from "../components/FeedCard";
 import InfiniteScroll from "react-infinite-scroller";
 import useLoadData from "../hooks/useLoadData";
+import ToolBar from "../components/ToolBar";
 
 function AllFeed() {
-  const [allFeeds, hasMore, loadData] = useLoadData();
+  const [allFeeds, hasMore, loadData, doSearch] = useLoadData();
 
   return (
     <MainDisplay>
+      <ToolBar doSearch={doSearch} />
       <InfiniteScroll
         loadMore={loadData}
         hasMore={hasMore}
