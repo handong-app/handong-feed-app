@@ -45,7 +45,7 @@ gradle dependencies 설치 후에 `RealsprApplication.java` 실행.
 
 ### 프론트 실행 방법
 
-front 에서 `npm start` 이후 http://localhost:3000 바로 접속.
+[/src/main/front](https://github.com/handong-app/handong-feed-app/tree/main/src/main/front) 에서 `npm start` 이후 http://localhost:3000 바로 접속.
 
 ## 배포용 JAR 다운로드 방법
 
