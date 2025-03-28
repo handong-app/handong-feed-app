@@ -1,4 +1,4 @@
-package app.handong.feed.exception;
+package app.handong.feed.exception.data;
 
 import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
