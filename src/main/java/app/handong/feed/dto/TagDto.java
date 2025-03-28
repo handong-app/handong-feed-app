@@ -12,6 +12,8 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 
 public class TagDto {
+    private TagDto() {} // 불필요한 인스턴스화 방지를 위함. (DTO 모음 유틸클레스임을 알림)
+
     @Schema
     @Getter
     @Setter
@@ -19,22 +21,27 @@ public class TagDto {
     @NoArgsConstructor
     public static class CreateReqDto {
 
-        @NotBlank(message = "태그 이름은 필수입니다.")
-        @Size(max = 32, message = "태그 이름은 32자 이내여야 합니다.")
-        private String name;
+        @NotBlank
+        @Size(max = 32)
+        private String code;
 
-        @NotBlank(message = "태그 한국어 이름은 필수입니다.")
-        @Size(max = 32, message = "태그 한국어 이름은 32자 이내여야 합니다.")
-        private String nameKor;
+        @NotBlank
+        @Size(max = 32)
+        private String label;
 
-        @Size(max = 1000, message = "설명은 1000자 이내여야 합니다.")
-        private String desc;
+        @Size(max = 1000)
+        private String userDesc;
 
-        @Size(max = 32, message = "색상 값은 32자 이내여야 합니다.")
-        private String color;
+        @Size(max = 1000)
+        private String llmDesc;
+
+        @Size(min = 6, max = 6)
+        private String colorHex;
+
+        private float priorityWeight;
 
         public Tag toEntity() {
-            return new Tag(this.name, this.nameKor, this.desc, this.color);
+            return new Tag(code, label, userDesc, llmDesc, colorHex, priorityWeight);
         }
     }
 
@@ -44,32 +51,35 @@ public class TagDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class CreateResDto {
-        private int id;
-        private String name;
-        private String nameKor;
-        private String desc;
-        private String color;
+        private String code;
+        private String label;
+        private String userDesc;
+        private String llmDesc;
+        private String colorHex;
+        private float priorityWeight;
         private LocalDateTime createdAt;
     }
 
     @Getter
     @Setter
     public static class UpdateReqDto {
-        private String name;
-        private String nameKor;
-        private String desc;
-        private String color;
+        private String label;
+        private String userDesc;
+        private String llmDesc;
+        private String colorHex;
+        private float priorityWeight;
     }
 
     @Getter
     @Setter
     @AllArgsConstructor
     public static class UpdateResDto {
-        private int id;
-        private String name;
-        private String nameKor;
-        private String desc;
-        private String color;
+        private String code;
+        private String label;
+        private String userDesc;
+        private String llmDesc;
+        private String colorHex;
+        private float priorityWeight;
         private LocalDateTime updatedAt;
     }
 
@@ -77,11 +87,12 @@ public class TagDto {
     @Setter
     @AllArgsConstructor
     public static class ReadResDto {
-        private int id;
-        private String name;
-        private String nameKor;
-        private String desc;
-        private String color;
+        private String code;
+        private String label;
+        private String userDesc;
+        private String llmDesc;
+        private String colorHex;
+        private float priorityWeight;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
     }
@@ -90,7 +101,7 @@ public class TagDto {
     @Setter
     @AllArgsConstructor
     public static class DeleteResDto {
-        private int id;
+        private String code;
         private String message;
     }
 }
