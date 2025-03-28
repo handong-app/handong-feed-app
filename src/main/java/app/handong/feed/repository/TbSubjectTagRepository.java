@@ -16,5 +16,5 @@ public interface TbSubjectTagRepository extends JpaRepository<TbSubjectTag, Inte
     List<TbSubjectTag> findByTbSubjectIdAndForDate(int tbSubjectId, LocalDate forDate);
 
     // subjectId, tagId 조합 존재 여부 확인 (복합키 유니크 체크에 유용)
-    boolean existsByTbSubjectIdAndTagId(int tbSubjectId, int tagId);
+    boolean existsByTbSubjectIdAndTagCode(int tbSubjectId, String tagCode);
 }
