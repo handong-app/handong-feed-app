@@ -2,6 +2,7 @@ package app.handong.feed.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -14,39 +15,50 @@ import java.time.LocalDateTime;
 public class Tag {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
-    @Column(nullable = false, length = 32)
-    private String name; // 태그 값
-
-    @Column(name = "name_kor", nullable = false, length = 32)
-    private String nameKor; // 태그 한국어 값
-
-    @Column(columnDefinition = "TEXT")
-    private String desc; // 태그 설명
-
+    @Setter
     @Column(length = 32)
-    private String color; // 태그 색상
+    private String code; // kebab-case, 태그 식별자, 영문
+
+    @Setter
+    @Column(nullable = false, length = 32)
+    private String label; // 유저 라벨, 국문
+
+    @Setter
+    @Column(name = "user_desc", columnDefinition = "TEXT")
+    private String userDesc; // 사용자용 설명
+
+    @Setter
+    @Column(name = "llm_desc", columnDefinition = "TEXT")
+    private String llmDesc; // LLM용 설명
+
+    @Setter
+    @Column(name = "color_hex", length = 6)
+    private String colorHex; // HEX 색상 (# 제외)
+
+    @Setter
+    @Column(name = "priority_weight")
+    private float priorityWeight; // 우선순위 가중치
 
     @CreatedDate
     @Column(name = "created_at", updatable = false)
-    private LocalDateTime createdAt; // 생성일
+    private LocalDateTime createdAt;
 
     @LastModifiedDate
     @Column(name = "updated_at")
-    private LocalDateTime updatedAt; // 수정일
+    private LocalDateTime updatedAt;
 
     protected Tag() {}
 
-    public Tag(String name, String nameKor, String desc, String color) {
-        this.name = name;
-        this.nameKor = nameKor;
-        this.desc = desc;
-        this.color = color;
+    public Tag(String code, String label, String userDesc, String llmDesc, String colorHex, float priorityWeight) {
+        this.code = code;
+        this.label = label;
+        this.userDesc = userDesc;
+        this.llmDesc = llmDesc;
+        this.colorHex = colorHex;
+        this.priorityWeight = priorityWeight;
     }
 
-    public static Tag of(String name, String nameKor, String desc, String color) {
-        return new Tag(name, nameKor, desc, color);
+    public static Tag of(String code, String label, String userDesc, String llmDesc, String colorHex, float priorityWeight) {
+        return new Tag(code, label, userDesc, llmDesc, colorHex, priorityWeight);
     }
 }
