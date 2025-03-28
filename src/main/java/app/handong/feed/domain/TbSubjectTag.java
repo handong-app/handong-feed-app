@@ -14,11 +14,11 @@ import java.time.LocalDateTime;
 @Table(
         name = "tb_subject_tag",
         uniqueConstraints = {
-                @UniqueConstraint(columnNames = {"tb_subject_id", "tag_id"})
+                @UniqueConstraint(columnNames = {"tb_subject_id", "tag_code"})
         },
         indexes = {
                 @Index(columnList = "tb_subject_id"),
-                @Index(columnList = "tag_id")
+                @Index(columnList = "tag_code")
         }
 )
 @EntityListeners(AuditingEntityListener.class)
@@ -31,14 +31,14 @@ public class TbSubjectTag {
     @Column(name = "tb_subject_id", nullable = false)
     private int tbSubjectId;
 
-    @Column(name = "tag_id", nullable = false)
-    private int tagId;
+    @Column(name = "tag_code", length = 32, nullable = false)
+    private String tagCode; // Tag.code 참조 (FK는 명시적으로 걸지 않음)
 
     @Column(name = "confident_value")
-    private float confidentValue; // 적합도
+    private float confidentValue;
 
-    @Column(name = "for_date", nullable = false)
-    private LocalDate forDate; // 실제로 주제가 생성된 Date
+    @Column(name = "for_date")
+    private LocalDate forDate;
 
     @CreatedDate
     @Column(name = "created_at", updatable = false)
@@ -51,18 +51,17 @@ public class TbSubjectTag {
     @Column(name = "updated_by", length = 32)
     private String updatedBy;
 
-    protected TbSubjectTag() {
-    }
+    protected TbSubjectTag() {}
 
-    public TbSubjectTag(int tbSubjectId, int tagId, float confidentValue, LocalDate forDate, String updatedBy) {
+    public TbSubjectTag(int tbSubjectId, String tagCode, float confidentValue, LocalDate forDate, String updatedBy) {
         this.tbSubjectId = tbSubjectId;
-        this.tagId = tagId;
+        this.tagCode = tagCode;
         this.confidentValue = confidentValue;
         this.forDate = forDate;
         this.updatedBy = updatedBy;
     }
 
-    public static TbSubjectTag of(int tbSubjectId, int tagId, float confidentValue, LocalDate forDate, String updatedBy) {
-        return new TbSubjectTag(tbSubjectId, tagId, confidentValue, forDate, updatedBy);
+    public static TbSubjectTag of(int tbSubjectId, String tagCode, float confidentValue, LocalDate forDate, String updatedBy) {
+        return new TbSubjectTag(tbSubjectId, tagCode, confidentValue, forDate, updatedBy);
     }
 }
