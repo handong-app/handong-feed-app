@@ -9,17 +9,19 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class TbSubjectTagDto {
+    private TbSubjectTagDto() {}
+
     @Getter
     @Setter
     public static class CreateReqDto {
         private int tbSubjectId;
-        private int tagId;
+        private String tagCode;
         private float confidentValue;
         private LocalDate forDate;
         private String updatedBy;
 
-        public TbSubjectTag toEntity(){
-            return new TbSubjectTag(this.tbSubjectId, this.tagId, this.confidentValue, this.forDate, this.updatedBy);
+        public TbSubjectTag toEntity() {
+            return new TbSubjectTag(tbSubjectId, tagCode, confidentValue, forDate, updatedBy);
         }
     }
 
@@ -29,7 +31,7 @@ public class TbSubjectTagDto {
     public static class CreateResDto {
         private int id;
         private int tbSubjectId;
-        private int tagId;
+        private String tagCode;
         private float confidentValue;
         private LocalDate forDate;
         private LocalDateTime createdAt;
@@ -60,7 +62,7 @@ public class TbSubjectTagDto {
     public static class ReadResDto {
         private int id;
         private int tbSubjectId;
-        private int tagId;
+        private String tagCode;
         private float confidentValue;
         private LocalDate forDate;
         private String updatedBy;
@@ -75,5 +77,4 @@ public class TbSubjectTagDto {
         private int id;
         private String message;
     }
-
 }
