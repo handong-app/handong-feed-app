@@ -1,0 +1,25 @@
+meta {
+  name: Update Tag
+  type: http
+  seq: 3
+}
+
+patch {
+  url: http://localhost:8080/api/tags/club
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: Bearer u1de67pNiNKKucVQg5KYEEWIYKW6Rc8cVP2lzhgs2Nyt+BiGf7e2Y85uARqLDe1hY33GETbbOUk3GCMcgZ2fxg==
+}
+
+body:json {
+  {
+    "label": "동아리 활동",
+    "userDesc": "학생들의 동아리 활동을 나타냅니다.",
+    "llmDesc": "학생 커뮤니티 내 동아리와 관련된 홍보, 이벤트, 모집 등을 의미합니다.",
+    "colorHex": "FF9900",
+    "priorityWeight": 1.2
+  }
+}
