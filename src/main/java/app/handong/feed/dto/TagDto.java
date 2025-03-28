@@ -58,6 +58,18 @@ public class TagDto {
         private String colorHex;
         private float priorityWeight;
         private LocalDateTime createdAt;
+
+        public static CreateResDto fromEntity(Tag tag) {
+            return new CreateResDto(
+                    tag.getCode(),
+                    tag.getLabel(),
+                    tag.getUserDesc(),
+                    tag.getLlmDesc(),
+                    tag.getColorHex(),
+                    tag.getPriorityWeight(),
+                    tag.getCreatedAt()
+            );
+        }
     }
 
     @Getter
