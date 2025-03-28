@@ -4,7 +4,7 @@ import app.handong.feed.domain.TbUserInteraction;
 import app.handong.feed.domain.TbUserLike;
 import app.handong.feed.domain.TbUserReadAll;
 import app.handong.feed.dto.UserInteractionDto;
-import app.handong.feed.exception.DuplicateEntityException;
+import app.handong.feed.exception.data.DuplicateEntityException;
 import app.handong.feed.id.UserSubjectId;
 import app.handong.feed.repository.TbUserInteractionRepository;
 import app.handong.feed.repository.TbUserLikeRepository;

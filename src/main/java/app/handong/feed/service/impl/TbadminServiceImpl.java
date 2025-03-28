@@ -1,7 +1,7 @@
 package app.handong.feed.service.impl;
 
 import app.handong.feed.dto.TbadminDto;
-import app.handong.feed.exception.NoAuthorizationException;
+import app.handong.feed.exception.auth.NoAuthorizationException;
 import app.handong.feed.id.UserPermId;
 import app.handong.feed.mapper.TbadminMapper;
 import app.handong.feed.repository.TbUserPermRepository;
