@@ -11,14 +11,13 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class TbSubjectTagServiceImpl implements TbSubjectTagService {
     private final TbSubjectTagRepository subjectTagRepository;
-
     public TbSubjectTagDto.CreateResDto createSubjectTag(TbSubjectTagDto.CreateReqDto dto) {
         TbSubjectTag saved = subjectTagRepository.save(dto.toEntity());
 
         return new TbSubjectTagDto.CreateResDto(
                 saved.getId(),
                 saved.getTbSubjectId(),
-                saved.getTagId(),
+                saved.getTagCode(),
                 saved.getConfidentValue(),
                 saved.getForDate(),
                 saved.getCreatedAt()
