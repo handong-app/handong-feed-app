@@ -129,4 +129,17 @@ public class TbadminServiceImpl implements TbadminService {
         );
     }
 
+    @Override
+    @Transactional
+    public void deleteApiKey(String userId, Long apiKeyId) {
+        if (tbUserPermRepository.findById(new UserPermId(userId, "adminDeleteApiKey")).isEmpty()) {
+            throw new NoAuthorizationException("No Admin Permission");
+        }
+
+        ApiKey apiKey = apiKeyRepository.findById(apiKeyId)
+                .orElseThrow(() -> new IllegalArgumentException("API key not found"));
+
+        apiKeyRepository.delete(apiKey);
+    }
+
 }

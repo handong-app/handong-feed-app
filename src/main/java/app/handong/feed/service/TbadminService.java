@@ -14,4 +14,5 @@ public interface TbadminService {
 
     TbadminDto.ApiKeyCreateRespDto issueApiKey(String userId, TbadminDto.ApiKeyCreateReqDto req);
     TbadminDto.ApiKeyDetail toggleApiKeyStatus(String userId, Long apiKeyId);
+    void deleteApiKey(String userId, Long apiKeyId);
 }
