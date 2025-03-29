@@ -11,4 +11,7 @@ public interface TbadminService {
     public List<TbadminDto.UserDetail> adminGetUser(String userId, Map<String, String> param);
 
     public List<String> adminGetFirebaseStorageList(String userId);
+
+    TbadminDto.ApiKeyCreateRespDto issueApiKey(String userId, TbadminDto.ApiKeyCreateReqDto req);
+
 }
