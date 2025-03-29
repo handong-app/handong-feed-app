@@ -1,0 +1,25 @@
+meta {
+  name: issue api key
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:8080/api/admin/issue-api-key
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: u1de67pNiNKKucVQg5KYEEWIYKW6Rc8cVP2lzhgs2NwNwkQXX3t5OLCx3Zsgey1eJa2grApKQFse54Z5W6k8dA==
+}
+
+body:json {
+  {
+    "owner": "Spotlight-LLM",
+    "scopes": [
+      "tag:read",
+      "tb-subject-tag:create"
+    ]
+  }
+}
