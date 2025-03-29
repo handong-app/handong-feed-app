@@ -2,6 +2,7 @@ package app.handong.feed.service.impl;
 
 import app.handong.feed.config.CustomProperties;
 import app.handong.feed.domain.ApiKey;
+import app.handong.feed.domain.ApiKeyScope;
 import app.handong.feed.dto.TbadminDto;
 import app.handong.feed.exception.auth.NoAuthorizationException;
 import app.handong.feed.id.UserPermId;
@@ -88,7 +89,6 @@ public class TbadminServiceImpl implements TbadminService {
                 .collect(Collectors.joining());
     }
 
-
     private String hash(String input) {
         try {
             Mac mac = Mac.getInstance("HmacSHA256");
@@ -99,6 +99,34 @@ public class TbadminServiceImpl implements TbadminService {
         } catch (Exception e) {
             throw new RuntimeException("HMAC hashing failed", e);
         }
+    }
+
+    @Override
+    @Transactional
+    public TbadminDto.ApiKeyDetail toggleApiKeyStatus(String userId, Long apiKeyId) {
+        if (tbUserPermRepository.findById(new UserPermId(userId, "adminToggleApiKey")).isEmpty()) {
+            throw new NoAuthorizationException("No Admin Permission");
+        }
+
+        ApiKey apiKey = apiKeyRepository.findById(apiKeyId)
+                .orElseThrow(() -> new IllegalArgumentException("API key not found"));
+
+        apiKey.setActive(!apiKey.isActive());
+
+        apiKeyRepository.save(apiKey);
+
+        List<String> scopes = apiKey.getScopes().stream()
+                .map(ApiKeyScope::getScope)
+                .toList();
+
+        return new TbadminDto.ApiKeyDetail(
+                apiKey.getId(),
+                apiKey.getOwner(),
+                apiKey.isActive(),
+                apiKey.getCreatedAt(),
+                apiKey.getLastUsedAt(),
+                scopes
+        );
     }
 
 }

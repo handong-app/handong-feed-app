@@ -13,5 +13,5 @@ public interface TbadminService {
     public List<String> adminGetFirebaseStorageList(String userId);
 
     TbadminDto.ApiKeyCreateRespDto issueApiKey(String userId, TbadminDto.ApiKeyCreateReqDto req);
-
+    TbadminDto.ApiKeyDetail toggleApiKeyStatus(String userId, Long apiKeyId);
 }
