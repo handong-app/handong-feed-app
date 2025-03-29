@@ -42,4 +42,11 @@ public class TbadminController {
         String reqUserId = RequestUtils.getReqUserId(request);
         return ResponseEntity.ok(tbadminService.toggleApiKeyStatus(reqUserId, id));
     }
+
+    @DeleteMapping("/api-keys/{id}")
+    public ResponseEntity<Void> deleteApiKey( @PathVariable Long id,HttpServletRequest request) {
+        String reqUserId = RequestUtils.getReqUserId(request);
+        tbadminService.deleteApiKey(reqUserId, id);
+        return ResponseEntity.noContent().build();
+    }
 }
