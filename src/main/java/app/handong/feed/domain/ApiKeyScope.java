@@ -1,8 +1,10 @@
 package app.handong.feed.domain;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
 @Entity
+@Getter
 @Table(name = "api_key_scopes")
 public class ApiKeyScope {
     @Id
