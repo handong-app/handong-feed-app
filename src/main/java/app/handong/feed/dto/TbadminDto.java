@@ -48,4 +48,17 @@ public class TbadminDto {
         @Schema(description = "발급 시간")
         private LocalDateTime issuedAt;
     }
+
+    @Schema
+    @Getter @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class ApiKeyDetail {
+        private Long id;
+        private String owner;
+        private boolean isActive;
+        private LocalDateTime createdAt;
+        private LocalDateTime lastUsedAt;
+        private List<String> scopes;
+    }
 }
