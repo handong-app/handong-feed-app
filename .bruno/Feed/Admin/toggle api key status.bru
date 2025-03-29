@@ -1,0 +1,15 @@
+meta {
+  name: toggle api key status
+  type: http
+  seq: 2
+}
+
+patch {
+  url: http://localhost:8080/api/admin/api-keys/2/toggle-status
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: u1de67pNiNKKucVQg5KYEEWIYKW6Rc8cVP2lzhgs2NwNwkQXX3t5OLCx3Zsgey1eJa2grApKQFse54Z5W6k8dA==
+}
