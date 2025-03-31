@@ -1,0 +1,25 @@
+meta {
+  name: Update Tag
+  type: http
+  seq: 2
+}
+
+patch {
+  url: http://localhost:8080/api/tags/:code
+  body: json
+  auth: inherit
+}
+
+params:path {
+  code: club
+}
+
+body:json {
+  {
+    "label": "동아리 활동",
+    "userDesc": "학생들의 동아리 활동을 나타냅니다.",
+    "llmDesc": "학생 커뮤니티 내 동아리와 관련된 홍보, 이벤트, 모집 등을 의미합니다.",
+    "colorHex": "FF9900",
+    "priorityWeight": 1.2
+  }
+}

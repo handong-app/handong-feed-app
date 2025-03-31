@@ -1,4 +1,4 @@
-package app.handong.feed.exception;
+package app.handong.feed.exception.auth;
 
 import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * 해당 메서드 권한 없을 경우 사용되는 예외처리
  * HttpStatus FORBIDDEN
  */
-@ResponseStatus(value = HttpStatus.CONFLICT)
+@ResponseStatus(value = HttpStatus.UNAUTHORIZED)
 @NoArgsConstructor
-public class DuplicateEntityException extends RuntimeException {
-    public DuplicateEntityException(String message) {
+public class NoAuthenticatedException extends RuntimeException {
+    public NoAuthenticatedException(String message) {
         super(message);
     }
 }

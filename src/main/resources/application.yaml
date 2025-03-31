@@ -62,3 +62,5 @@ external:
     refreshKey: RefreshToken  # 리프레시 토큰을 담는 헤더
     refreshTokenExpirationTime: 1209600000  # 리프레시 토큰 유효 기간 (2주)
 
+custom:
+  api-secret-key: ${API_SECRET_KEY}

@@ -2,7 +2,7 @@ package app.handong.feed.service.impl;
 
 import app.handong.feed.domain.TbKaFeed;
 import app.handong.feed.dto.TbmessageDto;
-import app.handong.feed.exception.NotFoundException;
+import app.handong.feed.exception.data.NotFoundException;
 import app.handong.feed.mapper.TbmessageMapper;
 import app.handong.feed.repository.TbKaFeedRepository;
 import app.handong.feed.repository.TbUserSearchRepository;

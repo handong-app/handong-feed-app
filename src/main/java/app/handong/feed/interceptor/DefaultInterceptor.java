@@ -1,7 +1,7 @@
 package app.handong.feed.interceptor;
 
 
-import app.handong.feed.exception.NoAuthenticatedException;
+import app.handong.feed.exception.auth.NoAuthenticatedException;
 import app.handong.feed.util.TokenFactory;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

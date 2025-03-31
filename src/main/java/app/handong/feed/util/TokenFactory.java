@@ -1,8 +1,8 @@
 package app.handong.feed.util;
 
 
-import app.handong.feed.exception.InvalidTokenException;
-import app.handong.feed.exception.NoAuthenticatedException;
+import app.handong.feed.exception.auth.InvalidTokenException;
+import app.handong.feed.exception.auth.NoAuthenticatedException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 

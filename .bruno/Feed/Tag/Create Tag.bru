@@ -1,0 +1,22 @@
+meta {
+  name: Create Tag
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:8080/api/tags
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "code": "faith",
+    "label": "신앙",
+    "userDesc": "신앙 생활과 관련된 태그입니다.",
+    "llmDesc": "예배, 기도, 성경공부, 신앙모임 등 신앙 관련 활동을 분류하는 데 사용됩니다.",
+    "colorHex": "6A5ACD",
+    "priorityWeight": 1.0
+  }
+}

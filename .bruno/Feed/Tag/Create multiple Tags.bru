@@ -1,0 +1,80 @@
+meta {
+  name: Create multiple Tags
+  type: http
+  seq: 4
+}
+
+post {
+  url: http://localhost:8080/api/tags/batch
+  body: json
+  auth: inherit
+}
+
+body:json {
+  [
+    {
+      "code": "club",
+      "label": "동아리",
+      "userDesc": "동아리 활동과 관련된 태그입니다.",
+      "llmDesc": "동아리와 관련된 활동, 홍보, 소식 등을 분류하는 데 사용됩니다.",
+      "colorHex": "FF5733",
+      "priorityWeight": 1.0
+    },
+    {
+      "code": "promotion",
+      "label": "홍보",
+      "userDesc": "홍보성 게시글에 사용되는 태그입니다.",
+      "llmDesc": "이 태그는 제품, 서비스, 행사 등의 홍보 목적의 콘텐츠 분류에 사용됩니다.",
+      "colorHex": "33B5FF",
+      "priorityWeight": 0.9
+    },
+    {
+      "code": "sharing",
+      "label": "나눔",
+      "userDesc": "물건 나눔이나 공유 목적의 게시글에 사용됩니다.",
+      "llmDesc": "사용자가 물건이나 자원을 공유하거나 기부하려는 글을 식별하는 데 사용됩니다.",
+      "colorHex": "28A745",
+      "priorityWeight": 0.8
+    },
+    {
+      "code": "sale",
+      "label": "판매",
+      "userDesc": "중고 물품 판매 등 거래 게시글에 사용됩니다.",
+      "llmDesc": "사용자가 중고 물품, 티켓 등의 판매 목적 게시글을 올릴 때 사용됩니다.",
+      "colorHex": "FFC107",
+      "priorityWeight": 0.85
+    },
+    {
+      "code": "performance",
+      "label": "공연",
+      "userDesc": "공연, 전시회 등 문화행사 관련 게시글에 사용됩니다.",
+      "llmDesc": "공연 및 문화행사 정보를 제공하는 글을 분류하는 데 사용됩니다.",
+      "colorHex": "9C27B0",
+      "priorityWeight": 0.75
+    },
+    {
+      "code": "lost-found",
+      "label": "분실물",
+      "userDesc": "분실물 또는 습득물에 대한 게시글에 사용됩니다.",
+      "llmDesc": "분실 또는 습득된 물건에 대한 정보를 공유하는 글에 사용됩니다.",
+      "colorHex": "E91E63",
+      "priorityWeight": 0.7
+    },
+    {
+      "code": "recruit",
+      "label": "모집",
+      "userDesc": "인원 모집, 채용 공고 등에 사용됩니다.",
+      "llmDesc": "구인, 채용, 참여자 모집 관련 게시글을 분류하는 데 사용됩니다.",
+      "colorHex": "00BCD4",
+      "priorityWeight": 0.95
+    },
+    {
+      "code": "event",
+      "label": "이벤트",
+      "userDesc": "행사나 이벤트 관련 정보 게시글에 사용됩니다.",
+      "llmDesc": "특정 날짜에 열리는 행사, 이벤트 관련 정보를 식별하는 데 사용됩니다.",
+      "colorHex": "FF9800",
+      "priorityWeight": 0.9
+    }
+  ]
+}

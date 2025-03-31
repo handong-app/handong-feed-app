@@ -3,7 +3,7 @@ package app.handong.feed.service.impl;
 import app.handong.feed.domain.Tbuser;
 import app.handong.feed.dto.DefaultDto;
 import app.handong.feed.dto.TbuserDto;
-import app.handong.feed.exception.NoAuthorizationException;
+import app.handong.feed.exception.auth.NoAuthorizationException;
 import app.handong.feed.repository.TbuserRepository;
 import app.handong.feed.service.GoogleAuthService;
 import app.handong.feed.service.TbuserService;

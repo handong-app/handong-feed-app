@@ -11,7 +11,7 @@ import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.gson.GsonFactory;
-import app.handong.feed.exception.NoAuthorizationException;
+import app.handong.feed.exception.auth.NoAuthorizationException;
 
 import java.util.Collections;
 
