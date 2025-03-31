@@ -15,13 +15,11 @@ import app.handong.feed.service.TbadminService;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
-import java.nio.charset.StandardCharsets;
-import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
+
+import static app.handong.feed.util.ApiKeyHasher.hmacSha256;
+import static app.handong.feed.util.KeyGenerator.generateRandomSuffix;
 
 
 @Service
@@ -30,7 +28,6 @@ public class TbadminServiceImpl implements TbadminService {
     private final TbUserPermRepository tbUserPermRepository;
     private final FirebaseService firebaseService;
     private final ApiKeyRepository apiKeyRepository;
-    private final SecureRandom secureRandom = new SecureRandom();
     private final CustomProperties customProperties;
 
 
@@ -65,7 +62,7 @@ public class TbadminServiceImpl implements TbadminService {
             throw new NoAuthorizationException("No Admin Permission");
 
         String rawKey = UUID.randomUUID().toString().replace("-", "") + generateRandomSuffix(8);
-        String hashedKey = hash(rawKey);
+        String hashedKey = hmacSha256(rawKey,  customProperties.getApiSecretKey());
 
         ApiKey apiKey = ApiKey.builder()
                 .apiKeyHash(hashedKey)
@@ -81,24 +78,6 @@ public class TbadminServiceImpl implements TbadminService {
         apiKeyRepository.save(apiKey);
 
         return new TbadminDto.ApiKeyCreateRespDto(rawKey, apiKey.getCreatedAt());
-    }
-
-    private String generateRandomSuffix(int length) {
-        return secureRandom.ints(length, 0, 36)
-                .mapToObj(i -> Integer.toString(i, 36))
-                .collect(Collectors.joining());
-    }
-
-    private String hash(String input) {
-        try {
-            Mac mac = Mac.getInstance("HmacSHA256");
-            SecretKeySpec keySpec = new SecretKeySpec(customProperties.getApiSecretKey().getBytes(), "HmacSHA256");
-            mac.init(keySpec);
-            byte[] digest = mac.doFinal(input.getBytes(StandardCharsets.UTF_8));
-            return HexFormat.of().formatHex(digest);
-        } catch (Exception e) {
-            throw new RuntimeException("HMAC hashing failed", e);
-        }
     }
 
     @Override
