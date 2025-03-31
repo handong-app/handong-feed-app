@@ -20,7 +20,7 @@ public class ApiKey {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "api_key_hash", nullable = false)
+    @Column(name = "api_key_hash", nullable = false, columnDefinition = "char(64)")
     private String apiKeyHash;
 
     private String owner;
