@@ -5,7 +5,11 @@ meta {
 }
 
 delete {
-  url: http://localhost:8080/api/tags/faith
+  url: http://localhost:8080/api/tags/:code
   body: none
   auth: inherit
+}
+
+params:path {
+  code: faith
 }
