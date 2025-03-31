@@ -67,19 +67,17 @@ sourceSets {
     }
 }
 
-processResources { dependsOn "copyReactBuildFiles" }
-
-def npmPath = '/opt/homebrew/bin/npm' // `which npm`으로 얻은 경로로 바꿔줘
+//processResources { dependsOn "copyReactBuildFiles" }
 
 task installReact(type: Exec) {
     workingDir "$frontendDir"
     inputs.dir "$frontendDir"
     group = BasePlugin.BUILD_GROUP
-
     if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
-        commandLine "npm.cmd", "install"
+        commandLine "npm.cmd", "audit", "fix"
+        commandLine 'npm.cmd', 'install'
     } else {
-        commandLine npmPath, "install"
+        commandLine "npm", "audit", "fix" commandLine 'npm', 'install'
     }
 }
 
@@ -92,9 +90,9 @@ task buildReact(type: Exec) {
     environment 'CI', 'false' // Disable CI check for lints
 
     if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
-        commandLine "npm.cmd", "run", "build"
+        commandLine "npm.cmd", "run-script", "build"
     } else {
-        commandLine npmPath, "run", "build"
+        commandLine "npm", "run-script", "build"
     }
 }
 
