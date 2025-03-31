@@ -5,9 +5,13 @@ meta {
 }
 
 patch {
-  url: http://localhost:8080/api/tags/club
+  url: http://localhost:8080/api/tags/:code
   body: json
   auth: inherit
+}
+
+params:path {
+  code: club
 }
 
 body:json {

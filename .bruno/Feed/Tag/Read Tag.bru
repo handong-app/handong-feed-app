@@ -5,7 +5,11 @@ meta {
 }
 
 get {
-  url: http://localhost:8080/api/tags/club
+  url: http://localhost:8080/api/tags/:code
   body: none
   auth: inherit
+}
+
+params:path {
+  code: club
 }

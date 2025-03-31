@@ -5,7 +5,11 @@ meta {
 }
 
 delete {
-  url: http://localhost:8080/api/admin/api-keys/2
+  url: http://localhost:8080/api/admin/api-keys/:id
   body: json
   auth: inherit
+}
+
+params:path {
+  id: 2
 }
