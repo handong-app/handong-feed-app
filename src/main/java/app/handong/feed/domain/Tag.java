@@ -32,7 +32,7 @@ public class Tag {
     private String llmDesc; // LLM용 설명
 
     @Setter
-    @Column(name = "color_hex", length = 6)
+    @Column(name = "color_hex", columnDefinition = "char(6)")
     private String colorHex; // HEX 색상 (# 제외)
 
     @Setter

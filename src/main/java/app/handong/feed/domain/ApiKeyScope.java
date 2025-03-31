@@ -12,7 +12,7 @@ public class ApiKeyScope {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "api_key_id", nullable = false)
+    @JoinColumn(name = "api_key_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private ApiKey apiKey;
 
     @Column(nullable = false)
