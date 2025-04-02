@@ -23,11 +23,37 @@ public class ApiKeyAuthInterceptor implements HandlerInterceptor {
     private final ApiKeyRepository apiKeyRepository;
     private final CustomProperties customProperties;
 
+    /**
+     * Constructs an ApiKeyAuthInterceptor with the specified API key repository and custom properties.
+     *
+     * The provided repository is used to retrieve and verify API keys, while the custom properties supply
+     * configuration details such as the secret key for hashing API keys.
+     *
+     * @param apiKeyRepository the repository for retrieving and validating API keys
+     * @param customProperties the custom configuration properties for API key authentication
+     */
     public ApiKeyAuthInterceptor(ApiKeyRepository apiKeyRepository, CustomProperties customProperties) {
         this.apiKeyRepository = apiKeyRepository;
         this.customProperties = customProperties;
     }
 
+    /**
+     * Intercepts an HTTP request to authenticate its API key.
+     *
+     * <p>This method retrieves the API key from the "X-API-Key" header, hashes it using HMAC SHA-256 
+     * with a configured secret, and validates it against the repository. If the key is missing, blank, 
+     * invalid, inactive, or lacks the required scopes (when specified via the {@code @RequiredScopes} 
+     * annotation on a controller method), the response status is set to 401 Unauthorized or 403 Forbidden 
+     * accordingly, and the request is rejected.
+     *
+     * <p>If the API key passes all checks, it is stored as a request attribute ("authenticatedApiKey") 
+     * for subsequent use, and the method returns {@code true}.
+     *
+     * @param request  the HTTP request containing the API key header
+     * @param response the HTTP response used to set an error status if authentication fails
+     * @param handler  the handler (typically a controller method) that may specify required scopes
+     * @return {@code true} if the API key is valid, active, and meets any required scopes; {@code false} otherwise
+     */
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
 

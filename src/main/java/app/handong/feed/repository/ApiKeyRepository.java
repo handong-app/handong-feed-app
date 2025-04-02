@@ -7,13 +7,22 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface ApiKeyRepository extends JpaRepository<ApiKey, Long> {
-    boolean existsByApiKeyHash(String hash);
-    /*
-    Spring의 @Transactional은 컨트롤러/서비스 레이어 이후에서만 프록시 세션을 유지한다.
-    따라서 인터셉터 레벨에서 ApiKeyRepository.findByApiKeyHash(...)를 호출하면,
-    해당 ApiKey 엔티티는 Hibernate 세션 밖에서 로딩되므로 지연 로딩(LAZY) 필드 접근 시 문제가 발생한다.
-    예를 들어 ApiKey.scopes가 LAZY 설정인 경우, getScopes()를 호출하면 세션이 이미 닫혀 있어 LazyInitializationException이 발생한다.
-    => 이를 해결하기 위해 @EntityGraph를 사용해 ApiKey.scopes를 즉시(fetch join) 로딩하도록 지정한다.
+    /**
+ * Checks if an API key exists in the database based on the provided hash.
+ *
+ * @param hash the API key hash to check for existence
+ * @return true if an API key with the specified hash exists, false otherwise
+ */
+boolean existsByApiKeyHash(String hash);
+    /**
+     * Retrieves an ApiKey entity using its hash while ensuring that the entity's scopes are loaded eagerly.
+     *
+     * <p>This method uses an entity graph to fetch the "scopes" attribute immediately. This is critical when
+     * the ApiKey is obtained outside an active Hibernate session (e.g., at the interceptor layer), preventing
+     * LazyInitializationException when accessing lazy-loaded fields such as scopes.</p>
+     *
+     * @param apiKeyHash the hashed API key used to identify the ApiKey entity
+     * @return an Optional containing the matching ApiKey if found, or an empty Optional otherwise
      */
     @EntityGraph(attributePaths = "scopes")
     Optional<ApiKey> findByApiKeyHash(String apiKeyHash);

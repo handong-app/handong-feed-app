@@ -14,12 +14,36 @@ public class WebMvcConfig implements WebMvcConfigurer {
     private final ApiKeyRepository apiKeyRepository;
     private final CustomProperties customProperties;
 
+    /**
+     * Constructs a new WebMvcConfig instance with the injected API key repository and custom properties.
+     *
+     * <p>The API key repository manages API keys while the custom properties supply configuration settings
+     * used during interceptor registration.
+     */
     public WebMvcConfig(ApiKeyRepository apiKeyRepository, CustomProperties customProperties) {
         this.apiKeyRepository = apiKeyRepository;
         this.customProperties = customProperties;
     }
 
-    //인터셉터 설정을 위함
+    /**
+     * Configures interceptors for processing HTTP requests.
+     *
+     * <p>This method registers two interceptors:
+     * <ul>
+     *   <li>
+     *     A <code>DefaultInterceptor</code> for handling all requests matching <code>/api/**</code>,
+     *     excluding those matching <code>/resources/**</code>, <code>/api/tbuser/login/google</code>,
+     *     <code>/api/lab/**</code>, and <code>/api/external/**</code>.
+     *   </li>
+     *   <li>
+     *     An <code>ApiKeyAuthInterceptor</code> for validating API key authentication on requests
+     *     matching <code>/api/external/**</code>.
+     *   </li>
+     * </ul>
+     * </p>
+     *
+     * @param registry the registry to which the interceptors are added
+     */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new DefaultInterceptor())
