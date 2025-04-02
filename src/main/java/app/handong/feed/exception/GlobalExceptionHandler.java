@@ -5,11 +5,9 @@ import app.handong.feed.exception.auth.NoAuthenticatedException;
 import app.handong.feed.exception.auth.NoAuthorizationException;
 import app.handong.feed.exception.data.DuplicateEntityException;
 import app.handong.feed.exception.data.DuplicateTagCodeException;
-import app.handong.feed.exception.data.NoMatchingDataException;
 import app.handong.feed.exception.data.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.jmx.access.InvalidInvocationException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -27,7 +25,6 @@ public class GlobalExceptionHandler {
             NoAuthorizationException.class,
             DuplicateEntityException.class,
             DuplicateTagCodeException.class,
-            NoMatchingDataException.class,
             NotFoundException.class,
     })
     public ResponseEntity<Map<String, Object>> handleCustomExceptions(Exception ex) {
