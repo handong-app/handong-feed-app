@@ -3,9 +3,9 @@ package app.handong.feed.service.impl;
 import app.handong.feed.domain.Tag;
 import app.handong.feed.dto.TagDto;
 import app.handong.feed.exception.data.DuplicateTagCodeException;
+import app.handong.feed.exception.data.NoMatchingDataException;
 import app.handong.feed.repository.TagRepository;
 import app.handong.feed.service.TagService;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -50,7 +50,7 @@ public class TagServiceImpl implements TagService {
     @Transactional(readOnly = true)
     public TagDto.ReadResDto readTag(String code) {
         Tag tag = tagRepository.findById(code)
-                .orElseThrow(() -> new EntityNotFoundException("Tag not found with code: " + code));
+                .orElseThrow(() -> new NoMatchingDataException("Tag not found with code: " + code));
 
         return new TagDto.ReadResDto(
                 tag.getCode(),
@@ -85,7 +85,7 @@ public class TagServiceImpl implements TagService {
     @Transactional
     public TagDto.UpdateResDto updateTag(String code, TagDto.UpdateReqDto dto) {
         Tag tag = tagRepository.findById(code)
-                .orElseThrow(() -> new EntityNotFoundException("Tag not found with code: " + code));
+                .orElseThrow(() -> new NoMatchingDataException("Tag not found with code: " + code));
 
         // 필드 업데이트
         tag.setLabel(dto.getLabel());
@@ -107,6 +107,9 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public TagDto.DeleteResDto deleteTag(String code) {
+        tagRepository.findById(code)
+            .orElseThrow(() -> new NoMatchingDataException("Tag not found with code: " + code));
+
         tagRepository.deleteById(code);
         return new TagDto.DeleteResDto(code, "Tag deleted successfully");
     }
