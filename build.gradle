@@ -67,7 +67,15 @@ sourceSets {
     }
 }
 
-processResources { dependsOn "copyReactBuildFiles" }
+processResources {
+    // NO_FRONT_BUILD 환경 변수가 '1'이 아닌 경우에만 frontend 빌드 의존성 추가
+    if (System.getenv("NO_FRONT_BUILD") != '1') {
+        println "NO_FRONT_BUILD is not set or not '1'. Adding dependency on copyReactBuildFiles."
+        dependsOn "copyReactBuildFiles"
+    } else {
+        println "NO_FRONT_BUILD=1 detected. Skipping dependency on copyReactBuildFiles."
+    }
+}
 
 task installReact(type: Exec) {
     workingDir "$frontendDir"
