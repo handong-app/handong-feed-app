@@ -31,8 +31,6 @@ public class ApiKeyAuthInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
 
-        System.out.println("==========인터셉터!!!======");
-
         String rawKey = request.getHeader("X-API-Key");
 
         if (rawKey == null || rawKey.isBlank()) {
