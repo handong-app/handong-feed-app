@@ -29,7 +29,7 @@ jobs:
       # JDK 17 설정한당
       # temurin = Adoptium에서 제공하는 JDK
       - name: Set up JDK 17
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
