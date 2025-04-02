@@ -4,13 +4,13 @@ import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-//2024-07-03 추가(클래스 처음 추가함)
 
 /**
- * 해당 메서드 권한 없을 경우 사용되는 예외처리
- * HttpStatus FORBIDDEN
+ * 중복 엔티티 발생한 경우 사용되는 예외처리
+ * HttpStatus CONFLICT
  */
 @ResponseStatus(value = HttpStatus.CONFLICT)
+@SuppressWarnings("serial")
 @NoArgsConstructor
 public class DuplicateEntityException extends RuntimeException {
     public DuplicateEntityException(String message) {
