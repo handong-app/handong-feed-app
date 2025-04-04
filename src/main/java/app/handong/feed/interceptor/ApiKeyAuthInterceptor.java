@@ -46,6 +46,8 @@ public class ApiKeyAuthInterceptor implements HandlerInterceptor {
             return false;
         }
 
+        ApiKey apiKey = apiKeyOpt.get();
+
         // @RequiredScopes 검사
         // 현재 요청이 Controller 메서드에 매핑되어 있는지 검사, 맞으면 HandlerMethod로 캐스팅
         if (handler instanceof HandlerMethod handlerMethod) {
@@ -56,7 +58,7 @@ public class ApiKeyAuthInterceptor implements HandlerInterceptor {
                 List<String> requiredScopes = List.of(annotation.value());
                 // 현재 API 키가 갖고 있는 모든 스코프를 Set<String>으로 정리
                 // grantedScopes는 중복 없고 빠른 조회가 필요하므로 Set (requiredScopes는 애노테이션으로부터 바로 받아온 리스트라 List 그대로 사용함)
-                Set<String> grantedScopes = apiKeyOpt.get().getScopes().stream()
+                Set<String> grantedScopes = apiKey.getScopes().stream()
                         .map(ApiKeyScope::getScope)
                         .collect(Collectors.toSet());
                 // requiredScopes 의 모든 요소가 grantedScopes 내에 있는지 확인
@@ -67,6 +69,9 @@ public class ApiKeyAuthInterceptor implements HandlerInterceptor {
                 }
             }
         }
+
+        apiKey.updateLastUsedAt();
+        apiKeyRepository.save(apiKey);
 
         // 현재 요청(HttpServletRequest)에 인증된 API 키 정보를 저장
         // 컨트롤러나 서비스 단에서 다시 DB 조회 없이 인증된 API 키 정보를 바로 꺼내 쓸 수 있음
