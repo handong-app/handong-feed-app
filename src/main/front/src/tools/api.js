@@ -44,6 +44,7 @@ export const fetchBe = (jwtValue, path, method = "GET", body) =>
           })
           .catch(() => {
             if (doc.status === 204) return res();
+            console.error("JSON 파싱 오류", doc);
             return rej({
               errorMsg: "JSON 파싱 오류. Status: " + doc.status,
             });

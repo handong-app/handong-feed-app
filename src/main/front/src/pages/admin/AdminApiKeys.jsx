@@ -219,12 +219,12 @@ export default function AdminApiKeys() {
     setScopes(scopes.filter((_, i) => i !== idx));
   };
 
-  const handleApiResponse = (success, action, refreshData = true) => {
+  const handleApiResponse = (success, action, doRefreshData = true) => {
     setSnackbarMessage(
       `API 키 ${action}${success ? "되었습니다" : "에 실패했습니다"}.`
     );
     setSnackbarOpen(true);
-    if (success && refreshData) refreshData();
+    if (success && doRefreshData) refreshData();
   };
 
   const handleSubmit = () => {
