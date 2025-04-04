@@ -51,4 +51,8 @@ public class ApiKey {
         }
     }
 
+    public void updateLastUsedAt() {
+        this.lastUsedAt = LocalDateTime.now();
+    }
+
 }
