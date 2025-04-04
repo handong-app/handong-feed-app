@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 import java.util.Optional;
 
-public interface ApiKeyRepository extends JpaRepository<ApiKey, Long> {
+public interface ApiKeyRepository extends JpaRepository<ApiKey, String> {
     boolean existsByApiKeyHash(String hash);
     /*
     Spring의 @Transactional은 컨트롤러/서비스 레이어 이후에서만 프록시 세션을 유지한다.

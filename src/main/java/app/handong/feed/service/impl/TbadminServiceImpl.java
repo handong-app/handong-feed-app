@@ -105,7 +105,7 @@ public class TbadminServiceImpl implements TbadminService {
 
     @Override
     @Transactional
-    public TbadminDto.ApiKeyDetail toggleApiKeyStatus(String userId, Long apiKeyId) {
+    public TbadminDto.ApiKeyDetail toggleApiKeyStatus(String userId, String apiKeyId) {
         if (tbUserPermRepository.findById(new UserPermId(userId, "adminToggleApiKey")).isEmpty()) {
             throw new NoAuthorizationException("No Admin Permission");
         }
@@ -134,7 +134,7 @@ public class TbadminServiceImpl implements TbadminService {
 
     @Override
     @Transactional
-    public void deleteApiKey(String userId, Long apiKeyId) {
+    public void deleteApiKey(String userId, String apiKeyId) {
         if (tbUserPermRepository.findById(new UserPermId(userId, "adminDeleteApiKey")).isEmpty()) {
             throw new NoAuthorizationException("No Admin Permission");
         }
