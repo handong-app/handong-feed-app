@@ -66,7 +66,8 @@ public class TbadminServiceImpl implements TbadminService {
 
         ApiKey apiKey = ApiKey.builder()
                 .apiKeyHash(hashedKey)
-                .owner(req.getOwner())
+                .description(req.getDescription())
+                .issuedBy(userId)
                 .createdAt(LocalDateTime.now())
                 .isActive(true)
                 .build();
@@ -118,7 +119,8 @@ public class TbadminServiceImpl implements TbadminService {
 
         return new TbadminDto.ApiKeyDetail(
                 apiKey.getId(),
-                apiKey.getOwner(),
+                apiKey.getDescription(),
+                apiKey.getIssuedBy(),
                 apiKey.isActive(),
                 apiKey.getCreatedAt(),
                 apiKey.getLastUsedAt(),

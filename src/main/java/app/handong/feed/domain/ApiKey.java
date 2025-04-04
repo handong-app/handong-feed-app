@@ -9,6 +9,7 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -17,13 +18,17 @@ import java.util.List;
 @Table(name = "api_keys")
 public class ApiKey {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Id
+    @Column(columnDefinition = "char(32)")
+    private String id; // UUID
 
     @Column(name = "api_key_hash", nullable = false, columnDefinition = "char(64)")
     private String apiKeyHash;
 
-    private String owner;
+    private String description;
+
+    @Column(columnDefinition = "varchar(32)")
+    private String issuedBy;
 
     private LocalDateTime createdAt = LocalDateTime.now();
     private LocalDateTime lastUsedAt;
@@ -37,6 +42,13 @@ public class ApiKey {
 
     public void addScope(String scopeName) {
         this.scopes.add(new ApiKeyScope(this, scopeName));
+    }
+
+    @PrePersist
+    public void onPrePersist() {
+        if (this.id == null || this.id.isEmpty()) {
+            this.id = UUID.randomUUID().toString().replace("-", "");
+        }
     }
 
 }
