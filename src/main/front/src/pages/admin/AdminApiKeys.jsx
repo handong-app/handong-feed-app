@@ -33,7 +33,7 @@ import AdminPage from "./AdminPage";
 
 const columns = [
   {
-    id: "owner",
+    id: "description",
     label: "Description",
     minWidth: 170,
     format: (value, row) => (
@@ -43,12 +43,15 @@ const columns = [
     ),
   },
   {
-    id: "creator",
-    label: "Creator",
+    id: "issuedBy",
+    label: "Issued By",
     minWidth: 170,
     format: (value, row) => (
       <div>
-        <Typography variant="body1">{value}</Typography>
+        <Typography variant="body1">{value.name}</Typography>
+        <Typography variant="body2" color="textSecondary">
+          {value.id}
+        </Typography>
       </div>
     ),
   },
@@ -213,7 +216,7 @@ export default function AdminApiKeys() {
     console.log("description:", description);
     console.log("scopes:", scopes);
     fetchBe("/admin/issue-api-key", "POST", {
-      owner: description,
+      description: description,
       scopes: scopes,
     })
       .then((doc) => {
