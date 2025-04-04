@@ -27,18 +27,28 @@ export const fetchBe = (jwtValue, path, method = "GET", body) =>
           window.location.href = "/land"; // back to home screen.
           return rej({ errorMsg: "로그인을 다시해주세요." });
         }
-        doc.json().then((json) => {
-          // If User not exist (due to db reset, etc)
-          if (path === "/user/get" && !json?.email) {
-            alert("유저가 존재하지 않습니다. 로그인을 다시해주세요.");
-            localStorage.clear();
-            window.location.reload();
+        doc
+          .json()
+          .then((json) => {
+            // If User not exist (due to db reset, etc)
+            if (path === "/user/get" && !json?.email) {
+              alert("유저가 존재하지 않습니다. 로그인을 다시해주세요.");
+              localStorage.clear();
+              window.location.reload();
+              return rej({
+                errorMsg: "유저가 존재하지 않습니다. 로그인을 다시해주세요.",
+              });
+            }
+            if (doc.status >= 400) return rej(json);
+            return res(json);
+          })
+          .catch(() => {
+            if (doc.status === 204) return res();
+            console.error("JSON 파싱 오류", doc);
             return rej({
-              errorMsg: "유저가 존재하지 않습니다. 로그인을 다시해주세요.",
+              errorMsg: "JSON 파싱 오류. Status: " + doc.status,
             });
-          }
-          return res(json);
-        });
+          });
       })
 
       .catch((err) => rej(err));

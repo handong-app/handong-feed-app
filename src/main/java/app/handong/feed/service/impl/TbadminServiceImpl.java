@@ -83,7 +83,29 @@ public class TbadminServiceImpl implements TbadminService {
 
     @Override
     @Transactional
-    public TbadminDto.ApiKeyDetail toggleApiKeyStatus(String userId, Long apiKeyId) {
+    public List<TbadminDto.ApiKeyDetail> getAllApiKeyStatus(String userId) {
+        if (tbUserPermRepository.findById(new UserPermId(userId, "adminReadAllApiKey")).isEmpty()) {
+            throw new NoAuthorizationException("No Admin Permission");
+        }
+        List<ApiKey> apiKeys = apiKeyRepository.findAll();
+        return apiKeys.stream().map((apiKey) -> {
+            List<String> scopes = apiKey.getScopes().stream()
+                    .map(ApiKeyScope::getScope)
+                    .toList();
+            return new TbadminDto.ApiKeyDetail(
+                    apiKey.getId(),
+                    apiKey.getDescription(),
+                    apiKey.getIssuedUser().toUserDetail(),
+                    apiKey.isActive(),
+                    apiKey.getCreatedAt(),
+                    apiKey.getLastUsedAt(),
+                    scopes
+            );   }).toList();
+    }
+
+    @Override
+    @Transactional
+    public TbadminDto.ApiKeyDetail toggleApiKeyStatus(String userId, String apiKeyId) {
         if (tbUserPermRepository.findById(new UserPermId(userId, "adminToggleApiKey")).isEmpty()) {
             throw new NoAuthorizationException("No Admin Permission");
         }
@@ -102,7 +124,7 @@ public class TbadminServiceImpl implements TbadminService {
         return new TbadminDto.ApiKeyDetail(
                 apiKey.getId(),
                 apiKey.getDescription(),
-                apiKey.getIssuedBy(),
+                apiKey.getIssuedUser().toUserDetail(),
                 apiKey.isActive(),
                 apiKey.getCreatedAt(),
                 apiKey.getLastUsedAt(),
@@ -112,7 +134,7 @@ public class TbadminServiceImpl implements TbadminService {
 
     @Override
     @Transactional
-    public void deleteApiKey(String userId, Long apiKeyId) {
+    public void deleteApiKey(String userId, String apiKeyId) {
         if (tbUserPermRepository.findById(new UserPermId(userId, "adminDeleteApiKey")).isEmpty()) {
             throw new NoAuthorizationException("No Admin Permission");
         }

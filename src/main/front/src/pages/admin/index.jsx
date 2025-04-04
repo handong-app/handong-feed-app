@@ -1,10 +1,12 @@
 import PeopleIcon from "@mui/icons-material/People";
 import FeedIcon from "@mui/icons-material/Feed";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
+import SmartToyIcon from "@mui/icons-material/SmartToy";
 
 import UsersTable from "./UsersTable";
 import AdminFeed from "./AdminFeed";
 import AdminFiles from "./AdminFiles";
+import AdminApiKeys from "./AdminApiKeys";
 
 export const ADMINMENU = [
   {
@@ -24,5 +26,11 @@ export const ADMINMENU = [
     icon: <InsertDriveFileIcon />,
     id: "files",
     comp: AdminFiles,
+  },
+  {
+    title: "APIKeys 관리",
+    icon: <SmartToyIcon />,
+    id: "apikeys",
+    comp: AdminApiKeys,
   },
 ];
