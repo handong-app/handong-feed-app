@@ -220,6 +220,14 @@ export default function AdminApiKeys() {
     setScopes(scopes.filter((_, i) => i !== idx));
   };
 
+  const handleApiResponse = (success, action) => {
+    setSnackbarMessage(
+      `API 키 ${action}${success ? "되었습니다" : "에 실패했습니다"}.`
+    );
+    setSnackbarOpen(true);
+    if (success) refreshData();
+  };
+
   const handleSubmit = () => {
     // 제출 처리 로직 추가
     console.log("description:", description);
@@ -238,8 +246,7 @@ export default function AdminApiKeys() {
       })
       .catch((err) => {
         console.error(err);
-        setSnackbarMessage("API 키 발급에 실패했습니다. " + err.message);
-        setSnackbarOpen(true);
+        handleApiResponse(false, "발급");
       });
   };
 
@@ -292,29 +299,29 @@ export default function AdminApiKeys() {
 
   const handleToggleEnable = (id) => {
     console.log("Toggle enable for:", id);
-    fetchBe(`/admin/api-keys/${id}/toggle-status`, "PATCH", {}).then((doc) => {
-      if (doc.id) {
-        setSnackbarMessage("API 키 상태가 변경되었습니다.");
-        setSnackbarOpen(true);
-        refreshData();
-      } else {
-        setSnackbarMessage("API 키 상태 변경에 실패했습니다.");
-        setSnackbarOpen(true);
-      }
-    });
+    fetchBe(`/admin/api-keys/${id}/toggle-status`, "PATCH", {})
+      .then((doc) => {
+        if (doc.id) {
+          handleApiResponse(true, "상태 변경");
+        } else {
+          handleApiResponse(false, "상태 변경");
+          console.error("API 응답 오류:", doc);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        handleApiResponse(false, "상태 변경");
+      });
   };
 
   const handleDelete = (id) => {
     fetchBe(`/admin/api-keys/${id}`, "DELETE", {})
       .then((doc) => {
-        setSnackbarMessage("API 키가 삭제되었습니다.");
-        setSnackbarOpen(true);
-        refreshData();
+        handleApiResponse(true, "삭제");
       })
       .catch((err) => {
         console.error(err);
-        setSnackbarMessage("API 키 삭제에 실패했습니다. " + err.message);
-        setSnackbarOpen(true);
+        handleApiResponse(false, "삭제");
       });
   };
 
@@ -454,13 +461,11 @@ export default function AdminApiKeys() {
                   navigator.clipboard
                     .writeText(apiKey)
                     .then(() => {
-                      setSnackbarMessage("클립보드에 복사되었습니다");
-                      setSnackbarOpen(true);
+                      handleApiResponse(true, "복사");
                     })
                     .catch((err) => {
                       console.error("클립보드 복사 실패:", err);
-                      setSnackbarMessage("클립보드 복사에 실패했습니다");
-                      setSnackbarOpen(true);
+                      handleApiResponse(false, "복사");
                     });
                 }}
               />

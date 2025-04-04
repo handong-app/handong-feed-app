@@ -39,13 +39,13 @@ export const fetchBe = (jwtValue, path, method = "GET", body) =>
                 errorMsg: "유저가 존재하지 않습니다. 로그인을 다시해주세요.",
               });
             }
+            if (doc.status >= 400) return rej(json);
             return res(json);
           })
           .catch(() => {
             if (doc.status === 204) return res();
             return rej({
-              errorMsg:
-                "서버에서 잘못된 응답을 받았습니다. Status: " + doc.status,
+              errorMsg: "JSON 파싱 오류. Status: " + doc.status,
             });
           });
       })
