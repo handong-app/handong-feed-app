@@ -1,18 +1,35 @@
 package app.handong.feed.interceptor;
 
 
+import app.handong.feed.domain.ApiKeyScope;
+import app.handong.feed.domain.TbUserPerm;
 import app.handong.feed.exception.auth.NoAuthenticatedException;
+import app.handong.feed.repository.TbUserPermRepository;
+import app.handong.feed.security.annotation.RequiredUserScopes;
+import app.handong.feed.security.enums.UserScope;
+import app.handong.feed.util.PermissionUtils;
 import app.handong.feed.util.TokenFactory;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class DefaultInterceptor implements HandlerInterceptor {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    private final TbUserPermRepository tbUserPermRepository;
+
+    public DefaultInterceptor(TbUserPermRepository tbUserPermRepository) {
+        this.tbUserPermRepository = tbUserPermRepository;
+    }
 
     //컨트롤러 진입 전에 호출되는 메서드
     @Override
@@ -21,6 +38,28 @@ public class DefaultInterceptor implements HandlerInterceptor {
             TokenFactory tokenFactory = new TokenFactory();
             String reqUserId = tokenFactory.verifyToken(request.getHeader("Authorization").replaceAll("Bearer ", ""));
             request.setAttribute("reqUserId", reqUserId);
+
+            // 만약에 추가적인 권한이 필요하다면 권한 확인
+
+            // @RequiredScopes 검사
+            // 현재 요청이 Controller 메서드에 매핑되어 있는지 검사, 맞으면 HandlerMethod로 캐스팅
+            if (handler instanceof HandlerMethod handlerMethod) {
+                // 컨트롤러 메서드에 붙은 @RequiredScopes 애노테이션을 꺼냄
+                RequiredUserScopes annotation = handlerMethod.getMethodAnnotation(RequiredUserScopes.class);
+                if (annotation != null) {
+                    // 일단 디비에서 유저 권한 가져오기
+                    Set<String> userPerms = tbUserPermRepository.findAllByIdUserId(reqUserId).stream().map(perm -> perm.getId().getPermission()).collect(Collectors.toSet());
+
+                    // 애노테이션에 명시된 스코프들을 List<String>으로 변환
+                    Set<String> requiredScopes = Arrays.stream(annotation.value()).map(scope -> new UserScope.Scope(scope.group(), scope.action()).toString()).collect(Collectors.toSet());
+
+                    // Helper function 을 사용하여 권한이 있는지 확인.
+                    if (!PermissionUtils.hasAllRequiredPermissions(userPerms, requiredScopes)) {
+                        response.setStatus(HttpStatus.FORBIDDEN.value());
+                        return false;
+                    }
+                }
+            }
         } else {
             throw new NoAuthenticatedException("Not Authenticated User");
         }

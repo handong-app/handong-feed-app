@@ -41,26 +41,17 @@ public class TbadminServiceImpl implements TbadminService {
 
     @Override
     public List<TbadminDto.UserDetail> adminGetUser(String userId, Map<String, String> param) {
-
-        if (tbUserPermRepository.findById(new UserPermId(userId, "adminGetUser")).isEmpty())
-            throw new NoAuthorizationException("No Admin Permission");
         return tbadminMapper.allUsers();
     }
 
     @Override
     public List<String> adminGetFirebaseStorageList(String userId) {
-
-        if (tbUserPermRepository.findById(new UserPermId(userId, "adminFirebaseFiles")).isEmpty())
-            throw new NoAuthorizationException("No Admin Permission");
         return firebaseService.listAllFiles("KaFile");
     }
 
     @Override
     @Transactional
     public TbadminDto.ApiKeyCreateRespDto issueApiKey(String userId, TbadminDto.ApiKeyCreateReqDto req) {
-        if (tbUserPermRepository.findById(new UserPermId(userId, "adminIssueApiKey")).isEmpty())
-            throw new NoAuthorizationException("No Admin Permission");
-
         String rawKey = UUID.randomUUID().toString().replace("-", "") + generateRandomSuffix(8);
         String hashedKey = hmacSha256(rawKey,  customProperties.getApiSecretKey());
 
@@ -84,9 +75,6 @@ public class TbadminServiceImpl implements TbadminService {
     @Override
     @Transactional
     public List<TbadminDto.ApiKeyDetail> getAllApiKeyStatus(String userId) {
-        if (tbUserPermRepository.findById(new UserPermId(userId, "adminReadAllApiKey")).isEmpty()) {
-            throw new NoAuthorizationException("No Admin Permission");
-        }
         List<ApiKey> apiKeys = apiKeyRepository.findAll();
         return apiKeys.stream().map((apiKey) -> {
             List<String> scopes = apiKey.getScopes().stream()
@@ -106,10 +94,6 @@ public class TbadminServiceImpl implements TbadminService {
     @Override
     @Transactional
     public TbadminDto.ApiKeyDetail toggleApiKeyStatus(String userId, String apiKeyId) {
-        if (tbUserPermRepository.findById(new UserPermId(userId, "adminToggleApiKey")).isEmpty()) {
-            throw new NoAuthorizationException("No Admin Permission");
-        }
-
         ApiKey apiKey = apiKeyRepository.findById(apiKeyId)
                 .orElseThrow(() -> new IllegalArgumentException("API key not found"));
 
@@ -135,13 +119,8 @@ public class TbadminServiceImpl implements TbadminService {
     @Override
     @Transactional
     public void deleteApiKey(String userId, String apiKeyId) {
-        if (tbUserPermRepository.findById(new UserPermId(userId, "adminDeleteApiKey")).isEmpty()) {
-            throw new NoAuthorizationException("No Admin Permission");
-        }
-
         ApiKey apiKey = apiKeyRepository.findById(apiKeyId)
                 .orElseThrow(() -> new IllegalArgumentException("API key not found"));
-
         apiKeyRepository.delete(apiKey);
     }
 
