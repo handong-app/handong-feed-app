@@ -2,6 +2,7 @@ name: Test PR Build (Spring Boot)
 
 on:
   pull_request:
+    types: [opened, synchronize, ready_for_review, reopened]
     branches:
       - main
     paths-ignore:
@@ -17,6 +18,7 @@ concurrency:
 
 jobs:
   test-build:
+    if: github.event.pull_request.draft == false
     runs-on: ubuntu-latest
 
     steps:
