@@ -6,7 +6,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useFetchBe } from "../../tools/api";
 import { visuallyHidden } from "@mui/utils";
 
@@ -24,7 +24,11 @@ import {
   DialogActions,
   TextField,
   Snackbar,
+  IconButton,
 } from "@mui/material";
+import VpnKeyIcon from "@mui/icons-material/VpnKey";
+import VpnKeyOffIcon from "@mui/icons-material/VpnKeyOff";
+import DeleteIcon from "@mui/icons-material/Delete";
 import AdminPage from "./AdminPage";
 
 const columns = [
@@ -39,7 +43,7 @@ const columns = [
     ),
   },
   {
-    id: "owner",
+    id: "creator",
     label: "Creator",
     minWidth: 170,
     format: (value, row) => (
@@ -126,17 +130,6 @@ function EnhancedTableHead(props) {
   return (
     <TableHead>
       <TableRow>
-        {/* <TableCell padding="checkbox">
-          <Checkbox
-            color="primary"
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{
-              "aria-label": "select all desserts",
-            }}
-          />
-        </TableCell> */}
         {columns.map((headCell) => (
           <TableCell
             key={headCell.id}
@@ -158,6 +151,9 @@ function EnhancedTableHead(props) {
             </TableSortLabel>
           </TableCell>
         ))}
+        <TableCell align="center" padding="normal">
+          Actions
+        </TableCell>
       </TableRow>
     </TableHead>
   );
@@ -187,6 +183,10 @@ export default function AdminApiKeys() {
 
   // 기존 API 키 발급 이벤트 핸들러 수정: 모달 오픈
   const handleApiKeyIssue = () => {
+    setDescription("");
+    setScopes([]);
+    setScopeInput("");
+    setApiKey("");
     setOpenModal(true);
   };
 
@@ -219,6 +219,7 @@ export default function AdminApiKeys() {
       .then((doc) => {
         if (doc.apiKey) {
           setApiKey(doc.apiKey);
+          refreshData();
         } else {
           throw new Error("응답에 apiKey가 없습니다." + JSON.stringify(doc));
         }
@@ -276,6 +277,33 @@ export default function AdminApiKeys() {
     setDense(event.target.checked);
   };
 
+  const handleToggleEnable = (id) => {
+    console.log("Toggle enable for:", id);
+    fetchBe(`/admin/api-keys/${id}/toggle-status`, "PATCH", {}).then((doc) => {
+      if (doc.id) {
+        setSnackbarMessage("API 키 상태가 변경되었습니다.");
+        setSnackbarOpen(true);
+        refreshData();
+      } else {
+        setSnackbarMessage("API 키 상태 변경에 실패했습니다.");
+        setSnackbarOpen(true);
+      }
+    });
+  };
+
+  const handleDelete = (id) => {
+    fetchBe(`/admin/api-keys/${id}`, "DELETE", {}).then((doc) => {
+      if (!doc) {
+        setSnackbarMessage("API 키가 삭제되었습니다.");
+        setSnackbarOpen(true);
+        refreshData();
+      } else {
+        setSnackbarMessage("API 키 상태 변경에 실패했습니다.");
+        setSnackbarOpen(true);
+      }
+    });
+  };
+
   // Avoid a layout jump when reaching the last page with empty allData.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - allData.length) : 0;
@@ -288,8 +316,12 @@ export default function AdminApiKeys() {
     [order, orderBy, page, rowsPerPage, allData]
   );
 
-  useEffect(() => {
+  const refreshData = useCallback(() => {
     fetchBe("/admin/api-keys").then((doc) => setAllData(doc));
+  }, [fetchBe]);
+
+  useEffect(() => {
+    refreshData();
   }, []);
 
   return (
@@ -312,19 +344,6 @@ export default function AdminApiKeys() {
           }}
         >
           <Table stickyHeader aria-label="sticky table">
-            {/* <TableHead>
-            <TableRow>
-              {columns.map((column) => (
-                <TableCell
-                  key={column.id}
-                  align={column.align}
-                  style={{ minWidth: column.minWidth }}
-                >
-                  {column.label}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead> */}
             <EnhancedTableHead
               numSelected={selected.length}
               order={order}
@@ -334,24 +353,40 @@ export default function AdminApiKeys() {
               rowCount={allData.length}
             />
             <TableBody>
-              {visibleRows
-                // .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row) => {
-                  return (
-                    <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
-                      {columns.map((column) => {
-                        // console.log(row, column.id);
-                        return (
-                          <TableCell key={column.id} align={column.align}>
-                            {column.format
-                              ? column.format(row[column.id], row)
-                              : row[column.id]}
-                          </TableCell>
-                        );
-                      })}
-                    </TableRow>
-                  );
-                })}
+              {visibleRows.map((row) => {
+                return (
+                  <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
+                    {columns.map((column) => {
+                      return (
+                        <TableCell key={column.id} align={column.align}>
+                          {column.format
+                            ? column.format(row[column.id], row)
+                            : row[column.id]}
+                        </TableCell>
+                      );
+                    })}
+                    <TableCell align="center" padding="normal">
+                      <Tooltip title={row.enabled ? "Key" : "Key Off"}>
+                        <IconButton onClick={() => handleToggleEnable(row.id)}>
+                          {row.active ? (
+                            <VpnKeyIcon sx={{ color: "green" }} />
+                          ) : (
+                            <VpnKeyOffIcon sx={{ color: "orange" }} />
+                          )}
+                        </IconButton>
+                      </Tooltip>
+                      <Tooltip title="삭제">
+                        <IconButton
+                          onClick={() => handleDelete(row.id)}
+                          sx={{ color: "grey" }}
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                      </Tooltip>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
               {emptyRows > 0 && (
                 <TableRow
                   style={{
