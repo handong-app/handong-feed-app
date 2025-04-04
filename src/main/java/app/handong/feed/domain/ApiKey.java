@@ -19,7 +19,7 @@ import java.util.UUID;
 public class ApiKey {
 
     @Id
-    @Column(columnDefinition = "varchar(32)")
+    @Column(columnDefinition = "char(32)")
     private String id; // UUID
 
     @Column(name = "api_key_hash", nullable = false, columnDefinition = "char(64)")

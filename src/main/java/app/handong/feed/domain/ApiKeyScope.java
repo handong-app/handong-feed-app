@@ -10,7 +10,7 @@ import java.util.UUID;
 @Table(name = "api_key_scopes")
 public class ApiKeyScope {
     @Id
-    @Column(columnDefinition = "varchar(32)")
+    @Column(columnDefinition = "char(32)")
     private String id;
 
     @ManyToOne(fetch = FetchType.LAZY)
