@@ -82,6 +82,24 @@ public class TbadminServiceImpl implements TbadminService {
 
     @Override
     @Transactional
+    public List<TbadminDto.ApiKeyDetail> getAllApiKeyStatus(String userId) {
+        if (tbUserPermRepository.findById(new UserPermId(userId, "adminReadAllApiKey")).isEmpty()) {
+            throw new NoAuthorizationException("No Admin Permission");
+        }
+        List<ApiKey> apiKeys = apiKeyRepository.findAllByOwner(userId);
+        return apiKeys.stream().map((apiKey) -> {
+            return new TbadminDto.ApiKeyDetail(
+                    apiKey.getId(),
+                    apiKey.getOwner(),
+                    apiKey.isActive(),
+                    apiKey.getCreatedAt(),
+                    apiKey.getLastUsedAt(),
+                    null
+            );   }).toList();
+    }
+
+    @Override
+    @Transactional
     public TbadminDto.ApiKeyDetail toggleApiKeyStatus(String userId, Long apiKeyId) {
         if (tbUserPermRepository.findById(new UserPermId(userId, "adminToggleApiKey")).isEmpty()) {
             throw new NoAuthorizationException("No Admin Permission");

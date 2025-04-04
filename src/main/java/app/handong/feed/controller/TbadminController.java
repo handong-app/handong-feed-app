@@ -37,6 +37,12 @@ public class TbadminController {
         return ResponseEntity.ok(tbadminService.issueApiKey(reqUserId, dto));
     }
 
+    @GetMapping("/api-keys")
+    public ResponseEntity<List<TbadminDto.ApiKeyDetail>> getAllApiKeys(HttpServletRequest request) {
+        String reqUserId = RequestUtils.getReqUserId(request);
+        return ResponseEntity.ok(tbadminService.getAllApiKeyStatus(reqUserId));
+    }
+
     @PatchMapping("/api-keys/{id}/toggle-status")
     public ResponseEntity<TbadminDto.ApiKeyDetail> toggleApiKeyStatus(@PathVariable Long id,HttpServletRequest request) {
         String reqUserId = RequestUtils.getReqUserId(request);
