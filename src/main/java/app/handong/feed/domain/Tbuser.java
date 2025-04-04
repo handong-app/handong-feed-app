@@ -1,5 +1,6 @@
 package app.handong.feed.domain;
 
+import app.handong.feed.dto.TbadminDto;
 import app.handong.feed.dto.TbuserDto;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -69,6 +70,10 @@ public class Tbuser {
 
     public TbuserDto.CreateResDto toCreateResDto() {
         return TbuserDto.CreateResDto.builder().email(this.getEmail()).build();
+    }
+
+    public TbadminDto.UserDetail toUserDetail() {
+        return new TbadminDto.UserDetail(id, name, last_login_time, modified_at, created_at);
     }
 
 

@@ -87,15 +87,19 @@ public class TbadminServiceImpl implements TbadminService {
         if (tbUserPermRepository.findById(new UserPermId(userId, "adminReadAllApiKey")).isEmpty()) {
             throw new NoAuthorizationException("No Admin Permission");
         }
-        List<ApiKey> apiKeys = apiKeyRepository.findAllByOwner(userId);
+        List<ApiKey> apiKeys = apiKeyRepository.findAll();
         return apiKeys.stream().map((apiKey) -> {
+            List<String> scopes = apiKey.getScopes().stream()
+                    .map(ApiKeyScope::getScope)
+                    .toList();
             return new TbadminDto.ApiKeyDetail(
                     apiKey.getId(),
-                    apiKey.getOwner(),
+                    apiKey.getDescription(),
+                    apiKey.getIssuedUser().toUserDetail(),
                     apiKey.isActive(),
                     apiKey.getCreatedAt(),
                     apiKey.getLastUsedAt(),
-                    null
+                    scopes
             );   }).toList();
     }
 
@@ -120,7 +124,7 @@ public class TbadminServiceImpl implements TbadminService {
         return new TbadminDto.ApiKeyDetail(
                 apiKey.getId(),
                 apiKey.getDescription(),
-                apiKey.getIssuedBy(),
+                apiKey.getIssuedUser().toUserDetail(),
                 apiKey.isActive(),
                 apiKey.getCreatedAt(),
                 apiKey.getLastUsedAt(),

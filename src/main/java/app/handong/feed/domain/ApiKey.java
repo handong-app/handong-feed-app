@@ -30,6 +30,16 @@ public class ApiKey {
     @Column(columnDefinition = "varchar(32)")
     private String issuedBy;
 
+    @ManyToOne
+    @JoinColumn(
+            name = "issuedBy",
+            referencedColumnName = "id",
+            insertable = false,
+            updatable = false,
+            foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT)
+    )
+    private Tbuser issuedUser;
+
     private LocalDateTime createdAt = LocalDateTime.now();
     private LocalDateTime lastUsedAt;
     @Setter private boolean isActive = true;

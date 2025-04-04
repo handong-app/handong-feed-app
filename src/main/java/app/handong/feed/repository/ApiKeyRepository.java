@@ -18,5 +18,4 @@ public interface ApiKeyRepository extends JpaRepository<ApiKey, Long> {
      */
     @EntityGraph(attributePaths = "scopes")
     Optional<ApiKey> findByApiKeyHash(String apiKeyHash);
-    List<ApiKey> findAllByOwner(String owner);
 }

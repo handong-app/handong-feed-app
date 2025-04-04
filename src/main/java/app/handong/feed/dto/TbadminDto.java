@@ -56,7 +56,7 @@ public class TbadminDto {
     public static class ApiKeyDetail {
         private String id;
         private String description;
-        private String issuedBy;
+        private TbadminDto.UserDetail issuedBy;
         private boolean isActive;
         private LocalDateTime createdAt;
         private LocalDateTime lastUsedAt;
