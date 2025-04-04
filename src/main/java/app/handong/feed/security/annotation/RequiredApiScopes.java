@@ -6,7 +6,7 @@ import java.lang.annotation.*;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented //JavaDoc 에 이 애노테이션이 붙은걸 보이게 해줌
-public @interface RequiredScopes {
+public @interface RequiredApiScopes {
     /**
      * 외부 API 의 Scope (권한 범위) 를 나타내는 애노테이션입니다.
      * e.g., @RequiredScopes({"tag:read", "tb-subject-tag:read"})
