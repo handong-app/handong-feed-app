@@ -60,9 +60,18 @@ const columns = [
     label: "Scopes",
     minWidth: 170,
     format: (value, row) => (
-      <div>
-        <Typography variant="body1">{value?.join(", ")}</Typography>
-      </div>
+      <Box
+        sx={{
+          fontFamily: "monospace",
+          whiteSpace: "pre-wrap",
+          wordWrap: "break-word",
+          maxHeight: "5em",
+          overflowY: "auto",
+          backgroundColor: "#f5f5f5",
+        }}
+      >
+        {value?.join("\n")}
+      </Box>
     ),
   },
   {
