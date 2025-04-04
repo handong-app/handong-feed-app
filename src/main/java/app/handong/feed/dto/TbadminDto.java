@@ -30,8 +30,8 @@ public class TbadminDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class ApiKeyCreateReqDto {
-        @Schema(description = "API 키 소유자", example = "spotlight")
-        private String owner;
+        @Schema(description = "API Key의 정보", example = "spotlight")
+        private String description;
 
         @Schema(description = "허용된 스코프 목록", example = "[\"tag:create\", \"tag:delete\"]")
         private List<String> scopes = new ArrayList<>();
@@ -54,8 +54,9 @@ public class TbadminDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class ApiKeyDetail {
-        private Long id;
-        private String owner;
+        private String id;
+        private String description;
+        private String issuedBy;
         private boolean isActive;
         private LocalDateTime createdAt;
         private LocalDateTime lastUsedAt;
