@@ -8,6 +8,8 @@
   ],
   "presets": {
     "requestType": "http",
-    "requestUrl": "http://localhost:8080/api/"
-  }
+    "requestUrl": "http://localhost:{{PORT}}/api/"
+  },
+  "size": 0.005414009094238281,
+  "filesCount": 20
 }

@@ -5,7 +5,8 @@ on:
     branches:
       - main
     paths-ignore:
-      - '**/*.md'
+      - "**/*.md"
+      - "**/*.bru"
 
 permissions:
   contents: write
@@ -31,8 +32,8 @@ jobs:
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
-          java-version: '17'
-          distribution: 'temurin'
+          java-version: "17"
+          distribution: "temurin"
 
       # gradle wrapper 파일에 실행 권한을 부여
       # gradle wrapper = 개발자가 특정 버전의 Gradle을 미리 설치하지 않고도 Gradle 빌드를 실행할 수 있게 해주는 편리한 도구
@@ -46,7 +47,7 @@ jobs:
           arguments: build
         env:
           REACT_APP_WEATHER_KEY: ${{ secrets.VITE_WEATHER_KEY }}
-      
+
       # 현재 날짜와 시간을 가져오기
       - name: Get current date and time
         id: date
@@ -60,7 +61,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ env.CURRENT_DATE }}
-          release_name: 'Release ${{ env.CURRENT_DATE }}'
+          release_name: "Release ${{ env.CURRENT_DATE }}"
           draft: false
           prerelease: false
 
