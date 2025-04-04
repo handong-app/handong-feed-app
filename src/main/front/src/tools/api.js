@@ -41,7 +41,13 @@ export const fetchBe = (jwtValue, path, method = "GET", body) =>
             }
             return res(json);
           })
-          .catch(() => res(null));
+          .catch(() => {
+            if (doc.status === 204) return res();
+            return rej({
+              errorMsg:
+                "서버에서 잘못된 응답을 받았습니다. Status: " + doc.status,
+            });
+          });
       })
 
       .catch((err) => rej(err));

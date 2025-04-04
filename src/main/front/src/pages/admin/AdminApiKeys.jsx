@@ -238,7 +238,8 @@ export default function AdminApiKeys() {
       })
       .catch((err) => {
         console.error(err);
-        alert("API 키 발급에 실패했습니다. " + err.message);
+        setSnackbarMessage("API 키 발급에 실패했습니다. " + err.message);
+        setSnackbarOpen(true);
       });
   };
 
@@ -304,16 +305,17 @@ export default function AdminApiKeys() {
   };
 
   const handleDelete = (id) => {
-    fetchBe(`/admin/api-keys/${id}`, "DELETE", {}).then((doc) => {
-      if (!doc) {
+    fetchBe(`/admin/api-keys/${id}`, "DELETE", {})
+      .then((doc) => {
         setSnackbarMessage("API 키가 삭제되었습니다.");
         setSnackbarOpen(true);
         refreshData();
-      } else {
-        setSnackbarMessage("API 키 상태 변경에 실패했습니다.");
+      })
+      .catch((err) => {
+        console.error(err);
+        setSnackbarMessage("API 키 삭제에 실패했습니다. " + err.message);
         setSnackbarOpen(true);
-      }
-    });
+      });
   };
 
   // Avoid a layout jump when reaching the last page with empty allData.
@@ -378,7 +380,7 @@ export default function AdminApiKeys() {
                       );
                     })}
                     <TableCell align="center" padding="normal">
-                      <Tooltip title={row.enabled ? "Key" : "Key Off"}>
+                      <Tooltip title={row.active ? "비활성화" : "활성화"}>
                         <IconButton onClick={() => handleToggleEnable(row.id)}>
                           {row.active ? (
                             <VpnKeyIcon sx={{ color: "green" }} />
@@ -449,9 +451,17 @@ export default function AdminApiKeys() {
                 }}
                 onClick={() => {
                   apiKeyRef.current?.select();
-                  document.execCommand("copy"); // Deprecated but still works in most browsers
-                  setSnackbarMessage("클립보드에 복사되었습니다");
-                  setSnackbarOpen(true);
+                  navigator.clipboard
+                    .writeText(apiKey)
+                    .then(() => {
+                      setSnackbarMessage("클립보드에 복사되었습니다");
+                      setSnackbarOpen(true);
+                    })
+                    .catch((err) => {
+                      console.error("클립보드 복사 실패:", err);
+                      setSnackbarMessage("클립보드 복사에 실패했습니다");
+                      setSnackbarOpen(true);
+                    });
                 }}
               />
             </DialogContent>
@@ -517,7 +527,11 @@ export default function AdminApiKeys() {
               <Button onClick={handleModalClose}>취소</Button>
               <Button
                 onClick={handleSubmit}
-                disabled={scopeInput.trim() !== ""}
+                disabled={
+                  scopeInput.trim() !== "" ||
+                  description.trim() === "" ||
+                  scopes.length === 0
+                }
                 variant="contained"
                 color="primary"
               >
