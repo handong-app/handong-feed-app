@@ -9,7 +9,7 @@ import java.lang.annotation.*;
 public @interface RequiredApiScopes {
     /**
      * 외부 API 의 Scope (권한 범위) 를 나타내는 애노테이션입니다.
-     * e.g., @RequiredScopes({"tag:read", "tb-subject-tag:read"})
+     * e.g., @RequiredApiScopes({"tag:read", "tb-subject-tag:read"})
      */
     String[] value(); // 여러 개 스코프 지원 위해 배열로 선언
 }

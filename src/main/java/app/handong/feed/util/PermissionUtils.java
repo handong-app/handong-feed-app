@@ -14,8 +14,6 @@ public class PermissionUtils {
     }
 
     private static boolean isGranted(Set<String> granted, String required) {
-        System.out.println(granted);
-        System.out.println(required);
         if (granted.contains(required)) return true;
 
         String[] parts = required.split(":");

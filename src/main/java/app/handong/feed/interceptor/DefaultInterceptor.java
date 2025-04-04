@@ -41,10 +41,10 @@ public class DefaultInterceptor implements HandlerInterceptor {
 
             // 만약에 추가적인 권한이 필요하다면 권한 확인
 
-            // @RequiredScopes 검사
+            // @RequiredUserScopes 검사
             // 현재 요청이 Controller 메서드에 매핑되어 있는지 검사, 맞으면 HandlerMethod로 캐스팅
             if (handler instanceof HandlerMethod handlerMethod) {
-                // 컨트롤러 메서드에 붙은 @RequiredScopes 애노테이션을 꺼냄
+                // 컨트롤러 메서드에 붙은 @RequiredUserScopes 애노테이션을 꺼냄
                 RequiredUserScopes annotation = handlerMethod.getMethodAnnotation(RequiredUserScopes.class);
                 if (annotation != null) {
                     // 일단 디비에서 유저 권한 가져오기
