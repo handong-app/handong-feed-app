@@ -67,7 +67,6 @@ const columns = [
           wordWrap: "break-word",
           maxHeight: "5em",
           overflowY: "auto",
-          backgroundColor: "#f5f5f5",
         }}
       >
         {value?.join("\n")}
@@ -220,12 +219,12 @@ export default function AdminApiKeys() {
     setScopes(scopes.filter((_, i) => i !== idx));
   };
 
-  const handleApiResponse = (success, action) => {
+  const handleApiResponse = (success, action, refreshData = true) => {
     setSnackbarMessage(
       `API 키 ${action}${success ? "되었습니다" : "에 실패했습니다"}.`
     );
     setSnackbarOpen(true);
-    if (success) refreshData();
+    if (success && refreshData) refreshData();
   };
 
   const handleSubmit = () => {
@@ -461,11 +460,11 @@ export default function AdminApiKeys() {
                   navigator.clipboard
                     .writeText(apiKey)
                     .then(() => {
-                      handleApiResponse(true, "복사");
+                      handleApiResponse(true, "복사", false);
                     })
                     .catch((err) => {
                       console.error("클립보드 복사 실패:", err);
-                      handleApiResponse(false, "복사");
+                      handleApiResponse(false, "복사", false);
                     });
                 }}
               />
@@ -483,7 +482,7 @@ export default function AdminApiKeys() {
                 label="API 키 사용 용도"
                 fullWidth
                 variant="outlined"
-                placeholder="spotlight"
+                placeholder="예: spotlight"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
               />
