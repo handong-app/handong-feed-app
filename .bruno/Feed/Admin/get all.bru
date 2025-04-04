@@ -1,0 +1,11 @@
+meta {
+  name: get all
+  type: http
+  seq: 2
+}
+
+get {
+  url: http://localhost:{{PORT}}/api/admin/api-keys
+  body: none
+  auth: inherit
+}
