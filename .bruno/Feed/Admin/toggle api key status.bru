@@ -5,7 +5,7 @@ meta {
 }
 
 patch {
-  url: http://localhost:8080/api/admin/api-keys/:id/toggle-status
+  url: http://localhost:{{PORT}}/api/admin/api-keys/:id/toggle-status
   body: json
   auth: inherit
 }

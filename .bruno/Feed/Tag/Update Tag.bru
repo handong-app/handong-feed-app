@@ -5,7 +5,7 @@ meta {
 }
 
 patch {
-  url: http://localhost:8080/api/tags/:code
+  url: http://localhost:{{PORT}}/api/tags/:code
   body: json
   auth: inherit
 }
