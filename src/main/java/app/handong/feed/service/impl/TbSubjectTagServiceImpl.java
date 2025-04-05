@@ -2,6 +2,7 @@ package app.handong.feed.service.impl;
 
 import app.handong.feed.domain.TbSubjectTag;
 import app.handong.feed.dto.TbSubjectTagDto;
+import app.handong.feed.exception.data.NotFoundException;
 import app.handong.feed.repository.TbSubjectTagRepository;
 import app.handong.feed.service.TbSubjectTagService;
 import lombok.RequiredArgsConstructor;
@@ -27,5 +28,15 @@ public class TbSubjectTagServiceImpl implements TbSubjectTagService {
     public TbSubjectTagDto.DeleteResDto deleteSubjectTag(int id) {
         subjectTagRepository.deleteById(id);
         return new TbSubjectTagDto.DeleteResDto(id, "SubjectTag deleted successfully");
+    }
+
+    public TbSubjectTagDto.DeleteResDto deleteSubjectTag(TbSubjectTagDto.DeleteReqDto dto) {
+        return deleteSubjectTag(
+                subjectTagRepository.findByTbSubjectIdAndTagCode(dto.getTbSubjectId(), dto.getTagCode())
+                        .orElseThrow(() -> new NotFoundException(
+                                "SubjectTag not found with subjectId: " + dto.getTbSubjectId() + ", tagCode: " + dto.getTagCode()
+                        ))
+                        .getId()
+        );
     }
 }

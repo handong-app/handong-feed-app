@@ -2,11 +2,13 @@ import PeopleIcon from "@mui/icons-material/People";
 import FeedIcon from "@mui/icons-material/Feed";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 import SmartToyIcon from "@mui/icons-material/SmartToy";
+import SellIcon from "@mui/icons-material/Sell";
 
 import UsersTable from "./UsersTable";
 import AdminFeed from "./AdminFeed";
 import AdminFiles from "./AdminFiles";
 import AdminApiKeys from "./AdminApiKeys";
+import AdminTags from "./AdminTags";
 
 export const ADMINMENU = [
   {
@@ -26,6 +28,12 @@ export const ADMINMENU = [
     icon: <InsertDriveFileIcon />,
     id: "files",
     comp: AdminFiles,
+  },
+  {
+    title: "태그 관리",
+    icon: <SellIcon />,
+    id: "tags",
+    comp: AdminTags,
   },
   {
     title: "APIKeys 관리",

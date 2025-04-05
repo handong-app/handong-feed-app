@@ -7,4 +7,6 @@ import org.springframework.stereotype.Service;
 public interface TbSubjectTagService {
     TbSubjectTagDto.CreateResDto createSubjectTag(TbSubjectTagDto.CreateReqDto dto);
     TbSubjectTagDto.DeleteResDto deleteSubjectTag(int id);
+    TbSubjectTagDto.DeleteResDto deleteSubjectTag(TbSubjectTagDto.DeleteReqDto dto);
+
 }

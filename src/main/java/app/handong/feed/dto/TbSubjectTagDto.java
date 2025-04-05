@@ -13,6 +13,19 @@ public class TbSubjectTagDto {
 
     @Getter
     @Setter
+    public static class UserCreateReqDto {
+        private int tbSubjectId;
+        private String tagCode;
+        private LocalDate forDate;
+
+        public CreateReqDto toCreateReqDto(String updatedBy) {
+            return new CreateReqDto(tbSubjectId, tagCode, 1, forDate, updatedBy);
+        }
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
     public static class CreateReqDto {
         private int tbSubjectId;
         private String tagCode;
@@ -68,6 +81,13 @@ public class TbSubjectTagDto {
         private String updatedBy;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
+    }
+
+    @Getter
+    @Setter
+    public static class DeleteReqDto {
+        private int tbSubjectId;
+        private String tagCode;
     }
 
     @Getter
