@@ -85,6 +85,13 @@ public class TbSubjectTagDto {
 
     @Getter
     @Setter
+    public static class DeleteReqDto {
+        private int tbSubjectId;
+        private String tagCode;
+    }
+
+    @Getter
+    @Setter
     @AllArgsConstructor
     public static class DeleteResDto {
         private int id;

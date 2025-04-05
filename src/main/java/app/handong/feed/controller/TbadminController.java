@@ -138,19 +138,16 @@ public class TbadminController {
         return ResponseEntity.ok(tbSubjectTagService.createSubjectTag(dto.toCreateReqDto(reqUserId)));
     }
 
-    @PostMapping("/tags/{code}/subject")
+    @DeleteMapping("/tags/{code}/subject")
     @Operation(summary = "태그에 서브젝트 제거")
     @RequiredUserScopes({
             @RequiredUserScopes.Scope(group = UserScope.ScopeGroup.TAG_ASSIGN, action = UserScope.ScopeAction.WRITE)
     })
-    public ResponseEntity<TbSubjectTagDto.CreateResDto> removeFeedToTag(
+    public ResponseEntity<TbSubjectTagDto.DeleteResDto> removeFeedToTag(
             @PathVariable String code,
-            @RequestBody TbSubjectTagDto.UserCreateReqDto dto,
-            HttpServletRequest request
+            @RequestBody TbSubjectTagDto.DeleteReqDto dto
     ) {
-        String reqUserId = RequestUtils.getReqUserId(request);
-
         dto.setTagCode(code);
-        return ResponseEntity.ok(tbSubjectTagService.createSubjectTag(dto.toCreateReqDto(reqUserId)));
+        return ResponseEntity.ok(tbSubjectTagService.deleteSubjectTag(dto));
     }
 }
