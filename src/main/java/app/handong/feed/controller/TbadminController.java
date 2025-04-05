@@ -1,10 +1,12 @@
 package app.handong.feed.controller;
 
 import app.handong.feed.dto.TagDto;
+import app.handong.feed.dto.TbSubjectTagDto;
 import app.handong.feed.dto.TbadminDto;
 import app.handong.feed.security.annotation.RequiredUserScopes;
 import app.handong.feed.security.enums.UserScope;
 import app.handong.feed.service.TagService;
+import app.handong.feed.service.TbSubjectTagService;
 import app.handong.feed.service.TbadminService;
 import app.handong.feed.util.RequestUtils;
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,9 +21,11 @@ import java.util.Map;
 @RestController
 public class TbadminController {
     private final TbadminService tbadminService;
+    private final TbSubjectTagService tbSubjectTagService;
 
-    public TbadminController(TbadminService tbadminService, TagService tagService) {
+    public TbadminController(TbadminService tbadminService, TagService tagService, TbSubjectTagService tbSubjectTagService) {
         this.tbadminService = tbadminService;
+        this.tbSubjectTagService = tbSubjectTagService;
     }
 
     @GetMapping("/users")
@@ -116,5 +120,37 @@ public class TbadminController {
     })
     public ResponseEntity<TagDto.DeleteResDto> deleteTag(@PathVariable String code) {
         return ResponseEntity.ok(tbadminService.deleteTag(code));
+    }
+
+    @PostMapping("/tags/{code}/subject")
+    @Operation(summary = "태그에 서브젝트 추가")
+    @RequiredUserScopes({
+            @RequiredUserScopes.Scope(group = UserScope.ScopeGroup.TAG_ASSIGN, action = UserScope.ScopeAction.WRITE)
+    })
+    public ResponseEntity<TbSubjectTagDto.CreateResDto> addFeedToTag(
+            @PathVariable String code,
+            @RequestBody TbSubjectTagDto.UserCreateReqDto dto,
+            HttpServletRequest request
+    ) {
+        String reqUserId = RequestUtils.getReqUserId(request);
+
+        dto.setTagCode(code);
+        return ResponseEntity.ok(tbSubjectTagService.createSubjectTag(dto.toCreateReqDto(reqUserId)));
+    }
+
+    @PostMapping("/tags/{code}/subject")
+    @Operation(summary = "태그에 서브젝트 제거")
+    @RequiredUserScopes({
+            @RequiredUserScopes.Scope(group = UserScope.ScopeGroup.TAG_ASSIGN, action = UserScope.ScopeAction.WRITE)
+    })
+    public ResponseEntity<TbSubjectTagDto.CreateResDto> removeFeedToTag(
+            @PathVariable String code,
+            @RequestBody TbSubjectTagDto.UserCreateReqDto dto,
+            HttpServletRequest request
+    ) {
+        String reqUserId = RequestUtils.getReqUserId(request);
+
+        dto.setTagCode(code);
+        return ResponseEntity.ok(tbSubjectTagService.createSubjectTag(dto.toCreateReqDto(reqUserId)));
     }
 }
