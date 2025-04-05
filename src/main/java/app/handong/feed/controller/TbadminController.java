@@ -122,32 +122,32 @@ public class TbadminController {
         return ResponseEntity.ok(tbadminService.deleteTag(code));
     }
 
-    @PostMapping("/tags/{code}/subject")
-    @Operation(summary = "태그에 서브젝트 추가")
+    @PostMapping("/subject/{subjectId}/tag-assign")
+    @Operation(summary = "서브젝트에 태그 추가")
     @RequiredUserScopes({
             @RequiredUserScopes.Scope(group = UserScope.ScopeGroup.TAG_ASSIGN, action = UserScope.ScopeAction.WRITE)
     })
     public ResponseEntity<TbSubjectTagDto.CreateResDto> addFeedToTag(
-            @PathVariable String code,
+            @PathVariable int subjectId,
             @RequestBody TbSubjectTagDto.UserCreateReqDto dto,
             HttpServletRequest request
     ) {
         String reqUserId = RequestUtils.getReqUserId(request);
 
-        dto.setTagCode(code);
+        dto.setTbSubjectId(subjectId);
         return ResponseEntity.ok(tbSubjectTagService.createSubjectTag(dto.toCreateReqDto(reqUserId)));
     }
 
-    @DeleteMapping("/tags/{code}/subject")
-    @Operation(summary = "태그에 서브젝트 제거")
+    @DeleteMapping("/subject/{subjectId}/tag-assign")
+    @Operation(summary = "서브젝트에 태그 제거")
     @RequiredUserScopes({
             @RequiredUserScopes.Scope(group = UserScope.ScopeGroup.TAG_ASSIGN, action = UserScope.ScopeAction.WRITE)
     })
     public ResponseEntity<TbSubjectTagDto.DeleteResDto> removeFeedToTag(
-            @PathVariable String code,
+            @PathVariable int subjectId,
             @RequestBody TbSubjectTagDto.DeleteReqDto dto
     ) {
-        dto.setTagCode(code);
+        dto.setTbSubjectId(subjectId);
         return ResponseEntity.ok(tbSubjectTagService.deleteSubjectTag(dto));
     }
 }

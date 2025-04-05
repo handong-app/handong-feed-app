@@ -5,18 +5,18 @@ meta {
 }
 
 post {
-  url: http://localhost:{{PORT}}/api/admin/tags/:code/subject
+  url: http://localhost:{{PORT}}/api/admin/subject/:subjectId/tag-assign
   body: json
   auth: inherit
 }
 
 params:path {
-  code: event
+  subjectId: 1
 }
 
 body:json {
   {
-    "tbSubjectId": "2",
+    "tagCode": "club",
     "forDate": "2025-01-01"     // 2025-01-01 or null
   }
 }

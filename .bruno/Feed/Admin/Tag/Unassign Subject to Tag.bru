@@ -5,17 +5,17 @@ meta {
 }
 
 delete {
-  url: http://localhost:{{PORT}}/api/admin/tags/:code/subject
+  url: http://localhost:{{PORT}}/api/admin/subject/:subjectId/tag-assign
   body: json
   auth: inherit
 }
 
 params:path {
-  code: event
+  subjectId: 1
 }
 
 body:json {
   {
-    "tbSubjectId": "1"
+    "tagCode": "club"
   }
 }
