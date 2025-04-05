@@ -82,7 +82,7 @@ public class TbadminController {
     @PostMapping("/tags")
     @Operation(summary = "태그 생성")
     @RequiredUserScopes({
-            @RequiredUserScopes.Scope(group = UserScope.ScopeGroup.APIKEY, action = UserScope.ScopeAction.WRITE)
+            @RequiredUserScopes.Scope(group = UserScope.ScopeGroup.TAG, action = UserScope.ScopeAction.WRITE)
     })
     public ResponseEntity<TagDto.CreateResDto> createTag(@RequestBody TagDto.CreateReqDto dto) {
         return ResponseEntity.ok(tbadminService.createTag(dto));
@@ -94,7 +94,7 @@ public class TbadminController {
             description = "여러 개의 태그를 한 번에 생성합니다. 각 태그는 고유한 code 값을 가져야 합니다."
     )
     @RequiredUserScopes({
-            @RequiredUserScopes.Scope(group = UserScope.ScopeGroup.APIKEY, action = UserScope.ScopeAction.WRITE)
+            @RequiredUserScopes.Scope(group = UserScope.ScopeGroup.TAG, action = UserScope.ScopeAction.WRITE)
     })
     public ResponseEntity<List<TagDto.CreateResDto>> createTags(@RequestBody List<TagDto.CreateReqDto> requestList, HttpServletRequest request) {
         return ResponseEntity.ok(tbadminService.createTags(requestList));
@@ -103,7 +103,7 @@ public class TbadminController {
     @PatchMapping("/tags/{code}")
     @Operation(summary = "태그 수정")
     @RequiredUserScopes({
-            @RequiredUserScopes.Scope(group = UserScope.ScopeGroup.APIKEY, action = UserScope.ScopeAction.WRITE)
+            @RequiredUserScopes.Scope(group = UserScope.ScopeGroup.TAG, action = UserScope.ScopeAction.WRITE)
     })
     public ResponseEntity<TagDto.UpdateResDto> updateTag(@PathVariable String code, @RequestBody TagDto.UpdateReqDto dto) {
         return ResponseEntity.ok(tbadminService.updateTag(code, dto));
@@ -112,7 +112,7 @@ public class TbadminController {
     @DeleteMapping("/tags/{code}")
     @Operation(summary = "태그 삭제")
     @RequiredUserScopes({
-            @RequiredUserScopes.Scope(group = UserScope.ScopeGroup.APIKEY, action = UserScope.ScopeAction.DELETE)
+            @RequiredUserScopes.Scope(group = UserScope.ScopeGroup.TAG, action = UserScope.ScopeAction.DELETE)
     })
     public ResponseEntity<TagDto.DeleteResDto> deleteTag(@PathVariable String code) {
         return ResponseEntity.ok(tbadminService.deleteTag(code));
