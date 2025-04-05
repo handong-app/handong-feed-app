@@ -84,8 +84,7 @@ public class TbadminController {
     @RequiredUserScopes({
             @RequiredUserScopes.Scope(group = UserScope.ScopeGroup.APIKEY, action = UserScope.ScopeAction.WRITE)
     })
-    public ResponseEntity<TagDto.CreateResDto> createTag(@RequestBody TagDto.CreateReqDto dto, HttpServletRequest request) {
-        String reqUserId = RequestUtils.getReqUserId(request);
+    public ResponseEntity<TagDto.CreateResDto> createTag(@RequestBody TagDto.CreateReqDto dto) {
         return ResponseEntity.ok(tbadminService.createTag(dto));
     }
 
@@ -98,7 +97,6 @@ public class TbadminController {
             @RequiredUserScopes.Scope(group = UserScope.ScopeGroup.APIKEY, action = UserScope.ScopeAction.WRITE)
     })
     public ResponseEntity<List<TagDto.CreateResDto>> createTags(@RequestBody List<TagDto.CreateReqDto> requestList, HttpServletRequest request) {
-        String reqUserId = RequestUtils.getReqUserId(request);
         return ResponseEntity.ok(tbadminService.createTags(requestList));
     }
 
@@ -107,9 +105,7 @@ public class TbadminController {
     @RequiredUserScopes({
             @RequiredUserScopes.Scope(group = UserScope.ScopeGroup.APIKEY, action = UserScope.ScopeAction.WRITE)
     })
-    public ResponseEntity<TagDto.UpdateResDto> updateTag(@PathVariable String code,
-                                                         @RequestBody TagDto.UpdateReqDto dto, HttpServletRequest request) {
-        String reqUserId = RequestUtils.getReqUserId(request);
+    public ResponseEntity<TagDto.UpdateResDto> updateTag(@PathVariable String code, @RequestBody TagDto.UpdateReqDto dto) {
         return ResponseEntity.ok(tbadminService.updateTag(code, dto));
     }
 
@@ -118,8 +114,7 @@ public class TbadminController {
     @RequiredUserScopes({
             @RequiredUserScopes.Scope(group = UserScope.ScopeGroup.APIKEY, action = UserScope.ScopeAction.DELETE)
     })
-    public ResponseEntity<TagDto.DeleteResDto> deleteTag(@PathVariable String code, HttpServletRequest request) {
-        String reqUserId = RequestUtils.getReqUserId(request);
+    public ResponseEntity<TagDto.DeleteResDto> deleteTag(@PathVariable String code) {
         return ResponseEntity.ok(tbadminService.deleteTag(code));
     }
 }
