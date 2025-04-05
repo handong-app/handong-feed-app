@@ -39,3 +39,25 @@ jobs:
           arguments: build
         env:
           REACT_APP_WEATHER_KEY: ${{ secrets.VITE_WEATHER_KEY }}
+
+  checkstyle-lint:
+    if: github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+    name: Run Checkstyle
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: "17"
+          distribution: "temurin"
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Run Checkstyle
+        run: ./gradlew checkstyleMain --console=plain --no-daemon
+        env:
+          NO_FRONT_BUILD: 1  # React 빌드 생략
