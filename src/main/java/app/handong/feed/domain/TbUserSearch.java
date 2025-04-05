@@ -1,7 +1,6 @@
 package app.handong.feed.domain;
 
 import jakarta.persistence.*;
-import org.springframework.scheduling.annotation.Async;
 
 import java.time.LocalDateTime;
 

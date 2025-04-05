@@ -1,8 +1,6 @@
 package app.handong.feed.interceptor;
 
 
-import app.handong.feed.domain.ApiKeyScope;
-import app.handong.feed.domain.TbUserPerm;
 import app.handong.feed.exception.auth.NoAuthenticatedException;
 import app.handong.feed.repository.TbUserPermRepository;
 import app.handong.feed.security.annotation.RequiredUserScopes;
@@ -18,7 +16,8 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class DefaultInterceptor implements HandlerInterceptor {

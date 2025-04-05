@@ -4,19 +4,17 @@ import app.handong.feed.config.CustomProperties;
 import app.handong.feed.domain.ApiKey;
 import app.handong.feed.domain.ApiKeyScope;
 import app.handong.feed.dto.TbadminDto;
-import app.handong.feed.exception.auth.NoAuthorizationException;
-import app.handong.feed.id.UserPermId;
 import app.handong.feed.mapper.TbadminMapper;
 import app.handong.feed.repository.ApiKeyRepository;
-import app.handong.feed.repository.TbUserPermRepository;
 import app.handong.feed.service.FirebaseService;
 import app.handong.feed.service.TbadminService;
-
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 import static app.handong.feed.util.ApiKeyHasher.hmacSha256;
 import static app.handong.feed.util.KeyGenerator.generateRandomSuffix;
@@ -25,15 +23,13 @@ import static app.handong.feed.util.KeyGenerator.generateRandomSuffix;
 @Service
 public class TbadminServiceImpl implements TbadminService {
     private final TbadminMapper tbadminMapper;
-    private final TbUserPermRepository tbUserPermRepository;
     private final FirebaseService firebaseService;
     private final ApiKeyRepository apiKeyRepository;
     private final CustomProperties customProperties;
 
 
-    public TbadminServiceImpl(TbadminMapper tbadminMapper, TbUserPermRepository tbUserPermRepository, FirebaseService firebaseService, ApiKeyRepository apiKeyRepository, CustomProperties customProperties) {
+    public TbadminServiceImpl(TbadminMapper tbadminMapper, FirebaseService firebaseService, ApiKeyRepository apiKeyRepository, CustomProperties customProperties) {
         this.tbadminMapper = tbadminMapper;
-        this.tbUserPermRepository = tbUserPermRepository;
         this.firebaseService = firebaseService;
         this.apiKeyRepository = apiKeyRepository;
         this.customProperties = customProperties;
