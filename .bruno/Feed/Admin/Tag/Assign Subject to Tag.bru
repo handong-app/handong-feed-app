@@ -1,0 +1,22 @@
+meta {
+  name: Assign Subject to Tag
+  type: http
+  seq: 5
+}
+
+post {
+  url: http://localhost:{{PORT}}/api/admin/tags/:code/subject
+  body: json
+  auth: inherit
+}
+
+params:path {
+  code: event
+}
+
+body:json {
+  {
+    "tbSubjectId": "2",
+    "forDate": "2025-01-01"     // 2025-01-01 or null
+  }
+}
