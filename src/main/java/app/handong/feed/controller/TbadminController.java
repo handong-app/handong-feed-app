@@ -81,6 +81,9 @@ public class TbadminController {
 
     @PostMapping("/tags")
     @Operation(summary = "태그 생성")
+    @RequiredUserScopes({
+            @RequiredUserScopes.Scope(group = UserScope.ScopeGroup.APIKEY, action = UserScope.ScopeAction.WRITE)
+    })
     public ResponseEntity<TagDto.CreateResDto> createTag(@RequestBody TagDto.CreateReqDto dto, HttpServletRequest request) {
         String reqUserId = RequestUtils.getReqUserId(request);
         return ResponseEntity.ok(tbadminService.createTag(dto));
@@ -91,6 +94,9 @@ public class TbadminController {
             summary = "태그 여러 개 생성",
             description = "여러 개의 태그를 한 번에 생성합니다. 각 태그는 고유한 code 값을 가져야 합니다."
     )
+    @RequiredUserScopes({
+            @RequiredUserScopes.Scope(group = UserScope.ScopeGroup.APIKEY, action = UserScope.ScopeAction.WRITE)
+    })
     public ResponseEntity<List<TagDto.CreateResDto>> createTags(@RequestBody List<TagDto.CreateReqDto> requestList, HttpServletRequest request) {
         String reqUserId = RequestUtils.getReqUserId(request);
         return ResponseEntity.ok(tbadminService.createTags(requestList));
@@ -98,6 +104,9 @@ public class TbadminController {
 
     @PatchMapping("/tags/{code}")
     @Operation(summary = "태그 수정")
+    @RequiredUserScopes({
+            @RequiredUserScopes.Scope(group = UserScope.ScopeGroup.APIKEY, action = UserScope.ScopeAction.WRITE)
+    })
     public ResponseEntity<TagDto.UpdateResDto> updateTag(@PathVariable String code,
                                                          @RequestBody TagDto.UpdateReqDto dto, HttpServletRequest request) {
         String reqUserId = RequestUtils.getReqUserId(request);
@@ -106,6 +115,9 @@ public class TbadminController {
 
     @DeleteMapping("/tags/{code}")
     @Operation(summary = "태그 삭제")
+    @RequiredUserScopes({
+            @RequiredUserScopes.Scope(group = UserScope.ScopeGroup.APIKEY, action = UserScope.ScopeAction.DELETE)
+    })
     public ResponseEntity<TagDto.DeleteResDto> deleteTag(@PathVariable String code, HttpServletRequest request) {
         String reqUserId = RequestUtils.getReqUserId(request);
         return ResponseEntity.ok(tbadminService.deleteTag(code));
