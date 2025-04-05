@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 import static app.handong.feed.util.ApiKeyHasher.hmacSha256;
@@ -161,11 +162,11 @@ public class TbadminServiceImpl implements TbadminService {
                 .orElseThrow(() -> new NotFoundException("Tag not found with code: " + code));
 
         // 필드 업데이트
-        tag.setLabel(dto.getLabel());
-        tag.setUserDesc(dto.getUserDesc());
-        tag.setLlmDesc(dto.getLlmDesc());
-        tag.setColorHex(dto.getColorHex());
-        tag.setPriorityWeight(dto.getPriorityWeight());
+        Optional.ofNullable(dto.getLabel()).ifPresent(tag::setLabel);
+        Optional.ofNullable(dto.getUserDesc()).ifPresent(tag::setUserDesc);
+        Optional.ofNullable(dto.getLlmDesc()).ifPresent(tag::setLlmDesc);
+        Optional.ofNullable(dto.getColorHex()).ifPresent(tag::setColorHex);
+        Optional.of(dto.getPriorityWeight()).ifPresent(tag::setPriorityWeight);
 
         return new TagDto.UpdateResDto(
                 tag.getCode(),
