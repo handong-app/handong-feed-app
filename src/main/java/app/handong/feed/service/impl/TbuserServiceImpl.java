@@ -10,8 +10,6 @@ import app.handong.feed.service.TbuserService;
 import app.handong.feed.util.TokenFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-//import com.thc.realspr.util.TokenFactory;
-
 
 import java.time.LocalDateTime;
 import java.util.HashMap;

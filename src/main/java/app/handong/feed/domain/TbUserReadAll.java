@@ -1,8 +1,6 @@
 package app.handong.feed.domain;
 
-import app.handong.feed.id.UserSubjectId;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;

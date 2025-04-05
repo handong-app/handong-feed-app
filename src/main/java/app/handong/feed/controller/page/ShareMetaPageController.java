@@ -1,11 +1,12 @@
 package app.handong.feed.controller.page;
 
 import app.handong.feed.dto.TbmessageDto;
-import app.handong.feed.service.ShortHashService;
 import app.handong.feed.service.TbKaFeedService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 
 @RequestMapping("/k")

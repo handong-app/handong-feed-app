@@ -1,6 +1,6 @@
 package app.handong.feed.interceptor;
 
-import app.handong.feed.security.annotation.RequiredScopes;
+import app.handong.feed.security.annotation.RequiredApiScopes;
 import app.handong.feed.config.CustomProperties;
 import app.handong.feed.domain.ApiKey;
 import app.handong.feed.domain.ApiKeyScope;
@@ -48,11 +48,11 @@ public class ApiKeyAuthInterceptor implements HandlerInterceptor {
 
         ApiKey apiKey = apiKeyOpt.get();
 
-        // @RequiredScopes 검사
+        // @RequiredApiScopes 검사
         // 현재 요청이 Controller 메서드에 매핑되어 있는지 검사, 맞으면 HandlerMethod로 캐스팅
         if (handler instanceof HandlerMethod handlerMethod) {
-            // 컨트롤러 메서드에 붙은 @RequiredScopes 애노테이션을 꺼냄
-            RequiredScopes annotation = handlerMethod.getMethodAnnotation(RequiredScopes.class);
+            // 컨트롤러 메서드에 붙은 @RequiredApiScopes 애노테이션을 꺼냄
+            RequiredApiScopes annotation = handlerMethod.getMethodAnnotation(RequiredApiScopes.class);
             if (annotation != null) {
                 // 애노테이션에 명시된 스코프들을 List<String>으로 변환
                 List<String> requiredScopes = List.of(annotation.value());
