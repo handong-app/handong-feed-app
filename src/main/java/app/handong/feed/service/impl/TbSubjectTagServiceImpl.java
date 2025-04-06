@@ -3,6 +3,7 @@ package app.handong.feed.service.impl;
 import app.handong.feed.domain.TbSubjectTag;
 import app.handong.feed.dto.TbSubjectTagDto;
 import app.handong.feed.exception.data.NotFoundException;
+import app.handong.feed.repository.TagRepository;
 import app.handong.feed.repository.TbSubjectTagRepository;
 import app.handong.feed.service.TbSubjectTagService;
 import lombok.RequiredArgsConstructor;
@@ -14,9 +15,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TbSubjectTagServiceImpl implements TbSubjectTagService {
     private final TbSubjectTagRepository subjectTagRepository;
-    public TbSubjectTagDto.CreateResDto createSubjectTag(TbSubjectTagDto.CreateReqDto dto) {
-        TbSubjectTag saved = subjectTagRepository.save(dto.toEntity());
+    private final TagRepository tagRepository;
 
+    public TbSubjectTagDto.CreateResDto createSubjectTag(TbSubjectTagDto.CreateReqDto dto) {
+        // 해당 태그 정보가 존재하는지 먼저 확인
+        tagRepository.findById(dto.getTagCode()).orElseThrow(() -> new NotFoundException(dto.getTagCode() + " tag not found!"));
+
+        TbSubjectTag saved = subjectTagRepository.save(dto.toEntity());
         return new TbSubjectTagDto.CreateResDto(
                 saved.getId(),
                 saved.getTbSubjectId(),
