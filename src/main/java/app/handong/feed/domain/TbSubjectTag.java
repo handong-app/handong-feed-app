@@ -34,6 +34,16 @@ public class TbSubjectTag {
     @Column(name = "tag_code", length = 32, nullable = false)
     private String tagCode; // Tag.code 참조 (FK는 명시적으로 걸지 않음)
 
+    @ManyToOne
+    @JoinColumn(
+            name = "tag_code",
+            referencedColumnName = "code",
+            insertable = false,
+            updatable = false,
+            foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT)
+    )
+    private Tag tag;
+
     @Column(name = "confident_value")
     private float confidentValue;
 

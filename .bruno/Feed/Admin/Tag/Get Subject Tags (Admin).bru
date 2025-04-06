@@ -1,0 +1,15 @@
+meta {
+  name: Get Subject Tags (Admin)
+  type: http
+  seq: 7
+}
+
+get {
+  url: http://localhost:{{PORT}}/api/admin/subject/:subjectId
+  body: none
+  auth: inherit
+}
+
+params:path {
+  subjectId: 1
+}

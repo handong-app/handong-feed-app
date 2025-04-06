@@ -76,6 +76,7 @@ public class TbSubjectTagDto {
         private int id;
         private int tbSubjectId;
         private String tagCode;
+        private TagDto.ReadResDto tagData;
         private float confidentValue;
         private LocalDate forDate;
         private String updatedBy;

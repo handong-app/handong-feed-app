@@ -8,6 +8,8 @@ import app.handong.feed.service.TbSubjectTagService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class TbSubjectTagServiceImpl implements TbSubjectTagService {
@@ -38,5 +40,22 @@ public class TbSubjectTagServiceImpl implements TbSubjectTagService {
                         ))
                         .getId()
         );
+    }
+
+    public List<TbSubjectTagDto.ReadResDto> readSubjectTags(int subjectId) {
+        return subjectTagRepository.findByTbSubjectId(subjectId).stream().map(subjectTag ->
+            new TbSubjectTagDto.ReadResDto(
+                    subjectTag.getId(),
+                    subjectTag.getTbSubjectId(),
+                    subjectTag.getTagCode(),
+                    subjectTag.getTag().toDto(),
+                    subjectTag.getConfidentValue(),
+                    subjectTag.getForDate(),
+                    subjectTag.getUpdatedBy(),
+                    subjectTag.getCreatedAt(),
+                    subjectTag.getUpdatedAt()
+
+            )
+        ).toList();
     }
 }
