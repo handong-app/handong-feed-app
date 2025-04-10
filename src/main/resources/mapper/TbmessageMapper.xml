@@ -122,4 +122,44 @@
         LIMIT 1
     </select>
 
+    <select id="externalFeedGetAll" parameterType="map" resultType="app.handong.feed.dto.TbmessageDto$Detail">
+        SELECT
+        m.subject_id AS subjectId,
+        m.id AS id,
+        m.last_sent_at AS sentAt,
+        m.message AS message
+        FROM TbKaMessage m
+        <where>
+            <if test="start != null and start &gt;= 0">
+                m.last_sent_at &gt;= #{start}
+            </if>
+            <if test="end != null and end &gt;= 0">
+                <if test="start != null and start &gt;= 0">
+                    AND
+                </if>
+                m.last_sent_at &lt;= #{end}
+            </if>
+            <if test="filterNew == true">
+                <choose>
+                    <when test="start != null or end != null">
+                        AND m.similar_id = 'NEW_MESSAGE'
+                    </when>
+                    <otherwise>
+                        m.similar_id = 'NEW_MESSAGE'
+                    </otherwise>
+                </choose>
+            </if>
+        </where>
+        ORDER BY m.last_sent_at DESC
+        LIMIT
+        <choose>
+            <when test="limit != null and limit &lt; 200">
+                #{limit}
+            </when>
+            <otherwise>
+                200
+            </otherwise>
+        </choose>
+    </select>
+
 </mapper>
