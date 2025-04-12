@@ -209,7 +209,7 @@ export default function AdminApiKeys() {
   const handleAddScope = () => {
     const trimmed = scopeInput.trim();
     if (trimmed && !scopes.includes(trimmed)) {
-      setScopes([...scopes, trimmed]);
+      setScopes([...scopes, ...trimmed.split(" ")]);
       setScopeInput("");
     }
   };
