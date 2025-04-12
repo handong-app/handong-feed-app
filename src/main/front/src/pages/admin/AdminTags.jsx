@@ -173,6 +173,8 @@ export default function AdminTags() {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
 
+  const [isLoading, setIsLoading] = useState(false);
+
   // 편집 셀을 위한 상태
   const [editingCell, setEditingCell] = useState({
     rowId: null,
@@ -202,10 +204,31 @@ export default function AdminTags() {
       `태그 ${action}${success ? "에 성공" : "에 실패"}했습니다.`
     );
     setSnackbarOpen(true);
+    setIsLoading(false);
     if (success && doRefreshData) refreshData();
   };
 
   const handleSubmit = () => {
+    // 기본 유효성 검증
+    if (!code.trim()) {
+      setSnackbarMessage("태그 코드는 필수입니다.");
+      setSnackbarOpen(true);
+      return;
+    }
+
+    if (!label.trim()) {
+      setSnackbarMessage("태그 레이블은 필수입니다.");
+      setSnackbarOpen(true);
+      return;
+    }
+
+    // 색상 HEX 코드 유효성 검증 (선택사항)
+    if (colorHex && !/^[0-9A-F]{6}$/i.test(colorHex)) {
+      setSnackbarMessage("올바른 HEX 색상 코드를 입력해주세요.");
+      setSnackbarOpen(true);
+      return;
+    }
+    setIsLoading(true);
     fetchBe("/admin/tags", "POST", {
       code,
       label,
@@ -315,7 +338,7 @@ export default function AdminTags() {
 
   useEffect(() => {
     refreshData();
-  }, []);
+  }, [refreshData]);
 
   // 선택된 셀에 각종 이벤트 헨들러 추가 (외부 클릭 및 Escape 키)
   useEffect(() => {
@@ -530,8 +553,13 @@ export default function AdminTags() {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleModalClose}>취소</Button>
-          <Button onClick={handleSubmit} variant="contained" color="primary">
-            제출
+          <Button
+            onClick={handleSubmit}
+            variant="contained"
+            color="primary"
+            disabled={isLoading}
+          >
+            {isLoading ? "처리중.." : "제출"}
           </Button>
         </DialogActions>
       </Dialog>

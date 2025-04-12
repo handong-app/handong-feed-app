@@ -5,9 +5,9 @@ import app.handong.feed.dto.TagDto;
 import app.handong.feed.exception.data.NotFoundException;
 import app.handong.feed.repository.TagRepository;
 import app.handong.feed.service.TagService;
-import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;

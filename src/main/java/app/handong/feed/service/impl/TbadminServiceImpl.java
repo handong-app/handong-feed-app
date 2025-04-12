@@ -13,8 +13,8 @@ import app.handong.feed.repository.ApiKeyRepository;
 import app.handong.feed.repository.TagRepository;
 import app.handong.feed.service.FirebaseService;
 import app.handong.feed.service.TbadminService;
-import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -156,7 +156,7 @@ public class TbadminServiceImpl implements TbadminService {
     }
 
     @Override
-    @org.springframework.transaction.annotation.Transactional
+    @Transactional
     public TagDto.UpdateResDto updateTag(String code, TagDto.UpdateReqDto dto) {
         Tag tag = tagRepository.findById(code)
                 .orElseThrow(() -> new NotFoundException("Tag not found with code: " + code));

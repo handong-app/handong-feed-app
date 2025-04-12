@@ -48,7 +48,14 @@ public class SubjectExternalApiController {
                 dto.setTbSubjectId(subjectId);
                 return externalSubjectService.createSubjectTag(dto.toCreateReqDto(reqApiId));
             } catch (DuplicateEntityException e) {
-                return null;
+                return new TbSubjectTagDto.CreateResDto(
+                        -1, // 실패를 나타내는 ID
+                        dto.getTbSubjectId(),
+                        dto.getTagCode(),
+                        dto.getConfidentValue(),
+                        dto.getForDate(),
+                        null // 생성 시간 없음
+                );
             }
         }).toList());
     }
