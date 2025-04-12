@@ -2,11 +2,13 @@ package app.handong.feed.service.impl;
 
 import app.handong.feed.domain.TbSubjectTag;
 import app.handong.feed.dto.TbSubjectTagDto;
+import app.handong.feed.exception.data.DuplicateEntityException;
 import app.handong.feed.exception.data.NotFoundException;
 import app.handong.feed.repository.TagRepository;
 import app.handong.feed.repository.TbSubjectTagRepository;
 import app.handong.feed.service.TbSubjectTagService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,15 +23,19 @@ public class TbSubjectTagServiceImpl implements TbSubjectTagService {
         // 해당 태그 정보가 존재하는지 먼저 확인
         tagRepository.findById(dto.getTagCode()).orElseThrow(() -> new NotFoundException(dto.getTagCode() + " tag not found!"));
 
-        TbSubjectTag saved = subjectTagRepository.save(dto.toEntity());
-        return new TbSubjectTagDto.CreateResDto(
-                saved.getId(),
-                saved.getTbSubjectId(),
-                saved.getTagCode(),
-                saved.getConfidentValue(),
-                saved.getForDate(),
-                saved.getCreatedAt()
-        );
+        try {
+            TbSubjectTag saved = subjectTagRepository.save(dto.toEntity());
+            return new TbSubjectTagDto.CreateResDto(
+                    saved.getId(),
+                    saved.getTbSubjectId(),
+                    saved.getTagCode(),
+                    saved.getConfidentValue(),
+                    saved.getForDate(),
+                    saved.getCreatedAt()
+            );
+        } catch (DataIntegrityViolationException e) {
+            throw new DuplicateEntityException("duplicate tag code: " + dto.getTagCode());
+        }
     }
 
     public TbSubjectTagDto.DeleteResDto deleteSubjectTag(int id) {

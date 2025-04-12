@@ -1,0 +1,30 @@
+meta {
+  name: Assign Tags to Subject
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:{{PORT}}/api/external/subject/:subjectId/tag-assign-batch
+  body: json
+  auth: inherit
+}
+
+params:path {
+  subjectId: 1
+}
+
+body:json {
+  [
+    {
+      "tagCode": "club",
+      "forDate": "2025-01-01", // 2025-01-01 or null,
+      "confidentValue": 0.33
+    },
+     {
+      "tagCode": "event",
+      "forDate": "2025-01-01", // 2025-01-01 or null,
+      "confidentValue": 0.33
+    }
+  ]
+}

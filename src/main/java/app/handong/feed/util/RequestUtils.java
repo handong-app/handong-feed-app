@@ -13,4 +13,10 @@ public class RequestUtils {
                 .map(Object::toString)
                 .orElseThrow(() -> new NoAuthorizationException("Missing user ID"));
     }
+
+    public static String getReqApiId(HttpServletRequest request) {
+        return Optional.ofNullable(request.getAttribute("reqApiId"))
+                .map(Object::toString)
+                .orElseThrow(() -> new NoAuthorizationException("Missing API ID"));
+    }
 }

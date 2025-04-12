@@ -19,7 +19,20 @@ public class TbSubjectTagDto {
         private LocalDate forDate;
 
         public CreateReqDto toCreateReqDto(String updatedBy) {
-            return new CreateReqDto(tbSubjectId, tagCode, 1, forDate, updatedBy);
+            return new CreateReqDto(tbSubjectId, tagCode, 1, forDate, updatedBy, "user");
+        }
+    }
+
+    @Getter
+    @Setter
+    public static class ApiCreateReqDto {
+        private int tbSubjectId;
+        private String tagCode;
+        private LocalDate forDate;
+        private float confidentValue;
+
+        public CreateReqDto toCreateReqDto(String updatedBy) {
+            return new CreateReqDto(tbSubjectId, tagCode, confidentValue, forDate, updatedBy, "api");
         }
     }
 
@@ -32,9 +45,10 @@ public class TbSubjectTagDto {
         private float confidentValue;
         private LocalDate forDate;
         private String updatedBy;
+        private String updatedByType;
 
         public TbSubjectTag toEntity() {
-            return new TbSubjectTag(tbSubjectId, tagCode, confidentValue, forDate, updatedBy);
+            return new TbSubjectTag(tbSubjectId, tagCode, confidentValue, forDate, updatedBy, updatedByType);
         }
     }
 

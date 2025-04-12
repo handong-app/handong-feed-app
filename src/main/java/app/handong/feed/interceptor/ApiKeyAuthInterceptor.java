@@ -48,6 +48,9 @@ public class ApiKeyAuthInterceptor implements HandlerInterceptor {
 
         ApiKey apiKey = apiKeyOpt.get();
 
+        // Request 에 저장
+        request.setAttribute("reqApiId", apiKey.getId());
+
         // @RequiredApiScopes 검사
         // 현재 요청이 Controller 메서드에 매핑되어 있는지 검사, 맞으면 HandlerMethod로 캐스팅
         if (handler instanceof HandlerMethod handlerMethod) {

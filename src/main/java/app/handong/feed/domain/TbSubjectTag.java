@@ -61,17 +61,21 @@ public class TbSubjectTag {
     @Column(name = "updated_by", length = 32)
     private String updatedBy;
 
+    @Column(name = "updated_by_type", nullable = false)
+    private String updatedByType;
+
     protected TbSubjectTag() {}
 
-    public TbSubjectTag(int tbSubjectId, String tagCode, float confidentValue, LocalDate forDate, String updatedBy) {
+    public TbSubjectTag(int tbSubjectId, String tagCode, float confidentValue, LocalDate forDate, String updatedBy, String updatedByType) {
         this.tbSubjectId = tbSubjectId;
         this.tagCode = tagCode;
         this.confidentValue = confidentValue;
         this.forDate = forDate;
         this.updatedBy = updatedBy;
+        this.updatedByType = updatedByType;
     }
 
-    public static TbSubjectTag of(int tbSubjectId, String tagCode, float confidentValue, LocalDate forDate, String updatedBy) {
-        return new TbSubjectTag(tbSubjectId, tagCode, confidentValue, forDate, updatedBy);
+    public static TbSubjectTag of(int tbSubjectId, String tagCode, float confidentValue, LocalDate forDate, String updatedBy, String updatedByType) {
+        return new TbSubjectTag(tbSubjectId, tagCode, confidentValue, forDate, updatedBy, updatedByType);
     }
 }
