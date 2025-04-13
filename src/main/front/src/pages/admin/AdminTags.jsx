@@ -17,7 +17,6 @@ import {
   Button,
   TableSortLabel,
   Tooltip,
-  Typography,
   Dialog,
   DialogTitle,
   DialogContent,
@@ -26,56 +25,34 @@ import {
   Snackbar,
   IconButton,
 } from "@mui/material";
-import VpnKeyIcon from "@mui/icons-material/VpnKey";
-import VpnKeyOffIcon from "@mui/icons-material/VpnKeyOff";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AdminPage from "./AdminPage";
 
 const columns = [
+  { id: "code", label: "코드", minWidth: 100 },
+  { id: "label", label: "레이블", minWidth: 170 },
+  { id: "userDesc", label: "사용자 설명", minWidth: 200 },
+  { id: "llmDesc", label: "LLM 설명", minWidth: 200 },
   {
-    id: "description",
-    label: "Description",
-    minWidth: 170,
-    format: (value, row) => (
-      <div>
-        <Typography variant="body1">{value}</Typography>
-      </div>
-    ),
-  },
-  {
-    id: "issuedBy",
-    label: "Issued By",
-    minWidth: 170,
-    format: (value, row) => (
-      <div>
-        <Typography variant="body1">{value.name}</Typography>
-        <Typography variant="body2" color="textSecondary">
-          {value.id}
-        </Typography>
-      </div>
-    ),
-  },
-  {
-    id: "scopes",
-    label: "Scopes",
-    minWidth: 170,
-    format: (value, row) => (
+    id: "colorHex",
+    label: "색상",
+    minWidth: 100,
+    format: (value) => (
       <Box
         sx={{
-          fontFamily: "monospace",
-          whiteSpace: "pre-wrap",
-          wordWrap: "break-word",
-          maxHeight: "5em",
-          overflowY: "auto",
+          backgroundColor: `#${value}`,
+          display: "inline-block",
+          marginLeft: 1,
         }}
       >
-        {value?.join("\n")}
+        {value}
       </Box>
     ),
   },
+  { id: "priorityWeight", label: "우선순위", minWidth: 100 },
   {
     id: "createdAt",
-    label: "Created At",
+    label: "생성일",
     minWidth: 170,
     format: (value) => (
       <Tooltip title={value}>
@@ -90,8 +67,8 @@ const columns = [
     ),
   },
   {
-    id: "lastUsedAt",
-    label: "Last Used",
+    id: "updatedAt",
+    label: "수정일",
     minWidth: 170,
     format: (value) => (
       <Tooltip title={value}>
@@ -170,9 +147,10 @@ function EnhancedTableHead(props) {
   );
 }
 
-export default function AdminApiKeys() {
+export default function AdminTags() {
   const fetchBe = useFetchBe();
 
+  // 목록 데이터를 위한 상태
   const [allData, setAllData] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(25);
@@ -183,21 +161,37 @@ export default function AdminApiKeys() {
   const [dense, setDense] = useState(false);
 
   const [openModal, setOpenModal] = useState(false);
-  const [description, setDescription] = useState("");
-  const [scopes, setScopes] = useState([]);
-  const [scopeInput, setScopeInput] = useState("");
-  const [apiKey, setApiKey] = useState("");
-  const apiKeyRef = useRef(null);
+
+  // 신규 태그 등록을 위한 상태
+  const [code, setCode] = useState("");
+  const [label, setLabel] = useState("");
+  const [userDesc, setUserDesc] = useState("");
+  const [llmDesc, setLlmDesc] = useState("");
+  const [colorHex, setColorHex] = useState("");
+  const [priorityWeight, setPriorityWeight] = useState("");
 
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
 
-  // 기존 API 키 발급 이벤트 핸들러 수정: 모달 오픈
-  const handleApiKeyIssue = () => {
-    setDescription("");
-    setScopes([]);
-    setScopeInput("");
-    setApiKey("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  // 편집 셀을 위한 상태
+  const [editingCell, setEditingCell] = useState({
+    rowId: null,
+    column: null,
+    value: "",
+  });
+  const editingInputRef = useRef(null);
+
+  console.log(editingCell);
+
+  const handleTagRegistration = () => {
+    setCode("");
+    setLabel("");
+    setUserDesc("");
+    setLlmDesc("");
+    setColorHex("");
+    setPriorityWeight("");
     setOpenModal(true);
   };
 
@@ -205,47 +199,51 @@ export default function AdminApiKeys() {
     setOpenModal(false);
   };
 
-  // 스코프 추가 핸들러
-  const handleAddScope = () => {
-    const trimmed = scopeInput.trim();
-    if (trimmed && !scopes.includes(trimmed)) {
-      setScopes([...scopes, ...trimmed.split(" ")]);
-      setScopeInput("");
-    }
-  };
-
-  // 스코프 삭제 핸들러
-  const handleRemoveScope = (idx) => {
-    setScopes(scopes.filter((_, i) => i !== idx));
-  };
-
   const handleApiResponse = (success, action, doRefreshData = true) => {
     setSnackbarMessage(
-      `API 키 ${action}${success ? "되었습니다" : "에 실패했습니다"}.`
+      `태그 ${action}${success ? "에 성공" : "에 실패"}했습니다.`
     );
     setSnackbarOpen(true);
+    setIsLoading(false);
     if (success && doRefreshData) refreshData();
   };
 
   const handleSubmit = () => {
-    // 제출 처리 로직 추가
-    console.log("description:", description);
-    console.log("scopes:", scopes);
-    fetchBe("/admin/issue-api-key", "POST", {
-      description: description,
-      scopes: scopes,
+    // 기본 유효성 검증
+    if (!code.trim()) {
+      setSnackbarMessage("태그 코드는 필수입니다.");
+      setSnackbarOpen(true);
+      return;
+    }
+
+    if (!label.trim()) {
+      setSnackbarMessage("태그 레이블은 필수입니다.");
+      setSnackbarOpen(true);
+      return;
+    }
+
+    // 색상 HEX 코드 유효성 검증 (선택사항)
+    if (colorHex && !/^[0-9A-F]{6}$/i.test(colorHex)) {
+      setSnackbarMessage("올바른 HEX 색상 코드를 입력해주세요.");
+      setSnackbarOpen(true);
+      return;
+    }
+    setIsLoading(true);
+    fetchBe("/admin/tags", "POST", {
+      code,
+      label,
+      userDesc,
+      llmDesc,
+      colorHex,
+      priorityWeight,
     })
       .then((doc) => {
-        if (doc.apiKey) {
-          setApiKey(doc.apiKey);
-          refreshData();
-        } else {
-          throw new Error("응답에 apiKey가 없습니다." + JSON.stringify(doc));
-        }
+        handleApiResponse(true, "등록");
+        setOpenModal(false);
       })
       .catch((err) => {
         console.error(err);
-        handleApiResponse(false, "발급");
+        handleApiResponse(false, "등록");
       });
   };
 
@@ -296,25 +294,8 @@ export default function AdminApiKeys() {
     setDense(event.target.checked);
   };
 
-  const handleToggleEnable = (id) => {
-    console.log("Toggle enable for:", id);
-    fetchBe(`/admin/api-keys/${id}/toggle-status`, "PATCH", {})
-      .then((doc) => {
-        if (doc.id) {
-          handleApiResponse(true, "상태 변경");
-        } else {
-          handleApiResponse(false, "상태 변경");
-          console.error("API 응답 오류:", doc);
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-        handleApiResponse(false, "상태 변경");
-      });
-  };
-
   const handleDelete = (id) => {
-    fetchBe(`/admin/api-keys/${id}`, "DELETE", {})
+    fetchBe(`/admin/tags/${id}`, "DELETE", {})
       .then((doc) => {
         handleApiResponse(true, "삭제");
       })
@@ -324,7 +305,22 @@ export default function AdminApiKeys() {
       });
   };
 
-  // Avoid a layout jump when reaching the last page with empty allData.
+  const handleCellSave = (id, column) => {
+    fetchBe(`/admin/tags/${id}`, "PATCH", { [column]: editingCell.value })
+      .then((doc) => {
+        const updatedData = allData.map((row) =>
+          row.id === id ? { ...row, [column]: editingCell.value } : row
+        );
+        setAllData(updatedData);
+        setEditingCell({ rowId: null, column: null, value: "" });
+        handleApiResponse(true, "업데이트");
+      })
+      .catch((err) => {
+        console.error(err);
+        handleApiResponse(false, "업데이트");
+      });
+  };
+
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - allData.length) : 0;
 
@@ -337,26 +333,48 @@ export default function AdminApiKeys() {
   );
 
   const refreshData = useCallback(() => {
-    fetchBe("/admin/api-keys").then((doc) => setAllData(doc));
+    fetchBe("/tags").then((doc) => setAllData(doc));
   }, [fetchBe]);
 
   useEffect(() => {
     refreshData();
-  }, []);
+  }, [refreshData]);
+
+  // 선택된 셀에 각종 이벤트 헨들러 추가 (외부 클릭 및 Escape 키)
+  useEffect(() => {
+    if (editingCell.rowId !== null) {
+      const handleClickOutside = (e) => {
+        if (
+          editingInputRef.current &&
+          !editingInputRef.current.contains(e.target)
+        ) {
+          setEditingCell({ rowId: null, column: null, value: "" });
+        }
+      };
+      const handleKeyDown = (e) => {
+        if (e.key === "Escape") {
+          setEditingCell({ rowId: null, column: null, value: "" });
+        }
+      };
+      document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener("keydown", handleKeyDown);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+        document.removeEventListener("keydown", handleKeyDown);
+      };
+    }
+  }, [editingCell]);
 
   return (
     <AdminPage>
-      <Paper
-        sx={{ width: "100%", overflow: "hidden", padding: 3 /* 추가된 패딩 */ }}
-      >
-        {/* 디자인 개선: variant, color, margin-bottom 추가 */}
+      <Paper sx={{ width: "100%", overflow: "hidden", padding: 3 }}>
         <Button
           variant="contained"
           color="primary"
           sx={{ mb: 2 }}
-          onClick={handleApiKeyIssue}
+          onClick={handleTagRegistration}
         >
-          API 키 발급
+          태그 등록
         </Button>
         <TableContainer
           sx={{
@@ -375,29 +393,72 @@ export default function AdminApiKeys() {
             <TableBody>
               {visibleRows.map((row) => {
                 return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
+                  <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
                     {columns.map((column) => {
+                      const isEditable = ![
+                        "code",
+                        "createdAt",
+                        "updatedAt",
+                      ].includes(column.id);
                       return (
                         <TableCell key={column.id} align={column.align}>
-                          {column.format
-                            ? column.format(row[column.id], row)
-                            : row[column.id]}
+                          {editingCell.rowId === row.code &&
+                          editingCell.column === column.id ? (
+                            <TextField
+                              variant="standard"
+                              value={editingCell.value}
+                              ref={editingInputRef}
+                              onChange={(e) =>
+                                setEditingCell({
+                                  ...editingCell,
+                                  value: e.target.value,
+                                })
+                              }
+                              onKeyDown={(e) => {
+                                if (e.key === "Enter") {
+                                  handleCellSave(row.code, column.id);
+                                }
+                              }}
+                              autoFocus
+                              onFocus={(e) => {
+                                const len = e.target.value.length;
+                                e.target.setSelectionRange(len, len);
+                              }}
+                            />
+                          ) : (
+                            <span
+                              style={
+                                isEditable
+                                  ? {
+                                      cursor: "pointer",
+                                      display: "inline-block",
+                                    }
+                                  : {}
+                              }
+                              onClick={() =>
+                                isEditable &&
+                                setEditingCell({
+                                  rowId: row.code,
+                                  column: column.id,
+                                  value: row[column.id],
+                                })
+                              }
+                            >
+                              {!row[column.id] && row[column.id] !== 0 && (
+                                <i>없음</i>
+                              )}
+                              {column.format
+                                ? column.format(row[column.id], row)
+                                : row[column.id]}
+                            </span>
+                          )}
                         </TableCell>
                       );
                     })}
                     <TableCell align="center" padding="normal">
-                      <Tooltip title={row.active ? "비활성화" : "활성화"}>
-                        <IconButton onClick={() => handleToggleEnable(row.id)}>
-                          {row.active ? (
-                            <VpnKeyIcon sx={{ color: "green" }} />
-                          ) : (
-                            <VpnKeyOffIcon sx={{ color: "orange" }} />
-                          )}
-                        </IconButton>
-                      </Tooltip>
                       <Tooltip title="삭제">
                         <IconButton
-                          onClick={() => handleDelete(row.id)}
+                          onClick={() => handleDelete(row.code)}
                           sx={{ color: "grey" }}
                         >
                           <DeleteIcon />
@@ -430,120 +491,77 @@ export default function AdminApiKeys() {
         />
       </Paper>
 
-      {/* API 키 발급 모달 추가 */}
       <Dialog
         open={openModal}
         onClose={handleModalClose}
         fullWidth
         maxWidth="sm"
       >
-        <DialogTitle>API 키 발급</DialogTitle>
-        {apiKey ? (
-          <>
-            <DialogContent>
-              <Typography variant="body1">
-                API 키가 발급되었습니다. 아래 키를 복사하여 사용하세요.
-                <br />이 키는 다시 발급할 수 없습니다.
-              </Typography>
-              <TextField
-                value={apiKey}
-                fullWidth
-                variant="outlined"
-                inputRef={apiKeyRef}
-                slotProps={{
-                  input: {
-                    readOnly: true,
-                  },
-                }}
-                onClick={() => {
-                  apiKeyRef.current?.select();
-                  navigator.clipboard
-                    .writeText(apiKey)
-                    .then(() => {
-                      handleApiResponse(true, "복사", false);
-                    })
-                    .catch((err) => {
-                      console.error("클립보드 복사 실패:", err);
-                      handleApiResponse(false, "복사", false);
-                    });
-                }}
-              />
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleModalClose}>나가기</Button>
-            </DialogActions>
-          </>
-        ) : (
-          <>
-            <DialogContent>
-              <TextField
-                autoFocus
-                margin="dense"
-                label="API 키 사용 용도"
-                fullWidth
-                variant="outlined"
-                placeholder="예: spotlight"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-              />
-              {/* 스코프 추가 영역 */}
-              <Box sx={{ mt: 2 }}>
-                <TextField
-                  margin="dense"
-                  label="스코프 추가"
-                  fullWidth
-                  variant="outlined"
-                  placeholder="예: tag:create"
-                  value={scopeInput}
-                  onChange={(e) => setScopeInput(e.target.value)}
-                />
-                <Button
-                  onClick={handleAddScope}
-                  sx={{ mt: 1 }}
-                  variant="outlined"
-                >
-                  추가
-                </Button>
-                {scopes.length > 0 && (
-                  <Box sx={{ mt: 2 }}>
-                    {scopes.map((scope, idx) => (
-                      <Box
-                        key={idx}
-                        sx={{ display: "flex", alignItems: "center", mb: 1 }}
-                      >
-                        <Typography variant="body2" sx={{ flexGrow: 1 }}>
-                          {scope}
-                        </Typography>
-                        <Button
-                          onClick={() => handleRemoveScope(idx)}
-                          variant="text"
-                          color="error"
-                        >
-                          삭제
-                        </Button>
-                      </Box>
-                    ))}
-                  </Box>
-                )}
-              </Box>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleModalClose}>취소</Button>
-              <Button
-                onClick={handleSubmit}
-                disabled={
-                  scopeInput.trim() !== "" ||
-                  description.trim() === "" ||
-                  scopes.length === 0
-                }
-                variant="contained"
-                color="primary"
-              >
-                제출
-              </Button>
-            </DialogActions>
-          </>
-        )}
+        <DialogTitle>태그 등록</DialogTitle>
+        <DialogContent>
+          <TextField
+            autoFocus
+            margin="dense"
+            label="코드"
+            fullWidth
+            variant="outlined"
+            value={code}
+            onChange={(e) => setCode(e.target.value)}
+          />
+          <TextField
+            margin="dense"
+            label="레이블"
+            fullWidth
+            variant="outlined"
+            value={label}
+            onChange={(e) => setLabel(e.target.value)}
+          />
+          <TextField
+            margin="dense"
+            label="사용자 설명"
+            fullWidth
+            variant="outlined"
+            value={userDesc}
+            onChange={(e) => setUserDesc(e.target.value)}
+          />
+          <TextField
+            margin="dense"
+            label="LLM 설명"
+            fullWidth
+            variant="outlined"
+            value={llmDesc}
+            onChange={(e) => setLlmDesc(e.target.value)}
+          />
+          <TextField
+            margin="dense"
+            label="색상 (Hex)"
+            fullWidth
+            variant="outlined"
+            type="color"
+            value={`#${colorHex}`}
+            onChange={(e) => setColorHex(e.target.value.replace("#", ""))}
+          />
+          <TextField
+            margin="dense"
+            label="우선순위"
+            fullWidth
+            variant="outlined"
+            type="number"
+            value={priorityWeight}
+            onChange={(e) => setPriorityWeight(e.target.value)}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleModalClose}>취소</Button>
+          <Button
+            onClick={handleSubmit}
+            variant="contained"
+            color="primary"
+            disabled={isLoading}
+          >
+            {isLoading ? "처리중.." : "제출"}
+          </Button>
+        </DialogActions>
       </Dialog>
       <Snackbar
         open={snackbarOpen}

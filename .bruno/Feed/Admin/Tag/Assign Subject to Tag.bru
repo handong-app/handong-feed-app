@@ -1,0 +1,22 @@
+meta {
+  name: Assign Subject to Tag
+  type: http
+  seq: 5
+}
+
+post {
+  url: http://localhost:{{PORT}}/api/admin/subject/:subjectId/tag-assign
+  body: json
+  auth: inherit
+}
+
+params:path {
+  subjectId: 1
+}
+
+body:json {
+  {
+    "tagCode": "club",
+    "forDate": "2025-01-01"     // 2025-01-01 or null
+  }
+}

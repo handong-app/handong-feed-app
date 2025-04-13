@@ -1,11 +1,11 @@
 meta {
   name: Update Tag
   type: http
-  seq: 2
+  seq: 1
 }
 
 patch {
-  url: http://localhost:{{PORT}}/api/tags/:code
+  url: http://localhost:{{PORT}}/api/admin/tags/:code
   body: json
   auth: inherit
 }

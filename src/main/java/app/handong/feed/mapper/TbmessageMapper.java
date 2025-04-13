@@ -22,4 +22,6 @@ public interface TbmessageMapper {
         // Call the original fileDetails method asynchronously
         return CompletableFuture.completedFuture(fileDetails(messageId));
     }
+
+    List<TbmessageDto.Detail> externalFeedGetAll(Long start, Long end, Integer limit, Boolean filterNew);
 }

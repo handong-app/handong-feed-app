@@ -1,11 +1,11 @@
 meta {
   name: Delete Tag
   type: http
-  seq: 1
+  seq: 2
 }
 
 delete {
-  url: http://localhost:{{PORT}}/api/tags/:code
+  url: http://localhost:{{PORT}}/api/admin/tags/:code
   body: none
   auth: inherit
 }

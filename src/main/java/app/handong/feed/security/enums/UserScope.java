@@ -18,7 +18,9 @@ public class UserScope {
         MEMBER(Set.of(ScopeAction.READ, ScopeAction.WRITE)),
         FEED(Set.of(ScopeAction.READ)),
         FILE(Set.of(ScopeAction.READ)),
-        APIKEY(Set.of(ScopeAction.READ, ScopeAction.WRITE, ScopeAction.DELETE)),;
+        APIKEY(Set.of(ScopeAction.READ, ScopeAction.WRITE, ScopeAction.DELETE)),
+        TAG(Set.of(ScopeAction.READ, ScopeAction.WRITE, ScopeAction.DELETE)),
+        TAG_ASSIGN(Set.of(ScopeAction.WRITE, ScopeAction.DELETE));
 
         private final Set<ScopeAction> allowedActions;
 

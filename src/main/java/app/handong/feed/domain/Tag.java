@@ -1,5 +1,6 @@
 package app.handong.feed.domain;
 
+import app.handong.feed.dto.TagDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -60,5 +61,9 @@ public class Tag {
 
     public static Tag of(String code, String label, String userDesc, String llmDesc, String colorHex, float priorityWeight) {
         return new Tag(code, label, userDesc, llmDesc, colorHex, priorityWeight);
+    }
+
+    public TagDto.ReadResDto toDto() {
+        return new TagDto.ReadResDto(code, label, userDesc, llmDesc, colorHex, priorityWeight, createdAt, updatedAt);
     }
 }

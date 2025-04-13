@@ -3,17 +3,23 @@ package app.handong.feed.service.impl;
 import app.handong.feed.config.CustomProperties;
 import app.handong.feed.domain.ApiKey;
 import app.handong.feed.domain.ApiKeyScope;
+import app.handong.feed.domain.Tag;
+import app.handong.feed.dto.TagDto;
 import app.handong.feed.dto.TbadminDto;
+import app.handong.feed.exception.data.DuplicateTagCodeException;
+import app.handong.feed.exception.data.NotFoundException;
 import app.handong.feed.mapper.TbadminMapper;
 import app.handong.feed.repository.ApiKeyRepository;
+import app.handong.feed.repository.TagRepository;
 import app.handong.feed.service.FirebaseService;
 import app.handong.feed.service.TbadminService;
-import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 import static app.handong.feed.util.ApiKeyHasher.hmacSha256;
@@ -26,13 +32,15 @@ public class TbadminServiceImpl implements TbadminService {
     private final FirebaseService firebaseService;
     private final ApiKeyRepository apiKeyRepository;
     private final CustomProperties customProperties;
+    private final TagRepository tagRepository;
 
 
-    public TbadminServiceImpl(TbadminMapper tbadminMapper, FirebaseService firebaseService, ApiKeyRepository apiKeyRepository, CustomProperties customProperties) {
+    public TbadminServiceImpl(TbadminMapper tbadminMapper, FirebaseService firebaseService, ApiKeyRepository apiKeyRepository, CustomProperties customProperties, TagRepository tagRepository) {
         this.tbadminMapper = tbadminMapper;
         this.firebaseService = firebaseService;
         this.apiKeyRepository = apiKeyRepository;
         this.customProperties = customProperties;
+        this.tagRepository = tagRepository;
     }
 
     @Override
@@ -118,6 +126,69 @@ public class TbadminServiceImpl implements TbadminService {
         ApiKey apiKey = apiKeyRepository.findById(apiKeyId)
                 .orElseThrow(() -> new IllegalArgumentException("API key not found"));
         apiKeyRepository.delete(apiKey);
+    }
+
+    @Override
+    @Transactional
+    public TagDto.CreateResDto createTag(TagDto.CreateReqDto dto) {
+        if (tagRepository.existsById(dto.getCode())) {
+            throw new DuplicateTagCodeException(dto.getCode());
+        }
+
+        return TagDto.CreateResDto.fromEntity(tagRepository.save(dto.toEntity()));
+    }
+
+    @Override
+    @Transactional
+    public List<TagDto.CreateResDto> createTags(List<TagDto.CreateReqDto> requestList) {
+        List<Tag> tags = requestList.stream()
+                .map(TagDto.CreateReqDto::toEntity)
+                .toList();
+
+        for (Tag tag : tags) {
+            if (tagRepository.existsById(tag.getCode())) {
+                throw new DuplicateTagCodeException(tag.getCode());
+            }
+        }
+
+        List<Tag> savedTags = tagRepository.saveAll(tags);
+        return savedTags.stream()
+                .map(TagDto.CreateResDto::fromEntity)
+                .toList();
+    }
+
+    @Override
+    @Transactional
+    public TagDto.UpdateResDto updateTag(String code, TagDto.UpdateReqDto dto) {
+        Tag tag = tagRepository.findById(code)
+                .orElseThrow(() -> new NotFoundException("Tag not found with code: " + code));
+
+        // 필드 업데이트
+        Optional.ofNullable(dto.getLabel()).ifPresent(tag::setLabel);
+        Optional.ofNullable(dto.getUserDesc()).ifPresent(tag::setUserDesc);
+        Optional.ofNullable(dto.getLlmDesc()).ifPresent(tag::setLlmDesc);
+        Optional.ofNullable(dto.getColorHex()).ifPresent(tag::setColorHex);
+        Optional.of(dto.getPriorityWeight()).ifPresent(tag::setPriorityWeight);
+
+        return new TagDto.UpdateResDto(
+                tag.getCode(),
+                tag.getLabel(),
+                tag.getUserDesc(),
+                tag.getLlmDesc(),
+                tag.getColorHex(),
+                tag.getPriorityWeight(),
+                tag.getUpdatedAt()
+        );
+    }
+
+    @Override
+    @Transactional
+    public TagDto.DeleteResDto deleteTag(String code) {
+        tagRepository.findById(code)
+                .orElseThrow(() -> new NotFoundException("Tag not found with code: " + code));
+
+        tagRepository.deleteById(code);
+        return new TagDto.DeleteResDto(code, "Tag deleted successfully");
     }
 
 }
