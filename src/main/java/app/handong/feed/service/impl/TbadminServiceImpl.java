@@ -129,6 +129,7 @@ public class TbadminServiceImpl implements TbadminService {
     }
 
     @Override
+    @Transactional
     public TagDto.CreateResDto createTag(TagDto.CreateReqDto dto) {
         if (tagRepository.existsById(dto.getCode())) {
             throw new DuplicateTagCodeException(dto.getCode());
@@ -138,6 +139,7 @@ public class TbadminServiceImpl implements TbadminService {
     }
 
     @Override
+    @Transactional
     public List<TagDto.CreateResDto> createTags(List<TagDto.CreateReqDto> requestList) {
         List<Tag> tags = requestList.stream()
                 .map(TagDto.CreateReqDto::toEntity)
@@ -180,6 +182,7 @@ public class TbadminServiceImpl implements TbadminService {
     }
 
     @Override
+    @Transactional
     public TagDto.DeleteResDto deleteTag(String code) {
         tagRepository.findById(code)
                 .orElseThrow(() -> new NotFoundException("Tag not found with code: " + code));
