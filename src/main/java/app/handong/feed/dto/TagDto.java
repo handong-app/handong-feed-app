@@ -38,7 +38,7 @@ public class TagDto {
         @Size(min = 6, max = 6)
         private String colorHex;
 
-        private Float priorityWeight;
+        private float priorityWeight;
 
         public Tag toEntity() {
             return new Tag(code, label, userDesc, llmDesc, colorHex, priorityWeight);
@@ -56,7 +56,7 @@ public class TagDto {
         private String userDesc;
         private String llmDesc;
         private String colorHex;
-        private Float priorityWeight;
+        private float priorityWeight;
         private LocalDateTime createdAt;
 
         public static CreateResDto fromEntity(Tag tag) {
@@ -79,7 +79,7 @@ public class TagDto {
         private String userDesc;
         private String llmDesc;
         private String colorHex;
-        private Float priorityWeight;
+        private float priorityWeight;
     }
 
     @Getter
@@ -91,7 +91,7 @@ public class TagDto {
         private String userDesc;
         private String llmDesc;
         private String colorHex;
-        private Float priorityWeight;
+        private float priorityWeight;
         private LocalDateTime updatedAt;
     }
 
@@ -104,7 +104,7 @@ public class TagDto {
         private String userDesc;
         private String llmDesc;
         private String colorHex;
-        private Float priorityWeight;
+        private float priorityWeight;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
     }
