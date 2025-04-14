@@ -20,6 +20,7 @@ public class TbmessageDto {
         private List<String> files;
         private boolean like;
         private int messageCount;
+        private List<TagDto.ReadUserResDto> tags;
     }
 
     @Schema
