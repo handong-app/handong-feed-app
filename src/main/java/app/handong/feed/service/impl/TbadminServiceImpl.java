@@ -168,7 +168,7 @@ public class TbadminServiceImpl implements TbadminService {
         Optional.ofNullable(dto.getUserDesc()).ifPresent(tag::setUserDesc);
         Optional.ofNullable(dto.getLlmDesc()).ifPresent(tag::setLlmDesc);
         Optional.ofNullable(dto.getColorHex()).ifPresent(tag::setColorHex);
-        Optional.of(dto.getPriorityWeight()).ifPresent(tag::setPriorityWeight);
+        Optional.ofNullable(dto.getPriorityWeight()).ifPresent(tag::setPriorityWeight);
 
         return new TagDto.UpdateResDto(
                 tag.getCode(),
