@@ -1,0 +1,56 @@
+meta {
+  name: GetOne
+  type: http
+  seq: 2
+}
+
+get {
+  url: http://localhost:{{PORT}}/api/kafeed/get/:feedId
+  body: none
+  auth: inherit
+}
+
+params:path {
+  feedId: e28b9dd94c704847a3ca067a948f2e70
+}
+
+tests {
+  test("each item should exactly match the expected structure (message item)", function () {
+    const data = res.getBody(); // 이미 파싱된 객체
+    const expectedShape = {
+      subjectId: 'number',
+      id: 'string',
+      sentAt: 'number',
+      message: 'string',
+      files: 'array',
+      like: 'boolean',
+      messageCount: 'number',
+      tags: 'array'
+    };
+  
+    expect(data).to.be.a('array');
+  
+    data.forEach((item, index) => {
+      // 키 목록 정확히 일치
+      const actualKeys = Object.keys(item).sort();
+      const expectedKeys = Object.keys(expectedShape).sort();
+  
+      expect(actualKeys, `Keys at index ${index} do not match expected keys`)
+        .to.eql(expectedKeys);
+  
+      // 각 필드 타입 확인
+      for (const [key, type] of Object.entries(expectedShape)) {
+        const value = item[key];
+        expect(value, `Field '${key}' at index ${index} should be a ${type}`).to.be.a(type);
+      }
+    });
+  });
+  
+}
+
+docs {
+  ### type
+  * like
+  * unseen
+  * all
+}

@@ -170,6 +170,18 @@ public class TbKaFeedServiceImpl implements TbKaFeedService {
         TbmessageDto.Detail detail = tbmessageMapper.getOneHash(messageId, userId);
         if (detail == null) throw new NotFoundException("GetOne Not Found: " + messageId);
 
+        // <<-- PROCESS THE TAGS -->>
+        List<TagDto.ReadUserResDto> tags = tbSubjectTagRepository.findByTbSubjectId(detail.getSubjectId()).stream().map(subjectTag ->
+                new TagDto.ReadUserResDto(
+                        subjectTag.getTag().getCode(),
+                        subjectTag.getTag().getLabel(),
+                        subjectTag.getTag().getUserDesc(),
+                        subjectTag.getTag().getColorHex()
+                )
+        ).toList();
+        detail.setTags(tags);
+
+        // <<-- PROCESS THE FILE -->>
         // Fetch file details asynchronously
         CompletableFuture<List<TbmessageDto.FileDetail>> fileDetailsFuture = tbmessageMapper.fileDetailsAsync(detail.getId());
 
