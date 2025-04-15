@@ -3,7 +3,6 @@ import React from "react";
 
 function FeedCardTags({ tags }) {
   const theme = useTheme();
-  console.log(tags);
   return (
     <Stack direction="row" spacing={1} sx={{ pt: 1 }}>
       {tags && tags.length > 0 && (
