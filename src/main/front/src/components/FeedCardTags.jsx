@@ -15,7 +15,6 @@ function FeedCardTags({ tags }) {
               color: theme.palette.getContrastText(`#${tag.colorHex}`),
               backgroundColor: `#${tag.colorHex}`,
             }}
-            // color={tag.colorHex}
             size="small"
           />
         ))}
