@@ -22,6 +22,7 @@ import { useSetRecoilState } from "recoil";
 import { feedCountAtom } from "../recoil/feedAtom";
 import ShareModal from "./modals/ShareModal";
 import HistoryModal from "./modals/HistoryModal";
+import FeedCardTags from "./FeedCardTags";
 
 export default function FeedCard({ loading, item, watchSeen = false }) {
   const fetch = useFetchBe();
@@ -168,6 +169,7 @@ export default function FeedCard({ loading, item, watchSeen = false }) {
               <ReactShowMoreText lines={3} truncatedEndingComponent="">
                 {convertTextToLinks(item.content.trim())}
               </ReactShowMoreText>
+              <FeedCardTags tags={item.tags} />
             </CardContent>
             {/* <CardActions disableSpacing>
         <IconButton aria-label="add to favorites">
