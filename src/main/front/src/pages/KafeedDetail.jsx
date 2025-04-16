@@ -41,6 +41,7 @@ function KafeedDetail() {
             subjectId: doc.subjectId,
             like: doc.like,
             messageCount: doc.messageCount,
+            tags: doc.tags,
           }}
         />
       ) : (

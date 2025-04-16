@@ -1,10 +1,12 @@
 package app.handong.feed.service.impl;
 
 import app.handong.feed.domain.TbKaFeed;
+import app.handong.feed.dto.TagDto;
 import app.handong.feed.dto.TbmessageDto;
 import app.handong.feed.exception.data.NotFoundException;
 import app.handong.feed.mapper.TbmessageMapper;
 import app.handong.feed.repository.TbKaFeedRepository;
+import app.handong.feed.repository.TbSubjectTagRepository;
 import app.handong.feed.repository.TbUserSearchRepository;
 import app.handong.feed.service.FirebaseService;
 import app.handong.feed.service.ShortHashService;
@@ -24,17 +26,19 @@ public class TbKaFeedServiceImpl implements TbKaFeedService {
     private final FirebaseService firebaseService;
     private final TbUserSearchRepository tbUserSearchRepository;
     private final TbLoggerService tbLoggerService;
+    private final TbSubjectTagRepository tbSubjectTagRepository;
 
     public TbKaFeedServiceImpl(
             TbKaFeedRepository tbKaFeedRepository,
             TbmessageMapper tbmessageMapper,
             FirebaseService firebaseService,
-            TbUserSearchRepository tbUserSearchRepository, TbLoggerService tbLoggerService) {
+            TbUserSearchRepository tbUserSearchRepository, TbLoggerService tbLoggerService, TbSubjectTagRepository tbSubjectTagRepository) {
         this.tbKaFeedRepository = tbKaFeedRepository;
         this.tbmessageMapper = tbmessageMapper;
         this.firebaseService = firebaseService;
         this.tbUserSearchRepository = tbUserSearchRepository;
         this.tbLoggerService = tbLoggerService;
+        this.tbSubjectTagRepository = tbSubjectTagRepository;
     }
 
     public Map<String, Object> create(Map<String, Object> param) {
@@ -94,6 +98,18 @@ public class TbKaFeedServiceImpl implements TbKaFeedService {
         // Process each TbmessageDto.Detail asynchronously
         List<CompletableFuture<TbmessageDto.Detail>> futures = result.stream()
                 .map(message -> {
+                    // <<-- PROCESS THE TAGS -->>
+                    List<TagDto.ReadUserResDto> tags = tbSubjectTagRepository.findByTbSubjectId(message.getSubjectId()).stream().map(subjectTag ->
+                            new TagDto.ReadUserResDto(
+                                    subjectTag.getTag().getCode(),
+                                    subjectTag.getTag().getLabel(),
+                                    subjectTag.getTag().getUserDesc(),
+                                    subjectTag.getTag().getColorHex()
+                            )
+                    ).toList();
+                    message.setTags(tags);
+
+                    // <<-- PROCESS THE FILE -->>
                     // Fetch file details asynchronously
                     CompletableFuture<List<TbmessageDto.FileDetail>> fileDetailsFuture = tbmessageMapper.fileDetailsAsync(message.getId());
 
@@ -154,6 +170,18 @@ public class TbKaFeedServiceImpl implements TbKaFeedService {
         TbmessageDto.Detail detail = tbmessageMapper.getOneHash(messageId, userId);
         if (detail == null) throw new NotFoundException("GetOne Not Found: " + messageId);
 
+        // <<-- PROCESS THE TAGS -->>
+        List<TagDto.ReadUserResDto> tags = tbSubjectTagRepository.findByTbSubjectId(detail.getSubjectId()).stream().map(subjectTag ->
+                new TagDto.ReadUserResDto(
+                        subjectTag.getTag().getCode(),
+                        subjectTag.getTag().getLabel(),
+                        subjectTag.getTag().getUserDesc(),
+                        subjectTag.getTag().getColorHex()
+                )
+        ).toList();
+        detail.setTags(tags);
+
+        // <<-- PROCESS THE FILE -->>
         // Fetch file details asynchronously
         CompletableFuture<List<TbmessageDto.FileDetail>> fileDetailsFuture = tbmessageMapper.fileDetailsAsync(detail.getId());
 

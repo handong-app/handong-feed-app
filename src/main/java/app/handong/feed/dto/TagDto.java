@@ -116,4 +116,14 @@ public class TagDto {
         private String code;
         private String message;
     }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    public static class ReadUserResDto {
+        private String code;
+        private String label;
+        private String userDesc;
+        private String colorHex;
+    }
 }

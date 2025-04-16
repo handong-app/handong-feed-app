@@ -9,3 +9,52 @@ get {
   body: none
   auth: inherit
 }
+
+tests {
+  test("each item should exactly match the expected user structure (nullable supported)", function () {
+    const data = res.getBody();
+  
+    const expectedShape = {
+      id: 'string',
+      name: 'string',
+      createdAt: 'string',
+      lastLoginTime: 'string',
+      lastReadTime: { type: 'string', nullable: true }
+    };
+  
+    function validateStructure(obj, shape, path = '') {
+      const actualKeys = Object.keys(obj).sort();
+      const expectedKeys = Object.keys(shape).sort();
+      expect(actualKeys, `Keys at '${path || 'root'}' do not match`).to.eql(expectedKeys);
+  
+      for (const [key, typeOrShape] of Object.entries(shape)) {
+        const fullPath = path ? `${path}.${key}` : key;
+        const value = obj[key];
+  
+        // Nullable 필드 처리
+        if (typeof typeOrShape === 'object' && typeOrShape.nullable) {
+          if (value === null) continue; // null 허용됨
+          expect(value, `Field '${fullPath}' should be a ${typeOrShape.type} or null`).to.be.a(typeOrShape.type);
+        }
+  
+        // 일반 타입 문자열
+        else if (typeof typeOrShape === 'string') {
+          expect(value, `Field '${fullPath}' should be a ${typeOrShape}`).to.be.a(typeOrShape);
+        }
+  
+        // 중첩된 객체 재귀
+        else {
+          expect(value, `Field '${fullPath}' should be an object`).to.be.a('object');
+          validateStructure(value, typeOrShape, fullPath);
+        }
+      }
+    }
+  
+    expect(data).to.be.a('array');
+  
+    data.forEach((item, index) => {
+      validateStructure(item, expectedShape, `item[${index}]`);
+    });
+  });
+  
+}

@@ -44,6 +44,7 @@ const useLoadData = ({ type = "" } = {}) => {
             subjectId: dd.subjectId,
             like: dd.like,
             messageCount: dd.messageCount,
+            tags: dd.tags,
           })),
         ],
         "id"

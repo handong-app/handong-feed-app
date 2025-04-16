@@ -1,18 +1,17 @@
 meta {
-  name: scrolllist(unread)
+  name: GetOne
   type: http
-  seq: 1
+  seq: 2
 }
 
 get {
-  url: http://localhost:{{PORT}}/api/kafeed/scrolllist?afterSentAt=-1&type=all
+  url: http://localhost:{{PORT}}/api/kafeed/get/:feedId
   body: none
   auth: inherit
 }
 
-params:query {
-  afterSentAt: -1
-  type: all
+params:path {
+  feedId: e28b9dd94c704847a3ca067a948f2e70
 }
 
 tests {

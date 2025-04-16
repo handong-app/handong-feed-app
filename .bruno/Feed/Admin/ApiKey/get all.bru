@@ -9,3 +9,50 @@ get {
   body: none
   auth: inherit
 }
+
+tests {
+  test("each item should exactly match the expected structure including nested issuedBy", function () {
+    const data = res.getBody();
+  
+    const expectedShape = {
+      id: 'string',
+      description: 'string',
+      issuedBy: {
+        id: 'string',
+        name: 'string',
+        createdAt: 'string',
+        lastLoginTime: 'string',
+        lastReadTime: 'string'
+      },
+      createdAt: 'string',
+      lastUsedAt: 'string',
+      scopes: 'array',
+      active: 'boolean'
+    };
+  
+    function validateStructure(obj, shape, path = '') {
+      const actualKeys = Object.keys(obj).sort();
+      const expectedKeys = Object.keys(shape).sort();
+      expect(actualKeys, `Keys at '${path || 'root'}' do not match`).to.eql(expectedKeys);
+  
+      for (const [key, typeOrShape] of Object.entries(shape)) {
+        const fullPath = path ? `${path}.${key}` : key;
+        const value = obj[key];
+  
+        if (typeof typeOrShape === 'string') {
+          expect(value, `Field '${fullPath}' should be a ${typeOrShape}`).to.be.a(typeOrShape);
+        } else {
+          expect(value, `Field '${fullPath}' should be an object`).to.be.a('object');
+          validateStructure(value, typeOrShape, fullPath);
+        }
+      }
+    }
+  
+    expect(data).to.be.a('array');
+  
+    data.forEach((item, index) => {
+      validateStructure(item, expectedShape, `item[${index}]`);
+    });
+  });
+  
+}
