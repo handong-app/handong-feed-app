@@ -91,6 +91,8 @@ public class TbSubjectTag {
     }
 
     public TbSubjectTagDto.CreateResDto toCreateResDto() {
+        Integer lastSentAt = tbSubject != null ? tbSubject.getLastSentAt() : null;
+        Long lastSentChatId = tbSubject != null ? tbSubject.getLastSentChatId() : null;
         return new TbSubjectTagDto.CreateResDto(
                 id,
                 tbSubjectId,
@@ -98,8 +100,8 @@ public class TbSubjectTag {
                 confidentValue,
                 forDate,
                 createdAt,
-                tbSubject.getLastSentAt(),
-                tbSubject.getLastSentChatId()
+                lastSentAt,
+                lastSentChatId
         );
     }
 }

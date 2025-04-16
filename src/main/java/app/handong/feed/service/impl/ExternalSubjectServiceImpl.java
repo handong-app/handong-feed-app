@@ -1,6 +1,5 @@
 package app.handong.feed.service.impl;
 
-import app.handong.feed.domain.TbSubject;
 import app.handong.feed.domain.TbSubjectTag;
 import app.handong.feed.dto.TbSubjectTagDto;
 import app.handong.feed.exception.data.DuplicateEntityException;
@@ -40,10 +39,6 @@ public class ExternalSubjectServiceImpl implements ExternalSubjectService {
 
     @Override
     public TbSubjectTagDto.CreateResDto getLastSubjectAssign(String updated_by) {
-        TbSubjectTagDto.CreateResDto result = tbSubjectTagRepository.findTopByUpdatedByOrderByCreatedAt(updated_by).orElseThrow(() -> new NotFoundException("Not Found")).toCreateResDto();
-        TbSubject tbSubject = tbSubjectRepository.findById(Long.valueOf(result.getTbSubjectId() + "")).orElseThrow(() -> new NotFoundException("Not Found" + result.getTbSubjectId()));
-        result.setLastSentAt(tbSubject.getLastSentAt());
-        result.setLastSentChatId(tbSubject.getLastSentChatId());
-        return result;
+        return tbSubjectTagRepository.findTopByUpdatedByOrderByCreatedAt(updated_by).orElseThrow(() -> new NotFoundException("Not Found")).toCreateResDto();
     }
 }

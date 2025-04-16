@@ -5,7 +5,59 @@ meta {
 }
 
 get {
-  url: http://localhost:{{PORT}}/api/
+  url: http://localhost:{{PORT}}/api/external/subject/last-assigned
   body: none
   auth: inherit
+}
+
+tests {
+  test("should have correct response", function () {
+    const data = res.getBody(); // JSON 객체 하나
+  
+    // 기대되는 필드와 타입 정의
+    const expectedShape = {
+      id: "number",
+      tbSubjectId: "number",
+      tagCode: "string",
+      confidentValue: "number",
+      forDate: "string",
+      createdAt: "string",
+      lastSentAt: "number",
+      lastSentChatId: "number"
+    };
+  
+    // 구조 유효성 검사 함수
+    function validateStructure(obj, shape, path = '') {
+      const actualKeys = Object.keys(obj).sort();
+      const expectedKeys = Object.keys(shape).sort();
+      expect(actualKeys, `Keys at '${path || 'root'}' do not match`).to.eql(expectedKeys);
+  
+      for (const [key, typeOrShape] of Object.entries(shape)) {
+        const fullPath = path ? `${path}.${key}` : key;
+        const value = obj[key];
+  
+        // nullable 필드 처리
+        if (typeof typeOrShape === 'object' && typeOrShape.nullable) {
+          if (value === null) continue;
+          expect(value, `Field '${fullPath}' should be a ${typeOrShape.type} or null`).to.be.a(typeOrShape.type);
+        }
+  
+        // 기본 타입 검사
+        else if (typeof typeOrShape === 'string') {
+          expect(value, `Field '${fullPath}' should be a ${typeOrShape}`).to.be.a(typeOrShape);
+        }
+  
+        // 중첩 객체 검사
+        else {
+          expect(value, `Field '${fullPath}' should be an object`).to.be.a('object');
+          validateStructure(value, typeOrShape, fullPath);
+        }
+      }
+    }
+  
+    // 객체 검사 실행
+    expect(data).to.be.an('object');
+    validateStructure(data, expectedShape);
+  });
+  
 }
