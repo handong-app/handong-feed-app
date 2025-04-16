@@ -19,6 +19,13 @@ import java.util.List;
 public class SubjectExternalApiController {
     private final ExternalSubjectService externalSubjectService;
 
+    @GetMapping("/last-assigned")
+    @Operation(summary = "내가 마지막으로 추가한 서브젝트 확인")
+    public ResponseEntity<TbSubjectTagDto.CreateResDto> getMyLastCreatedTagAssign (HttpServletRequest request) {
+        String reqApiId = RequestUtils.getReqApiId(request);
+        return ResponseEntity.ok(externalSubjectService.getLastSubjectAssign(reqApiId));
+    }
+
     @PostMapping("/{subjectId}/tag-assign")
     @Operation(summary = "서브젝트에 태그 추가")
     @RequiredApiScopes({"tag_assign:write"})
@@ -54,7 +61,9 @@ public class SubjectExternalApiController {
                         dto.getTagCode(),
                         dto.getConfidentValue(),
                         dto.getForDate(),
-                        null // 생성 시간 없음
+                        null, // 생성 시간 없음
+                        null,
+                        null
                 );
             }
         }).toList());

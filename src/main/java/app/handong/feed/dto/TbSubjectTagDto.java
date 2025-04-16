@@ -62,6 +62,8 @@ public class TbSubjectTagDto {
         private float confidentValue;
         private LocalDate forDate;
         private LocalDateTime createdAt;
+        private Integer lastSentAt;
+        private Long lastSentChatId;
     }
 
     @Getter

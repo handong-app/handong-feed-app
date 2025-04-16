@@ -25,14 +25,7 @@ public class TbSubjectTagServiceImpl implements TbSubjectTagService {
 
         try {
             TbSubjectTag saved = subjectTagRepository.save(dto.toEntity());
-            return new TbSubjectTagDto.CreateResDto(
-                    saved.getId(),
-                    saved.getTbSubjectId(),
-                    saved.getTagCode(),
-                    saved.getConfidentValue(),
-                    saved.getForDate(),
-                    saved.getCreatedAt()
-            );
+            return saved.toCreateResDto();
         } catch (DataIntegrityViolationException e) {
             throw new DuplicateEntityException("duplicate tag code: " + dto.getTagCode());
         }

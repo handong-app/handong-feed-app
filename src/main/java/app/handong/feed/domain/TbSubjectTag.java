@@ -1,5 +1,6 @@
 package app.handong.feed.domain;
 
+import app.handong.feed.dto.TbSubjectTagDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
@@ -30,6 +31,16 @@ public class TbSubjectTag {
 
     @Column(name = "tb_subject_id", nullable = false)
     private int tbSubjectId;
+
+    @ManyToOne
+    @JoinColumn(
+            name = "tb_subject_id",
+            referencedColumnName = "id",
+            insertable = false,
+            updatable = false,
+            foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT)
+    )
+    private TbSubject tbSubject;
 
     @Column(name = "tag_code", length = 32, nullable = false)
     private String tagCode; // Tag.code 참조 (FK는 명시적으로 걸지 않음)
@@ -77,5 +88,18 @@ public class TbSubjectTag {
 
     public static TbSubjectTag of(int tbSubjectId, String tagCode, float confidentValue, LocalDate forDate, String updatedBy, String updatedByType) {
         return new TbSubjectTag(tbSubjectId, tagCode, confidentValue, forDate, updatedBy, updatedByType);
+    }
+
+    public TbSubjectTagDto.CreateResDto toCreateResDto() {
+        return new TbSubjectTagDto.CreateResDto(
+                id,
+                tbSubjectId,
+                tagCode,
+                confidentValue,
+                forDate,
+                createdAt,
+                tbSubject.getLastSentAt(),
+                tbSubject.getLastSentChatId()
+        );
     }
 }

@@ -21,4 +21,7 @@ public interface TbSubjectTagRepository extends JpaRepository<TbSubjectTag, Inte
 
     // subjectId, tagId 조합 존재 여부 확인 (복합키 유니크 체크에 유용)
     boolean existsByTbSubjectIdAndTagCode(int tbSubjectId, String tagCode);
+
+    Optional<TbSubjectTag> findTopByUpdatedByOrderByCreatedAt(String updated_by);
+
 }

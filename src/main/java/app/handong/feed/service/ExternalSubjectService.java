@@ -5,5 +5,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface ExternalSubjectService {
-    public TbSubjectTagDto.CreateResDto createSubjectTag(TbSubjectTagDto.CreateReqDto dto);
+
+    TbSubjectTagDto.CreateResDto createSubjectTag(TbSubjectTagDto.CreateReqDto dto);
+    TbSubjectTagDto.CreateResDto getLastSubjectAssign(String updated_by);
 }

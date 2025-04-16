@@ -1,10 +1,12 @@
 package app.handong.feed.service.impl;
 
+import app.handong.feed.domain.TbSubject;
 import app.handong.feed.domain.TbSubjectTag;
 import app.handong.feed.dto.TbSubjectTagDto;
 import app.handong.feed.exception.data.DuplicateEntityException;
 import app.handong.feed.exception.data.NotFoundException;
 import app.handong.feed.repository.TagRepository;
+import app.handong.feed.repository.TbSubjectRepository;
 import app.handong.feed.repository.TbSubjectTagRepository;
 import app.handong.feed.service.ExternalSubjectService;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -15,10 +17,12 @@ public class ExternalSubjectServiceImpl implements ExternalSubjectService {
 
     private final TagRepository tagRepository;
     private final TbSubjectTagRepository tbSubjectTagRepository;
+    private final TbSubjectRepository tbSubjectRepository;
 
-    public ExternalSubjectServiceImpl(TagRepository tagRepository, TbSubjectTagRepository tbSubjectTagRepository) {
+    public ExternalSubjectServiceImpl(TagRepository tagRepository, TbSubjectTagRepository tbSubjectTagRepository, TbSubjectRepository tbSubjectRepository) {
         this.tagRepository = tagRepository;
         this.tbSubjectTagRepository = tbSubjectTagRepository;
+        this.tbSubjectRepository = tbSubjectRepository;
     }
 
     public TbSubjectTagDto.CreateResDto createSubjectTag(TbSubjectTagDto.CreateReqDto dto) {
@@ -28,17 +32,18 @@ public class ExternalSubjectServiceImpl implements ExternalSubjectService {
         dto.setUpdatedByType("api");
         try {
             TbSubjectTag saved = tbSubjectTagRepository.save(dto.toEntity());
-            return new TbSubjectTagDto.CreateResDto(
-                    saved.getId(),
-                    saved.getTbSubjectId(),
-                    saved.getTagCode(),
-                    saved.getConfidentValue(),
-                    saved.getForDate(),
-                    saved.getCreatedAt()
-            );
+            return saved.toCreateResDto();
         } catch (DataIntegrityViolationException e) {
             throw new DuplicateEntityException("duplicate tag code: " + dto.getTagCode());
         }
     }
 
+    @Override
+    public TbSubjectTagDto.CreateResDto getLastSubjectAssign(String updated_by) {
+        TbSubjectTagDto.CreateResDto result = tbSubjectTagRepository.findTopByUpdatedByOrderByCreatedAt(updated_by).orElseThrow(() -> new NotFoundException("Not Found")).toCreateResDto();
+        TbSubject tbSubject = tbSubjectRepository.findById(Long.valueOf(result.getTbSubjectId() + "")).orElseThrow(() -> new NotFoundException("Not Found" + result.getTbSubjectId()));
+        result.setLastSentAt(tbSubject.getLastSentAt());
+        result.setLastSentChatId(tbSubject.getLastSentChatId());
+        return result;
+    }
 }
