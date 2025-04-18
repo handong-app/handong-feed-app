@@ -1,10 +1,11 @@
 # Handong Feed APP
 
-https://feed.handong.app/
-
 **한동대학교의 소식을 한 번에 볼 수 있게 도와줄 Handong Feed 입니다.**
 
 분산되어 있어 보기 어려운 한동대학교의 소식을 한 곳에서 쉽고 빠르게 볼 수 있는 서비스입니다.
+
+사이트 주소: https://feed.handong.app \
+관련 리포지토리 모음: https://github.com/orgs/handong-app/repositories?q=handong-feed
 
 ## 소개 영상 (뮤직비디오)
 
