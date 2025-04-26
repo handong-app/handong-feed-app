@@ -100,6 +100,13 @@ public class TbSubjectTagDto {
 
     @Getter
     @Setter
+    @AllArgsConstructor
+    public static class GetLatestForDateResDto {
+        private LocalDate latestForDate;
+    }
+
+    @Getter
+    @Setter
     public static class DeleteReqDto {
         private int tbSubjectId;
         private String tagCode;

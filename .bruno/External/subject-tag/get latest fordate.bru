@@ -1,0 +1,11 @@
+meta {
+  name: get latest fordate
+  type: http
+  seq: 3
+}
+
+get {
+  url: http://localhost:{{PORT}}/api/external/subject-tag/latest-for-date
+  body: none
+  auth: inherit
+}
