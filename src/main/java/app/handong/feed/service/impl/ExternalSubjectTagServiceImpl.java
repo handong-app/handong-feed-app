@@ -7,18 +7,18 @@ import app.handong.feed.exception.data.NotFoundException;
 import app.handong.feed.mapper.TbSubjectTagMapper;
 import app.handong.feed.repository.TagRepository;
 import app.handong.feed.repository.TbSubjectTagRepository;
-import app.handong.feed.service.ExternalSubjectService;
+import app.handong.feed.service.ExternalSubjectTagService;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ExternalSubjectServiceImpl implements ExternalSubjectService {
+public class ExternalSubjectTagServiceImpl implements ExternalSubjectTagService {
 
     private final TagRepository tagRepository;
     private final TbSubjectTagRepository tbSubjectTagRepository;
     private final TbSubjectTagMapper tbSubjectTagMapper;
 
-    public ExternalSubjectServiceImpl(TagRepository tagRepository, TbSubjectTagRepository tbSubjectTagRepository, TbSubjectTagMapper tbSubjectTagMapper) {
+    public ExternalSubjectTagServiceImpl(TagRepository tagRepository, TbSubjectTagRepository tbSubjectTagRepository, TbSubjectTagMapper tbSubjectTagMapper) {
         this.tagRepository = tagRepository;
         this.tbSubjectTagRepository = tbSubjectTagRepository;
         this.tbSubjectTagMapper = tbSubjectTagMapper;
