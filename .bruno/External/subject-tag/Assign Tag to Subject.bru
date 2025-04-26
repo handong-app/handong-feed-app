@@ -1,11 +1,11 @@
 meta {
   name: Assign Tag to Subject
   type: http
-  seq: 8
+  seq: 2
 }
 
 post {
-  url: http://localhost:{{PORT}}/api/external/subject/:subjectId/tag-assign
+  url: http://localhost:{{PORT}}/api/external/subject-tag/:subjectId/tag-assign
   body: json
   auth: inherit
 }

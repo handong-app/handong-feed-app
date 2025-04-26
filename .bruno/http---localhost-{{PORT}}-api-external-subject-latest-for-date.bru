@@ -1,0 +1,11 @@
+meta {
+  name: http://localhost:{{PORT}}/api/external/subject/latest-for-date
+  type: http
+  seq: 1
+}
+
+get {
+  url: http://localhost:{{PORT}}/api/
+  body: none
+  auth: inherit
+}
