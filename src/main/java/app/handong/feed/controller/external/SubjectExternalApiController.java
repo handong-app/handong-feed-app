@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/external/subject")
+@RequestMapping("/api/external/subject-tag")
 @RequiredArgsConstructor
 public class SubjectExternalApiController {
     private final ExternalSubjectService externalSubjectService;
@@ -58,5 +58,12 @@ public class SubjectExternalApiController {
                 );
             }
         }).toList());
+    }
+
+    @GetMapping("/latest-for-date")
+    @Operation(summary = "가장 최근에 assign 된 for_date 가져오기")
+    @RequiredApiScopes({"tag_assign:read"})
+    public ResponseEntity<TbSubjectTagDto.GetLatestForDateResDto> getLatestForDate(){
+        return ResponseEntity.ok(externalSubjectService.readLatestForDate());
     }
 }
