@@ -43,7 +43,8 @@
     <!-- 주제 태그 할당 완료처리 쿼리 -->
     <update id="updateIsTagAssignedTrue">
         UPDATE TbSubject
-        SET is_tag_assigned = 1
+        SET is_tag_assigned = 1,
+            updated_at = NOW()
         WHERE id = #{id}
     </update>
 </mapper>
