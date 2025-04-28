@@ -3,7 +3,7 @@ package app.handong.feed.service;
 import app.handong.feed.dto.UserInteractionDto;
 import org.springframework.stereotype.Service;
 
-@Service
+
 public interface UserInteractionService {
 
 

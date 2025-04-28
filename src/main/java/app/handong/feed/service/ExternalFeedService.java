@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
+
 public interface ExternalFeedService {
     List<TbmessageDto.Detail> getFeedBetween(Long startTimestamp, Long endTimestamp, boolean isNew, Integer limit);
     List<TbmessageDto.Detail> getFeedBetween(ExternalDto.FeedReqDto dto);

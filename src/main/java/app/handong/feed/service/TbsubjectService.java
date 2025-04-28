@@ -5,7 +5,6 @@ import app.handong.feed.dto.TbsubjectDto;
 import org.springframework.stereotype.Service;
 
 
-@Service
 public interface TbsubjectService {
 
     TbsubjectDto.DetailResDto getDetail(TbsubjectDto.DetailReqDto param);
