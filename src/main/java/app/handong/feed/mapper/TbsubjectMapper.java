@@ -13,5 +13,5 @@ public interface TbsubjectMapper {
 
     List<TbsubjectDto.MessageHistoryServDto> getMessageHistoryById(Long subjectId);
 
-    void updateIsTagAssignedTrue(Long id);
+    int updateIsTagAssignedTrue(Long id);
 }
