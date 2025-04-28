@@ -40,5 +40,10 @@
         ORDER BY last_sent_at DESC
     </select>
 
-
+    <!-- 주제 태그 할당 완료처리 쿼리 -->
+    <update id="updateIsTagAssignedTrue">
+        UPDATE TbSubject
+        SET is_tag_assigned = 1
+        WHERE id = #{id}
+    </update>
 </mapper>

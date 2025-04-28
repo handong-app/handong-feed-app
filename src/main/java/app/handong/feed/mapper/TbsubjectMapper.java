@@ -12,4 +12,6 @@ public interface TbsubjectMapper {
     TbsubjectDto.LastMessageServDto getLastMessageByMessageId(String lastMessageId);
 
     List<TbsubjectDto.MessageHistoryServDto> getMessageHistoryById(Long subjectId);
+
+    void updateIsTagAssignedTrue(Long id);
 }
