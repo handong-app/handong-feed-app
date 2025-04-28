@@ -27,6 +27,10 @@ public class SubjectExternalApiController {
     public ResponseEntity<Void> updateIsTagAssignedTrue(
             @PathVariable long subjectId
     ) {
+
+        if (subjectId <= 0) {
+            return ResponseEntity.badRequest().build();
+        }
         externalSubjectService.updateIsTagAssignedTrue(subjectId);
         return ResponseEntity.noContent().build();
     }
