@@ -12,7 +12,11 @@ import org.springframework.stereotype.Service;
 public class ExternalSubjectServiceImpl implements ExternalSubjectService {
     private final TbsubjectMapper tbsubjectMapper;
 
-
+    /**
+     * 주어진 주제(subject)의 태그 할당 상태를 완료(true)로 업데이트합니다.
+     *
+     * @param subjectId 업데이트할 주제의 ID
+     */
     @Override
     @Transactional
     public void updateIsTagAssignedTrue(Long subjectId) {
