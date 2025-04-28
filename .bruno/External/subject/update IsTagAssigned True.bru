@@ -1,0 +1,15 @@
+meta {
+  name: update IsTagAssigned True
+  type: http
+  seq: 1
+}
+
+patch {
+  url: http://localhost:{{PORT}}/api/external/subject/:subjectId/tag-assigned
+  body: none
+  auth: inherit
+}
+
+params:path {
+  subjectId: 1
+}

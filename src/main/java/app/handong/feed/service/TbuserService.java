@@ -2,11 +2,10 @@ package app.handong.feed.service;
 
 import app.handong.feed.dto.DefaultDto;
 import app.handong.feed.dto.TbuserDto;
-import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
-@Service
+
 public interface TbuserService {
 
 

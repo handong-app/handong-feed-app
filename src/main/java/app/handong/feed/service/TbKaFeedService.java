@@ -1,12 +1,11 @@
 package app.handong.feed.service;
 
 import app.handong.feed.dto.TbmessageDto;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
 
-@Service
+
 public interface TbKaFeedService {
     public Map<String, Object> create(Map<String, Object> param);
 
