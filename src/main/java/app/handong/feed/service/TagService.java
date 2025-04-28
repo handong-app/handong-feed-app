@@ -1,7 +1,6 @@
 package app.handong.feed.service;
 
 import app.handong.feed.dto.TagDto;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 

@@ -2,7 +2,6 @@ package app.handong.feed.service;
 
 import app.handong.feed.dto.ExternalDto;
 import app.handong.feed.dto.TbmessageDto;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
