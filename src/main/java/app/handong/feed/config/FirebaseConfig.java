@@ -36,10 +36,14 @@ public class FirebaseConfig {
 
     private InputStream loadFirebaseConfig() throws Exception {
         if (firebaseConfigBase64 == null || firebaseConfigBase64.isEmpty()) {
-            throw new IllegalStateException("환경변수 FIREBASE_CONFIG_BASE64가 설정되지 않았습니다.");
+            throw new IllegalStateException("환경변수 FB_CONFIG_BASE64가 설정되지 않았습니다.");
         }
 
-        byte[] decodedBytes = Base64.getDecoder().decode(firebaseConfigBase64);
-        return new ByteArrayInputStream(decodedBytes);
+        try {
+            byte[] decodedBytes = Base64.getDecoder().decode(firebaseConfigBase64);
+            return new ByteArrayInputStream(decodedBytes);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalStateException("환경변수 FB_CONFIG_BASE64의 형식이 올바르지 않습니다: " + e.getMessage(), e);
+        }
     }
 }
