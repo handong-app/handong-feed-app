@@ -5,9 +5,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class DefaultController {
-    @GetMapping("/aaa")
-    public String create(){
-
+    @GetMapping("/api/health")
+    public String health(){
         return "Hello World";
     }
 

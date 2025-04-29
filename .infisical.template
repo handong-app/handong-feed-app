@@ -1,0 +1,6 @@
+{{$secrets := secret "d9bab329-eb82-4f4c-a50b-5ea297b8daa9" "dev" "/"}}
+{{- with $secrets }}
+{{- range . }}
+{{ .Key }}={{ .Value }}{{ end }}
+{{- end }}
+{{ "" -}}

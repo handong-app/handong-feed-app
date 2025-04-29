@@ -6,15 +6,15 @@ import com.google.firebase.FirebaseOptions;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ClassPathResource;
 
-import java.io.FileInputStream;
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.util.Base64;
 
 @Configuration
 public class FirebaseConfig {
-    @Value("${FB_CONFIG_PATH:${FB_CONFIG_PATH_DEFAULT:#{null}}}")
-    private String firebaseConfigPath;
+    @Value("${FB_CONFIG_BASE64:${FB_CONFIG_BASE64_DEFAULT:#{null}}}")
+    private String firebaseConfigBase64;
 
     @Value("${FB_BUCKET:${FB_BUCKET_DEFAULT:#{null}}}")
     private String storageBucketUrl;
@@ -35,15 +35,15 @@ public class FirebaseConfig {
     }
 
     private InputStream loadFirebaseConfig() throws Exception {
-        // Check if running in development or production
-        boolean isProduction = System.getenv("ENV") != null && System.getenv("ENV").equalsIgnoreCase("PRODUCTION");
+        if (firebaseConfigBase64 == null || firebaseConfigBase64.isEmpty()) {
+            throw new IllegalStateException("환경변수 FB_CONFIG_BASE64가 설정되지 않았습니다.");
+        }
 
-        if (isProduction) {
-            // Use absolute path in production
-            return new FileInputStream(firebaseConfigPath);
-        } else {
-            // Use ClassPathResource in development
-            return new ClassPathResource(firebaseConfigPath).getInputStream();
+        try {
+            byte[] decodedBytes = Base64.getDecoder().decode(firebaseConfigBase64);
+            return new ByteArrayInputStream(decodedBytes);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalStateException("환경변수 FB_CONFIG_BASE64의 형식이 올바르지 않습니다: " + e.getMessage(), e);
         }
     }
 }

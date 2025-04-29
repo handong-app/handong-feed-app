@@ -19,6 +19,7 @@ https://www.youtube.com/watch?v=xpXz107p8Gw
 [🛠 프로젝트 페이지](https://github.com/orgs/handong-app/projects/2/views/1) 에서 자세히 확인하실 수 있습니다.
 
 ### 핵심 진행 중인 기능
+
 - [ ] LLM 기반 뉴스레터 자동 생성 (기획 완료, 프로토타입 테스트 중)
 - [ ] 학년별 인기글 자동 분류 시각화 (관리자 페이지 프로토타입 완료, 이용자 페이지 개발 중)
 
@@ -33,6 +34,20 @@ https://www.youtube.com/watch?v=xpXz107p8Gw
 - MYSQL
 
 ## 개발환경 - 실행 방법
+
+### 환경변수 관리
+
+본 프로젝트는 [Infisical](https://infisical.com/docs/documentation/getting-started/introduction)을 **Self-Host** 방식으로 설치하여 환경변수를 관리합니다.
+
+특히 [ghcr.io 이미지](https://github.com/handong-app/handong-feed-app/pkgs/container/handong-feed-app)를 실행하기 위해서는 Infisical 환경 구성이 필요합니다.
+
+Infisical 환경을 사용할 수 없는 경우, [Release](https://github.com/handong-app/handong-feed-app/releases) 버전을 사용해 주세요.
+
+**환경변수 내보내기**
+
+```shell
+infisical export --template=./.infisical.template > .env
+```
 
 ### IntelliJ 사용
 
