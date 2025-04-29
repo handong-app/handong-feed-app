@@ -27,7 +27,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new DefaultInterceptor(tbUserPermRepository))
                 .addPathPatterns("/api/**") //인터셉터가 실행되야 하는 url 패턴 설정
-                .excludePathPatterns("/resources/**", "/api/tbuser/login/google", "/api/lab/**", "/api/external/**"); //인터셉터가 실행되지 않아야 하는 url 패턴
+                .excludePathPatterns("/api/health", "/resources/**", "/api/tbuser/login/google", "/api/lab/**", "/api/external/**"); //인터셉터가 실행되지 않아야 하는 url 패턴
         registry.addInterceptor(new ApiKeyAuthInterceptor(apiKeyRepository, customProperties))
                 .addPathPatterns("/api/external/**"); // 외부 api 요청시 인터셉터 실행
     }
