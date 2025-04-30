@@ -3,4 +3,4 @@ blank_issues_enabled: false  # "빈 이슈 만들기" 버튼 비활성화
 contact_links:
   - name: 📄 한동피드 관련 문의 및 피드백
     url: https://board.handong.app/feed/num/19
-    about: 한동피드 관련 문의사항 및 피드백이 있으시면 '문의사항 등록 방법'을 참고해주세요.
+    about: "한동피드 관련 문의사항 및 피드백이 있으시면 '문의사항 등록 방법'을 참고해주세요."
