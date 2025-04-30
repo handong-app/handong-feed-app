@@ -27,6 +27,7 @@ ___
 ___ 
 
 ## 🌐 환경 정보
+-  앱/버전: <!--[e.g., handong-feed-app v1.0.0]-->
 - 브라우저/OS: <!--[e.g., Chrome 123, macOS Sequoia]-->
 - 디바이스: <!--[e.g., MacBook Pro M3 pro]-->
 - 기타: <!--[e.g., VPN 사용 여부 등]-->
