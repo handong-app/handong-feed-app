@@ -1,8 +1,8 @@
 ---
 name: 📄 문서화 요청
-about: 문서 추가/수정이 필요한 경우 작성해주세요
+about: "문서 추가/수정이 필요한 경우 작성해주세요"
 title: "[DOCS] "
-labels: documentation
+labels: ["documentation"]
 ---
 
 ## 📄 문서 요청 내용

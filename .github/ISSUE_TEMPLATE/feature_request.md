@@ -1,8 +1,8 @@
 ---
 name: ✨ Feature Request
-about: 새로운 기능을 제안하고 싶을 때 사용해주세요.
+about: "새로운 기능을 제안하고 싶을 때 사용해주세요."
 title: "[FEAT] "
-labels: enhancement
+labels: ["enhancement"]
 ---
 
 ## ✨ 제안 내용

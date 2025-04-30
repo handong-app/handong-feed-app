@@ -1,8 +1,8 @@
 ---
 name: 💬 기타 문의/요청
-about: 위 템플릿에 해당하지 않는 일반적인 요청
+about: "위 템플릿에 해당하지 않는 일반적인 요청"
 title: "[OTHER] "
-labels: question
+labels: ["question"]
 ---
 
 ## 💬 내용
