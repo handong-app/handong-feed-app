@@ -176,4 +176,4 @@ jobs:
             --header "X-API-Key: $DCA_SECRET" \
             --data "{\"gh\": {\"commitSha\": \"$GITHUB_SHA\", \"githubRepo\": \"$GITHUB_REPOSITORY\", \"githubToken\": \"$GITHUB_TOKEN\"}}"
         env:
-          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
