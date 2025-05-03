@@ -164,7 +164,7 @@ jobs:
           method: "oidc"
           env-slug: "prod"
           domain: "${{ secrets.INFISICAL_DOMAIN }}"
-          project-slug: "d9bab329-eb82-4f4c-a50b-5ea297b8daa9"
+          project-slug: "github-actions"
           identity-id: "${{ secrets.INFISICAL_IDENTITY }}"
           secret-path: "/Handong-App-Deploy"
 
