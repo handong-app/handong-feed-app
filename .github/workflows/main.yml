@@ -170,7 +170,7 @@ jobs:
 
       - name: Send Deploy Request to DCA
         run: |
-          curl --request POST \
+          curl --fail --request POST \
             --url "$DCA_ADDR" \
             --header "content-type: application/json" \
             --header "X-API-Key: $DCA_SECRET" \
