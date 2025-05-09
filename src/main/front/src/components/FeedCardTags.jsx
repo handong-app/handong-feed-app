@@ -8,7 +8,12 @@ function FeedCardTags({ tags }) {
       {tags &&
         tags.length > 0 &&
         tags.map((tag) => (
-          <TagChip code={tag.code} label={tag.label} colorHex={tag.colorHex} />
+          <TagChip
+            key={tag.code}
+            code={tag.code}
+            label={tag.label}
+            colorHex={tag.colorHex}
+          />
         ))}
     </Stack>
   );

@@ -9,24 +9,24 @@ const useLoadData = ({ type = "" } = {}) => {
 
   const [allFeeds, setAllFeed] = useState([]);
   const [hasMore, setHasMore] = useState(true);
-  const [search, setSearch] = useState();
+  const [search, setSearch] = useState({ stags: [], squery: "" });
 
-  const doSearch = (squery) => {
+  const doSearch = ({ squery, stags }) => {
     setAllFeed([]);
     setHasMore(true);
-    setSearch(squery);
+    setSearch({ squery, stags });
   };
 
   useEffect(() => {
     getData();
-  }, [search]);
+  }, [search.squery, search.stags]);
 
   const getData = async () => {
     const lastTimestamp = allFeeds.at(-1)?.sentAtEpoch || -1;
     const data = await fetch(
       `/kafeed/scrolllist?afterSentAt=${lastTimestamp}&type=${type}&search=${
-        search || ""
-      }`
+        search.squery || ""
+      }&tags=${search.stags.join(",")}`
     );
     if (!Array.isArray(data)) return;
     setAllFeed((prev) =>

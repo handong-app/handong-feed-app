@@ -59,6 +59,19 @@
                 AND l.userId = #{userId}
                 )
             </if>
+
+            <!-- Tag 검색 -->
+            <if test="searchTags != null and searchTags.length > 0">
+                AND EXISTS (
+                SELECT 1
+                FROM mydb_tb_subject_tag st
+                WHERE st.tb_subject_id = m.subject_id
+                AND st.tag_code IN
+                <foreach item="tag" index="index" collection="searchTags" open="(" separator="," close=")">
+                    #{tag}
+                </foreach>
+                )
+            </if>
         </where>
         ORDER BY m.last_sent_at DESC
         LIMIT 15
