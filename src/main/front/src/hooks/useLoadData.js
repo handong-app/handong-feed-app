@@ -11,7 +11,7 @@ const useLoadData = ({ type = "" } = {}) => {
   const [hasMore, setHasMore] = useState(true);
   const [search, setSearch] = useState({ stags: [], squery: "" });
 
-  const doSearch = ({ squery, stags }) => {
+  const doSearch = ({ squery = "", stags = [] }) => {
     setAllFeed([]);
     setHasMore(true);
     setSearch({ squery, stags });
@@ -26,7 +26,7 @@ const useLoadData = ({ type = "" } = {}) => {
     const data = await fetch(
       `/kafeed/scrolllist?afterSentAt=${lastTimestamp}&type=${type}&search=${
         search.squery || ""
-      }&tags=${search.stags.join(",")}`
+      }&tags=${Array.isArray(search.stags) ? search.stags.join(",") : ""}`
     );
     if (!Array.isArray(data)) return;
     setAllFeed((prev) =>

@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   IconButton,
   InputAdornment,
   styled,
@@ -32,7 +31,7 @@ const CssTextField = styled(TextField)({
   },
 });
 
-function ToolBar({ doSearch, loading }) {
+function ToolBar({ doSearch }) {
   const [search, setSearch] = useState("");
   const [searchTags, setSearchTags] = useState([]);
 

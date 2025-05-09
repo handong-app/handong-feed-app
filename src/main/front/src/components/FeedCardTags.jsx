@@ -7,14 +7,17 @@ function FeedCardTags({ tags }) {
     <Stack direction="row" spacing={0.5} sx={{ pt: 0.5, mt: 1 }}>
       {tags &&
         tags.length > 0 &&
-        tags.map((tag) => (
-          <TagChip
-            key={tag.code}
-            code={tag.code}
-            label={tag.label}
-            colorHex={tag.colorHex}
-          />
-        ))}
+        tags.map(
+          (tag) =>
+            tag && (
+              <TagChip
+                key={tag.code}
+                code={tag.code || ""}
+                label={tag.label || ""}
+                colorHex={tag.colorHex || ""}
+              />
+            )
+        )}
     </Stack>
   );
 }
