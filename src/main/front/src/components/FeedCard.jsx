@@ -5,7 +5,6 @@ import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
-import { deepOrange, green } from "@mui/material/colors";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShareIcon from "@mui/icons-material/Share";
 import {
@@ -16,7 +15,7 @@ import ReactShowMoreText from "react-show-more-text";
 
 import "./FeedCard.css";
 import FeedCardGallery from "./FeedCardGallery";
-import { Link, Skeleton, Typography } from "@mui/material";
+import { Box, Link, Skeleton, Typography } from "@mui/material";
 import { useFetchBe } from "../tools/api";
 import { useSetRecoilState } from "recoil";
 import { feedCountAtom } from "../recoil/feedAtom";
@@ -99,12 +98,7 @@ export default function FeedCard({ loading, item, watchSeen = false }) {
           <>
             <CardHeader
               avatar={
-                <Avatar
-                  sx={{
-                    bgcolor: !isScrolledUpOut ? deepOrange[500] : green[700],
-                  }}
-                  aria-label="recipe"
-                >
+                <Avatar aria-label="logo" src="/favicon.png">
                   실카
                 </Avatar>
               }
@@ -152,6 +146,11 @@ export default function FeedCard({ loading, item, watchSeen = false }) {
                   )}
                 </Typography>
               }
+              sx={{
+                "& .MuiCardHeader-avatar": {
+                  marginRight: 1,
+                },
+              }}
             />
             <CardMedia sx={{ width: "100%" }}>
               {item.files && (

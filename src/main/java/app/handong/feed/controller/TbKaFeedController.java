@@ -6,6 +6,7 @@ import app.handong.feed.service.TbKaFeedService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -45,10 +46,20 @@ public class TbKaFeedController {
         final String afterSentAt = param.get("afterSentAt");
         String type = param.get("type");
         String search = param.get("search");
+        String tags = param.get("tags");
+
+        String[] searchTags = {};
+
+        if (tags != null) {
+            searchTags = Arrays.stream(tags.split(","))
+                    .map(String::trim)                // 공백 제거
+                    .filter(s -> !s.isEmpty())        // 빈 문자열 제거
+                    .toArray(String[]::new);
+        }
 
         if (afterSentAt != null && !afterSentAt.equals("-1"))
-            return tbKaFeedService.scrollList(type, Integer.parseInt(afterSentAt), reqUserId, search);
-        else return tbKaFeedService.scrollList(type, reqUserId, search);
+            return tbKaFeedService.scrollList(type, Integer.parseInt(afterSentAt), reqUserId, search, searchTags);
+        else return tbKaFeedService.scrollList(type, reqUserId, search, searchTags);
     }
 
     @GetMapping("/get/{messageId}")
