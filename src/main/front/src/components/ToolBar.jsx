@@ -6,7 +6,7 @@ import {
   TextField,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import useTags from "../hooks/useTags";
 import TagChip from "./TagChip";
@@ -35,12 +35,17 @@ function ToolBar({ doSearch }) {
   const [search, setSearch] = useState("");
   const [searchTags, setSearchTags] = useState([]);
 
+  const searchRef = useRef(search);
+
   const [tags] = useTags();
 
-  useEffect(
-    () => doSearch({ squery: search, stags: searchTags }),
-    [searchTags]
-  );
+  useEffect(() => {
+    searchRef.current = search;
+  }, [search]);
+
+  useEffect(() => {
+    doSearch({ squery: searchRef.current, stags: searchTags });
+  }, [searchTags]);
   return (
     <Box display={"flex"} justifyContent={"space-between"} alignItems="end">
       <Box>
