@@ -4,7 +4,7 @@ import React from "react";
 function FeedCardTags({ tags }) {
   const theme = useTheme();
   return (
-    <Stack direction="row" spacing={1} sx={{ pt: 2 }}>
+    <Stack direction="row" spacing={0.5} sx={{ pt: 0.5, mt: 1 }}>
       {tags &&
         tags.length > 0 &&
         tags.map((tag) => (
@@ -14,6 +14,7 @@ function FeedCardTags({ tags }) {
             sx={{
               color: theme.palette.getContrastText(`#${tag.colorHex}`),
               backgroundColor: `#${tag.colorHex}`,
+              borderRadius: 1,
             }}
             size="small"
           />

@@ -12,6 +12,11 @@
     position: relative;
   }
 
+  .post-images img {
+    max-height: 50vh;
+    object-fit: contain;
+  }
+
   /* 1 image layout - full width */
   .images-1 {
     grid-template-columns: 1fr;
