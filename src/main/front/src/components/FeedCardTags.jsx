@@ -1,8 +1,11 @@
 import { Button, Stack } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import TagChip from "./TagChip";
+import TagReportModal from "./modals/TagReportModal";
 
-function FeedCardTags({ tags }) {
+function FeedCardTags({ tags, feedId }) {
+  const [isReportModalOpen, setIsReportModalOpen] = useState(false);
+
   if (!tags || tags.length === 0) {
     return null;
   }
@@ -36,10 +39,14 @@ function FeedCardTags({ tags }) {
           py: 0,
           background: "none",
         }}
-        onClick={() => {}}
+        onClick={() => setIsReportModalOpen(true)}
       >
-        🏷️ 태그가 어색한가요?
+        태그가 어색한가요?
       </Button>
+      <TagReportModal
+        openState={[isReportModalOpen, setIsReportModalOpen]}
+        feedId={feedId}
+      />
     </Stack>
   );
 }
