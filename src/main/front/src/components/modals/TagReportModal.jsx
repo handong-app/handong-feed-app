@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { useFetchBe } from "../../tools/api";
 
-const TagReportModal = ({ openState, feedId }) => {
+const TagReportModal = ({ openState, subjectId }) => {
   const [open, setOpen] = openState;
   const [reportContent, setReportContent] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -30,9 +30,9 @@ const TagReportModal = ({ openState, feedId }) => {
     }
 
     try {
-      await fetchBe(`/kafeed/report/${feedId}`, {
-        method: "POST",
-        body: JSON.stringify({ content: reportContent }),
+      await fetchBe(`/tags/report`, "POST", {
+        message: reportContent,
+        subjectId: subjectId,
       });
       handleClose();
     } catch (error) {

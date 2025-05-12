@@ -1,9 +1,11 @@
 package app.handong.feed.service.impl;
 
 import app.handong.feed.domain.Tag;
+import app.handong.feed.domain.TbTagReport;
 import app.handong.feed.dto.TagDto;
 import app.handong.feed.exception.data.NotFoundException;
 import app.handong.feed.repository.TagRepository;
+import app.handong.feed.repository.TbTagReportRepository;
 import app.handong.feed.service.TagService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,7 @@ import java.util.stream.Collectors;
 public class TagServiceImpl implements TagService {
 
     private final TagRepository tagRepository;
+    private final TbTagReportRepository tbTagReportRepository;
 
     @Override
     @Transactional(readOnly = true)
@@ -51,5 +54,11 @@ public class TagServiceImpl implements TagService {
                         tag.getUpdatedAt()
                 ))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public boolean reportTag(TagDto.ReportReqDto dto, String reportedBy) {
+        tbTagReportRepository.save(TbTagReport.of(dto.getSubjectId(), dto.getMessage(), reportedBy));
+        return true;
     }
 }

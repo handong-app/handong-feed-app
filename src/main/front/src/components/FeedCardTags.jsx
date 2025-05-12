@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import TagChip from "./TagChip";
 import TagReportModal from "./modals/TagReportModal";
 
-function FeedCardTags({ tags, feedId }) {
+function FeedCardTags({ tags, subjectId }) {
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
 
   if (!tags || tags.length === 0) {
@@ -45,7 +45,7 @@ function FeedCardTags({ tags, feedId }) {
       </Button>
       <TagReportModal
         openState={[isReportModalOpen, setIsReportModalOpen]}
-        feedId={feedId}
+        subjectId={subjectId}
       />
     </Stack>
   );

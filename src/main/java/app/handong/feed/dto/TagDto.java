@@ -12,7 +12,8 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 
 public class TagDto {
-    private TagDto() {} // 불필요한 인스턴스화 방지를 위함. (DTO 모음 유틸클레스임을 알림)
+    private TagDto() {
+    } // 불필요한 인스턴스화 방지를 위함. (DTO 모음 유틸클레스임을 알림)
 
     @Schema
     @Getter
@@ -125,5 +126,17 @@ public class TagDto {
         private String label;
         private String userDesc;
         private String colorHex;
+    }
+
+    @Schema
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class ReportReqDto {
+        @NotBlank
+        String subjectId;
+        @NotBlank
+        String message;
     }
 }
