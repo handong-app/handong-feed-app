@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Typography, Paper, Box } from "@mui/material";
+import { Typography, Paper, Box, CircularProgress } from "@mui/material";
 import FeedRecommendSlider from "./FeedRecommendSlider";
 import TagChipList from "./TagChipList";
 import useLoadData from "../hooks/useLoadData";
@@ -12,6 +12,7 @@ function FeedRecommend() {
   const [allFeeds, hasMore, search, loadData, doSearch] = useLoadData({});
 
   const getData = async () => {
+    setLoading(true);
     try {
       await doSearch({ squery: "", stags: searchTags });
     } catch (error) {
@@ -36,8 +37,19 @@ function FeedRecommend() {
         setSearchTags={setSearchTags}
         sx={{ mb: 1 }}
       />
-      {loading ? (
-        <div>Loading</div>
+      {loading || (allFeeds.length === 0 && hasMore) ? (
+        <Box
+          height={345}
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <CircularProgress color="primary" />
+          <Typography variant="body2" color="text.secondary" sx={{ mt: 2 }}>
+            추천 피드를 불러오는 중입니다...
+          </Typography>
+        </Box>
       ) : !hasMore && allFeeds.length === 0 ? (
         <Box
           height={345}

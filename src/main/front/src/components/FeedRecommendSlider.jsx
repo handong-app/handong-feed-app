@@ -52,10 +52,6 @@ const FeedRecommendSlider = ({ feeds, getData }) => {
     feeds.length - CARDS_PER_PAGE
   );
 
-  if (!feeds || feeds.length === 0) {
-    return <></>;
-  }
-
   return (
     <Box
       sx={{
