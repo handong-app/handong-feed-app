@@ -140,6 +140,9 @@
         m.last_sent_at AS sentAt,
         m.message AS message
         FROM TbKaMessage m
+        <if test="onlyUnassignedFeeds == true">
+            JOIN TbSubject s ON m.subject_id = s.id
+        </if>
         <where>
             <if test="start != null and start &gt;= 0">
                 m.last_sent_at &gt;= #{start}
@@ -161,7 +164,7 @@
                 </choose>
             </if>
             <if test="onlyUnassignedFeeds == true">
-                AND m.is_tag_assigned != 1
+                AND s.is_tag_assigned != 1
             </if>
         </where>
         ORDER BY m.last_sent_at DESC
