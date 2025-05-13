@@ -9,9 +9,7 @@ function FeedRecommend({}) {
   const [searchTags, setSearchTags] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const [allFeeds, hasMore, search, loadData, doSearch] = useLoadData({
-    type: "like",
-  });
+  const [allFeeds, hasMore, search, loadData, doSearch] = useLoadData({});
 
   const getData = async (startNew) => {
     doSearch({ squery: "", stags: searchTags }).finally(() => {

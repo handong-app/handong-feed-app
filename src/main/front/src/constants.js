@@ -8,7 +8,7 @@ export const googleClientId =
 export const mealData = {
   food: {
     koreantable: {
-      breakfast: "운영없음2",
+      breakfast: "운영없음",
       lunch: "잔치국수<br />추가밥<br />찐만두<br />요구르트<br />맛김치",
       dinner:
         "쌀밥<br />미역국<br />닭살간장볶음<br />데친두부<br />열무나물<br />깍두기",
