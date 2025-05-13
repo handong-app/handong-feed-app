@@ -9,6 +9,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
+import HomeIcon from "@mui/icons-material/Home";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ViewListIcon from "@mui/icons-material/ViewList";
 import GitHubIcon from "@mui/icons-material/GitHub";
@@ -92,13 +93,18 @@ export default function MainDrawer({ noCount = false }) {
 
   const MENUS = [
     {
+      name: "홈",
+      icon: <HomeIcon />,
+      link: "/",
+    },
+    {
       name: "신규피드",
       icon: (
         <Badge badgeContent={feedNumber} color="primary">
           <InboxIcon />
         </Badge>
       ),
-      link: "/",
+      link: "/new",
     },
     {
       name: "찜한피드",

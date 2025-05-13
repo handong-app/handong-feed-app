@@ -15,6 +15,7 @@ import PWAInstallModal from "./components/modals/PWAInstallModal";
 import { ADMINMENU } from "./pages/admin";
 import KafeedDetail from "./pages/KafeedDetail";
 import LabScreen from "./pages/LabScreen";
+import HomePage from "./pages/HomePage";
 
 const router = createBrowserRouter([
   {
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
   },
   {
     path: "/",
+    element: <LoginProtected comp={HomePage} />,
+  },
+  {
+    path: "/new",
     element: <LoginProtected comp={MainFeed} />,
   },
   {
