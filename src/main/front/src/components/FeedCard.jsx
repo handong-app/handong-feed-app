@@ -163,12 +163,15 @@ export default function FeedCard({ loading, item, watchSeen = false }) {
                 wordWrap: "break-word",
                 wordBreak: "break-all",
                 overflowWrap: "break-word",
+                "&:last-child": {
+                  paddingBottom: 2,
+                },
               }}
             >
               <ReactShowMoreText lines={3} truncatedEndingComponent="">
                 {convertTextToLinks(item.content.trim())}
               </ReactShowMoreText>
-              <FeedCardTags tags={item.tags} />
+              <FeedCardTags tags={item.tags} subjectId={item.subjectId} />
             </CardContent>
             {/* <CardActions disableSpacing>
         <IconButton aria-label="add to favorites">

@@ -56,7 +56,7 @@ const useLoadData = ({ type = "" } = {}) => {
     if (lastTimestamp === -1) getCount();
   };
 
-  return [allFeeds, hasMore, getData, doSearch];
+  return [allFeeds, hasMore, search, getData, doSearch];
 };
 
 export default useLoadData;

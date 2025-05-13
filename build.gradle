@@ -34,6 +34,8 @@ dependencies {
     implementation 'org.mariadb.jdbc:mariadb-java-client:3.1.2'
     //mybatis
     implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3' //3.0.2 => 3.0.3으로 상승!!
+    ///validator
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
     //swagger 사용!!!
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2' //swagger 사용을 위함.
     // 추가 종료
