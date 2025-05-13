@@ -1,7 +1,13 @@
-import { Card, CardContent, CardMedia, Typography } from "@mui/material";
+import {
+  Button,
+  Card,
+  CardContent,
+  CardMedia,
+  Typography,
+} from "@mui/material";
 import { motion, usePresenceData } from "framer-motion";
 
-const FeedRecommendSlidePage = ({ feeds }) => {
+const FeedRecommendSlidePage = ({ feeds, cardsPerPage }) => {
   const direction = usePresenceData();
   return (
     <motion.div
@@ -9,51 +15,122 @@ const FeedRecommendSlidePage = ({ feeds }) => {
       initial={{ x: direction === 1 ? 300 : -300, opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
       exit={{ x: direction === 1 ? -300 : 300, opacity: 0 }}
-      transition={{ duration: 0.5 }}
+      transition={{ duration: 0.35 }}
       style={{
         position: "absolute",
         margin: 4,
+        width: "100%",
         height: 345,
         display: "flex",
         gap: "16px",
         justifyContent: "flex-start",
       }}
     >
-      {feeds.map((feed) => (
-        <Card
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            height: "100%",
-          }}
-        >
-          <CardMedia
-            component="img"
-            height="180"
-            image="/public/hehe.png"
-            alt="Feed Image"
-          />
-          <CardContent>
-            <Typography variant="body2" color="text.secondary">
-              {feed.tag}
-            </Typography>
-            <Typography
-              variant="body2"
+      {Array.from({ length: cardsPerPage }).map((_, idx) => {
+        if (feeds.length > idx) {
+          const feed = feeds[idx];
+          return (
+            <Card
+              key={feed.id}
               sx={{
-                height: 100,
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                display: "-webkit-box",
-                WebkitLineClamp: 5,
-                WebkitBoxOrient: "vertical",
-                whiteSpace: "normal",
+                display: "flex",
+                flexDirection: "column",
+                height: "100%",
+                flex: 1,
               }}
             >
-              {feed.content + feed.description + feed.year}
-            </Typography>
-          </CardContent>
-        </Card>
-      ))}
+              {feed.files[0] ? (
+                <CardMedia
+                  component="img"
+                  height="180"
+                  image={feed.files[0]}
+                  alt="Feed Image"
+                />
+              ) : (
+                <CardMedia
+                  component="img"
+                  height="180"
+                  image={"/new-hfeed.png"}
+                  alt="Feed Image"
+                  sx={{
+                    objectFit: "contain",
+                    backgroundColor: "white",
+                  }}
+                />
+              )}
+
+              <CardContent sx={{ px: 2, py: 1 }}>
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  as="div"
+                  sx={{ mb: 0.5 }}
+                >
+                  {feed.tags.length === 0
+                    ? "\u00A0"
+                    : feed.tags.map((tag) => tag.label).join(", ")}
+                </Typography>
+                <Typography
+                  variant="body2"
+                  sx={{
+                    height: 100,
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    display: "-webkit-box",
+                    WebkitLineClamp: 5,
+                    WebkitBoxOrient: "vertical",
+                    whiteSpace: "normal",
+                    wordWrap: "break-word",
+                    wordBreak: "break-all",
+                  }}
+                >
+                  {feed.content}
+                </Typography>
+              </CardContent>
+            </Card>
+          );
+        } else {
+          return (
+            <Card
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                height: "100%",
+                flex: 1,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <CardContent
+                sx={{
+                  flex: 1,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: "100%",
+                }}
+              >
+                <div style={{ width: "100%", textAlign: "center" }}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    sx={{
+                      borderRadius: "20px",
+                      fontWeight: "bold",
+                      fontSize: "1rem",
+                      px: 3,
+                      py: 1,
+                    }}
+                    onClick={() => (window.location.href = "/all")}
+                  >
+                    모든 피드 보러가기
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          );
+        }
+      })}
     </motion.div>
   );
 };

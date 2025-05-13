@@ -11,17 +11,17 @@ const useLoadData = ({ type = "" } = {}) => {
   const [hasMore, setHasMore] = useState(true);
   const [search, setSearch] = useState({ stags: [], squery: "" });
 
-  const doSearch = ({ squery = "", stags = [] }) => {
-    setAllFeed([]);
-    setHasMore(true);
+  const doSearch = async ({ squery = "", stags = [] }) => {
+    // setAllFeed([]);
+    // setHasMore(true);
     setSearch({ squery, stags });
   };
 
   useEffect(() => {
-    getData();
+    getData({ clear: true });
   }, [search.squery, search.stags]);
 
-  const getData = async () => {
+  const getData = async ({ clear = false }) => {
     const lastTimestamp = allFeeds.at(-1)?.sentAtEpoch || -1;
     const data = await fetch(
       `/kafeed/scrolllist?afterSentAt=${lastTimestamp}&type=${type}&search=${
@@ -29,28 +29,31 @@ const useLoadData = ({ type = "" } = {}) => {
       }&tags=${Array.isArray(search.stags) ? search.stags.join(",") : ""}`
     );
     if (!Array.isArray(data)) return;
-    setAllFeed((prev) =>
-      removeDuplicates(
-        [
-          ...prev,
-          ...data.map((dd) => ({
-            author: "실명카톡방2",
-            sentAtEpoch: dd.sentAt,
-            createdAt: new Date(dd.sentAt * 1000),
-            id: dd.id,
-            content: dd.message,
-            files: dd.files,
-            img: dd.files[0], // Temp just for testing
-            subjectId: dd.subjectId,
-            like: dd.like,
-            messageCount: dd.messageCount,
-            tags: dd.tags,
-          })),
-        ],
-        "id"
-      )
-    );
-    if (data.length === 0) setHasMore(false);
+    if (data.length > 0) {
+      setAllFeed((prev) =>
+        removeDuplicates(
+          [
+            ...(clear ? [] : prev),
+            ...data.map((dd) => ({
+              author: "실명카톡방2",
+              sentAtEpoch: dd.sentAt,
+              createdAt: new Date(dd.sentAt * 1000),
+              id: dd.id,
+              content: dd.message,
+              files: dd.files,
+              img: dd.files[0], // Temp just for testing
+              subjectId: dd.subjectId,
+              like: dd.like,
+              messageCount: dd.messageCount,
+              tags: dd.tags,
+            })),
+          ],
+          "id"
+        )
+      );
+    } else {
+      setHasMore(false);
+    }
 
     // Also update watch seen data on init request
     if (lastTimestamp === -1) getCount();
