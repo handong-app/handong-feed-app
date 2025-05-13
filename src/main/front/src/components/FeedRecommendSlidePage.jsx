@@ -6,6 +6,7 @@ import {
   Typography,
 } from "@mui/material";
 import { motion, usePresenceData } from "framer-motion";
+import GoToAllFeedButton from "./GoToAllFeedButton";
 
 const FeedRecommendSlidePage = ({ feeds, cardsPerPage }) => {
   const direction = usePresenceData();
@@ -19,11 +20,11 @@ const FeedRecommendSlidePage = ({ feeds, cardsPerPage }) => {
       style={{
         position: "absolute",
         margin: 4,
-        width: "100%",
         height: 345,
         display: "flex",
         gap: "16px",
         justifyContent: "flex-start",
+        padding: 8,
       }}
     >
       {Array.from({ length: cardsPerPage }).map((_, idx) => {
@@ -92,6 +93,7 @@ const FeedRecommendSlidePage = ({ feeds, cardsPerPage }) => {
         } else {
           return (
             <Card
+              key="no-feed"
               sx={{
                 display: "flex",
                 flexDirection: "column",
@@ -111,20 +113,7 @@ const FeedRecommendSlidePage = ({ feeds, cardsPerPage }) => {
                 }}
               >
                 <div style={{ width: "100%", textAlign: "center" }}>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    sx={{
-                      borderRadius: "20px",
-                      fontWeight: "bold",
-                      fontSize: "1rem",
-                      px: 3,
-                      py: 1,
-                    }}
-                    onClick={() => (window.location.href = "/all")}
-                  >
-                    모든 피드 보러가기
-                  </Button>
+                  <GoToAllFeedButton />
                 </div>
               </CardContent>
             </Card>
