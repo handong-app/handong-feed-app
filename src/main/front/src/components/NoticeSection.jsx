@@ -14,13 +14,14 @@ function NoticeSection({ notices }) {
       <Typography variant="caption" gutterBottom display="block" mb={2}>
         * 조회수 기준으로 정렬되어 있습니다.
       </Typography>
-      <Typography variant="subtitle2" color="primary">
-        드롭합늘관리부 교심전문
-      </Typography>
+
       {notices.map((notice) => (
         <Box key={notice.id} sx={{ mb: 2 }}>
-          <Typography variant="body2" component="div">
+          <Typography variant="subtitle2" color="primary">
             {notice.title}
+          </Typography>
+          <Typography variant="body2" component="div">
+            {notice.content}
           </Typography>
         </Box>
       ))}
