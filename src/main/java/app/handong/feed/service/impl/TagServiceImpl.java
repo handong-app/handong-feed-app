@@ -57,8 +57,14 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
+    @Transactional
     public boolean reportTag(TagDto.ReportReqDto dto, String reportedBy) {
-        tbTagReportRepository.save(TbTagReport.of(dto.getSubjectId(), dto.getMessage(), reportedBy));
-        return true;
+        try {
+            tbTagReportRepository.save(TbTagReport.of(dto.getSubjectId(), dto.getMessage(), reportedBy));
+            return true;
+        } catch (Exception e) {
+            log.error("태그 신고 저장 중 오류 발생: {}", e.getMessage(), e);
+            return false;
+        }
     }
 }
