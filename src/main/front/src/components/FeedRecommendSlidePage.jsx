@@ -1,11 +1,6 @@
-import {
-  Button,
-  Card,
-  CardContent,
-  CardMedia,
-  Typography,
-} from "@mui/material";
+import { Card, CardContent, CardMedia, Typography } from "@mui/material";
 import { motion, usePresenceData } from "framer-motion";
+import { Link } from "react-router-dom";
 import GoToAllFeedButton from "./GoToAllFeedButton";
 
 const FeedRecommendSlidePage = ({ feeds, cardsPerPage }) => {
@@ -31,64 +26,70 @@ const FeedRecommendSlidePage = ({ feeds, cardsPerPage }) => {
         if (feeds.length > idx) {
           const feed = feeds[idx];
           return (
-            <Card
+            <Link
+              to={`/kafeed/${feed.id}`}
               key={feed.id}
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                height: "100%",
-                flex: 1,
-              }}
+              style={{ flex: 1, textDecoration: "none" }}
             >
-              {feed.files[0] ? (
-                <CardMedia
-                  component="img"
-                  height="180"
-                  image={feed.files[0]}
-                  alt="Feed Image"
-                />
-              ) : (
-                <CardMedia
-                  component="img"
-                  height="180"
-                  image={"/new-hfeed.png"}
-                  alt="Feed Image"
-                  sx={{
-                    objectFit: "contain",
-                    backgroundColor: "white",
-                  }}
-                />
-              )}
+              <Card
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  height: "100%",
+                  flex: 1,
+                  cursor: "pointer",
+                }}
+              >
+                {feed.files[0] ? (
+                  <CardMedia
+                    component="img"
+                    height="180"
+                    image={feed.files[0]}
+                    alt="Feed Image"
+                  />
+                ) : (
+                  <CardMedia
+                    component="img"
+                    height="180"
+                    image={"/new-hfeed.png"}
+                    alt="Feed Image"
+                    sx={{
+                      objectFit: "contain",
+                      backgroundColor: "white",
+                    }}
+                  />
+                )}
 
-              <CardContent sx={{ px: 2, py: 1 }}>
-                <Typography
-                  variant="body2"
-                  color="text.secondary"
-                  as="div"
-                  sx={{ mb: 0.5 }}
-                >
-                  {feed.tags.length === 0
-                    ? "\u00A0"
-                    : feed.tags.map((tag) => tag.label).join(", ")}
-                </Typography>
-                <Typography
-                  variant="body2"
-                  sx={{
-                    height: 100,
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    display: "-webkit-box",
-                    WebkitLineClamp: 5,
-                    WebkitBoxOrient: "vertical",
-                    whiteSpace: "normal",
-                    wordWrap: "break-word",
-                    wordBreak: "break-all",
-                  }}
-                >
-                  {feed.content}
-                </Typography>
-              </CardContent>
-            </Card>
+                <CardContent sx={{ px: 2, py: 1 }}>
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    as="div"
+                    sx={{ mb: 0.5 }}
+                  >
+                    {feed.tags.length === 0
+                      ? "\u00A0"
+                      : feed.tags.map((tag) => tag.label).join(", ")}
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      height: 100,
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      display: "-webkit-box",
+                      WebkitLineClamp: 5,
+                      WebkitBoxOrient: "vertical",
+                      whiteSpace: "normal",
+                      wordWrap: "break-word",
+                      wordBreak: "break-all",
+                    }}
+                  >
+                    {feed.content}
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Link>
           );
         } else {
           return (
