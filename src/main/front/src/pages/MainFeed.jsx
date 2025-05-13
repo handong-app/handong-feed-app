@@ -25,7 +25,7 @@ function MainFeed() {
   const fetch = useFetchBe();
   const navigate = useNavigate();
   const setFeedCount = useSetRecoilState(feedCountAtom);
-  const [allFeeds, hasMore, loadData, doSearch] = useLoadData({
+  const [allFeeds, hasMore, search, loadData, doSearch] = useLoadData({
     type: "unseen",
   });
   const [feedNumber] = useFeedCount();
@@ -121,9 +121,26 @@ function MainFeed() {
       {!hasMore && allFeeds.length === 0 && (
         <Card sx={{ my: 1 }}>
           <CardContent>
-            <Typography variant="h5" component="div" align="center">
-              모든 피드를 읽었어요!
-            </Typography>
+            <Box display="flex" flexDirection="column" alignItems="center">
+              <Box
+                component="img"
+                src="/graphics/feed_news.png"
+                alt="no feed"
+                sx={{
+                  width: 200,
+                  mb: 2,
+                }}
+              />
+              {search.stags.length === 0 && search.squery.length === 0 ? (
+                <Typography variant="h6" component="div" align="center">
+                  모든 피드를 읽었어요!
+                </Typography>
+              ) : (
+                <Typography variant="h6" component="div" align="center">
+                  신규피드 중에 검색 결과가 없습니다.
+                </Typography>
+              )}
+            </Box>
           </CardContent>
         </Card>
       )}

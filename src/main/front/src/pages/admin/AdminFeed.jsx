@@ -5,7 +5,7 @@ import useLoadData from "../../hooks/useLoadData";
 import { Box, Paper } from "@mui/material";
 
 function AdminFeed() {
-  const [allFeeds, hasMore, loadData] = useLoadData();
+  const [allFeeds, hasMore, _, loadData] = useLoadData();
 
   return (
     <AdminPage>
