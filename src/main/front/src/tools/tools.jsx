@@ -121,3 +121,12 @@ export const calculateDiffChange = (oldValue, newValue) => {
   return `${diff > 0 ? "+" : ""}${diff}`;
   // return result || "No changes";
 };
+
+export function parseMealString(str) {
+  if (typeof str !== "string") return str;
+  // "운영없음" 등은 그대로 반환
+  if (str.includes("<br />")) {
+    return str.split("<br />");
+  }
+  return [str];
+}

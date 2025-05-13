@@ -6,14 +6,27 @@ export const googleClientId =
 
 // 식단 테이블 데이터
 export const mealData = {
-  아침: {
-    메뉴항목: ["쌀밥", "계란찜", "미역국", "감자조림", "배추김치"],
-  },
-  점심: {
-    메뉴항목: ["잡곡밥", "된장찌개", "닭갈비", "시금치나물", "깍두기"],
-  },
-  저녁: {
-    메뉴항목: ["볶음밥", "유부장국", "돈까스", "양배추샐러드", "열무김치"],
+  food: {
+    koreantable: {
+      breakfast: "운영없음2",
+      lunch: "잔치국수<br />추가밥<br />찐만두<br />요구르트<br />맛김치",
+      dinner:
+        "쌀밥<br />미역국<br />닭살간장볶음<br />데친두부<br />열무나물<br />깍두기",
+    },
+    fryfry: "운영없음",
+    mixedrice: "돼지국밥<br />양념돈까스",
+    lounge: "운영없음",
+    momskitchen: {
+      breakfast: "빵식",
+      lunch: "잔치국수<br />추가밥<br />찐만두<br />요구르트<br />맛김치",
+      dinner:
+        "쌀밥<br />미역국<br />닭살간장볶음<br />데친두부<br />열무나물<br />깍두기",
+    },
+    gracetable: {
+      lunch: "잔치국수<br />추가밥<br />찐만두<br />요구르트<br />맛김치",
+      dinner:
+        "쌀밥<br />미역국<br />닭살간장볶음<br />데친두부<br />열무나물<br />깍두기",
+    },
   },
 };
 
