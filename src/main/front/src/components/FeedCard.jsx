@@ -98,7 +98,7 @@ export default function FeedCard({ loading, item, watchSeen = false }) {
           <>
             <CardHeader
               avatar={
-                <Avatar aria-label="logo" src="/favicon.png">
+                <Avatar aria-label="logo" src="/new-hfeed.png">
                   실카
                 </Avatar>
               }
