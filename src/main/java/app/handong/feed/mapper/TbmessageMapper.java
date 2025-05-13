@@ -1,6 +1,7 @@
 package app.handong.feed.mapper;
 
 import app.handong.feed.dto.TbmessageDto;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.scheduling.annotation.Async;
 
 import java.util.List;
@@ -23,5 +24,10 @@ public interface TbmessageMapper {
         return CompletableFuture.completedFuture(fileDetails(messageId));
     }
 
-    List<TbmessageDto.Detail> externalFeedGetAll(Long start, Long end, Integer limit, Boolean filterNew);
+    List<TbmessageDto.Detail> externalFeedGetAll( @Param("start") Long start,
+                                                  @Param("end") Long end,
+                                                  @Param("limit") Integer limit,
+                                                  @Param("filterNew") Boolean filterNew,
+                                                  @Param("onlyUnassignedFeeds") Boolean onlyUnassignedFeeds);
+
 }

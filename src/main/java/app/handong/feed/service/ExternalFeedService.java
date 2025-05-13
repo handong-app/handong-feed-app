@@ -7,6 +7,6 @@ import java.util.List;
 
 
 public interface ExternalFeedService {
-    List<TbmessageDto.Detail> getFeedBetween(Long startTimestamp, Long endTimestamp, boolean isNew, Integer limit);
+    List<TbmessageDto.Detail> getFeedBetween(Long startTimestamp, Long endTimestamp, Integer limit, boolean isNew, boolean onlyUnassignedFeeds);
     List<TbmessageDto.Detail> getFeedBetween(ExternalDto.FeedReqDto dto);
 }

@@ -5,16 +5,17 @@ meta {
 }
 
 get {
-  url: http://localhost:{{PORT}}/api/external/feed?limit=3&start&end&isFilterNew=1
+  url: http://localhost:{{PORT}}/api/external/feed?limit=10000&start=1744458456&end=1744516566&isFilterNew=0&onlyUnassignedFeeds=1
   body: none
   auth: inherit
 }
 
 params:query {
-  limit: 3
-  start: 
-  end: 
-  isFilterNew: 1
+  limit: 10000
+  start: 1744458456
+  end: 1744516566
+  isFilterNew: 0
+  onlyUnassignedFeeds: 1
 }
 
 tests {
@@ -78,6 +79,7 @@ docs {
   | `start`       | `Long`    | 조회 시작 시간 / 초 (포함)                          | `1742027579` | 조건에 포함되지 않음            |
   | `end`         | `Long`    | 조회 종료 시간 / 초 (포함)                          | `1742027579` | 조건에 포함되지 않음            |
   | `isFilterNew` | `boolean` | 새로운 피드만 반환                                 | "1"          | false 처리되어 조건에 포함되지 않음 |
+  | `onlyUnassignedFeeds` | `boolean` | 태그가 할당되지 않은 피드만 반환               | "1"          | false 처리되어 조건에 포함되지 않음 |
   | `limit`       | `Integer` | 결과 최대 개수 제한 (없거나 200 이상이면 자동으로 `200`으로 제한) | `100`, 없음    | 없으면 최대값인 200으로 자동 설정됨  |
   
 }
