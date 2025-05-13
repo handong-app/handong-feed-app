@@ -12,8 +12,11 @@ public class ExternalDto {
     @NoArgsConstructor
     public static class FeedReqDto {
         Long start, end;
-        boolean isFilterNew;
         Integer limit;
+
+        boolean isFilterNew;
+        boolean onlyUnassignedFeeds;
+
 
         // 커스텀 setter
         public void setIsFilterNew(String value) {
