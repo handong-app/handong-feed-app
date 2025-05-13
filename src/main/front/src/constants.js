@@ -30,52 +30,6 @@ export const mealData = {
   },
 };
 
-// 추천 피드 데이터
-export const recommendedFeeds = [
-  {
-    id: 1,
-    tag: "#동아리",
-    title: "🔥Motion In Christ 남자 추가 리크루팅🔥",
-    content:
-      "안녕하세요! 25학번 새내기 여러분을 위한 MIC 동아리에서 남자 신입 회원을 추가 모집합니다.",
-    description:
-      "하나님께 영광을 돌리는 사역 단체이자 팝핀 기반의 동아리 MIC입니다.",
-    year: "2025년 신입기수 MIC31기 남자 추가 모집!",
-    buttonText: "> 한동피드에서 더 보기",
-  },
-  {
-    id: 2,
-    tag: "#동아리",
-    title: "🔥Motion In Christ 남자 추가 리크루팅🔥",
-    content:
-      "MIC 동아리에서 2025년 신입 남자 회원을 기다리고 있습니다. 많은 지원 바랍니다!",
-    description:
-      "믿음과 춤을 함께하는 MIC 동아리에서 새로운 가족을 찾고 있습니다.",
-    year: "2025년 MIC31기 남자 추가 모집",
-    buttonText: "> 한동피드에서 더 보기",
-  },
-  {
-    id: 3,
-    tag: "#동아리",
-    title: "🔥Motion In Christ 남자 추가 리크루팅3🔥",
-    content:
-      "MIC 동아리에서 열정 가득한 25학번 남자 신입을 모집합니다! 함께 성장해요.",
-    description: "믿음과 열정이 넘치는 MIC 동아리에서 여러분을 기다립니다.",
-    year: "2025년 MIC31기 남자 추가 모집",
-    buttonText: "> 한동피드에서 더 보기",
-  },
-  {
-    id: 4,
-    tag: "#동아리",
-    title: "🔥Motion In Christ 남자 추가 리크루팅4🔥",
-    content:
-      "MIC 동아리에서 새로운 남자 신입 회원을 모집합니다. 많은 관심 부탁드립니다!",
-    description: "MIC 동아리와 함께 멋진 대학 생활을 시작해보세요!",
-    year: "2025년 MIC31기 남자 추가 모집",
-    buttonText: "> 한동피드에서 더 보기",
-  },
-];
-
 // 공지 데이터
 export const notices = [
   {
