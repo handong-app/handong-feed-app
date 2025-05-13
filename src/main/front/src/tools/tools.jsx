@@ -121,3 +121,32 @@ export const calculateDiffChange = (oldValue, newValue) => {
   return `${diff > 0 ? "+" : ""}${diff}`;
   // return result || "No changes";
 };
+
+export function parseMealString(str) {
+  if (typeof str !== "string") return str;
+  // "운영없음" 등은 그대로 반환
+  const BR_REGEX = /<br\s*\/?>/i; // <br>, <br/>, <br /> 모두 매칭
+  if (BR_REGEX.test(str)) {
+    return str.split(BR_REGEX);
+  }
+  return [str];
+}
+
+export function getCurrentWeekdayString(date = new Date()) {
+  // 2025년 3월 3일(월) 개강 기준
+  const semesterStart = new Date(2025, 2, 3); // 월은 0부터 시작 (2=3월)
+  const msPerDay = 1000 * 60 * 60 * 24;
+  const daysPassed = Math.floor((date - semesterStart) / msPerDay);
+  const week = Math.floor(daysPassed / 7) + 1;
+  const weekdays = [
+    "일요일",
+    "월요일",
+    "화요일",
+    "수요일",
+    "목요일",
+    "금요일",
+    "토요일",
+  ];
+  const weekday = weekdays[date.getDay()];
+  return `${week}주차 ${weekday}`;
+}

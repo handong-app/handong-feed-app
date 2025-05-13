@@ -6,10 +6,9 @@ import {
   TextField,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
-import useTags from "../hooks/useTags";
-import TagChip from "./TagChip";
+import TagChipList from "./TagChipList";
 
 const CssTextField = styled(TextField)({
   "& label.Mui-focused": {
@@ -37,8 +36,6 @@ function ToolBar({ doSearch }) {
 
   const searchRef = useRef(search);
 
-  const [tags] = useTags();
-
   useEffect(() => {
     searchRef.current = search;
   }, [search]);
@@ -49,23 +46,7 @@ function ToolBar({ doSearch }) {
   return (
     <Box display={"flex"} justifyContent={"space-between"} alignItems="end">
       <Box>
-        {tags.map((tag) => (
-          <TagChip
-            key={tag.code}
-            code={tag.code}
-            label={tag.label}
-            colorHex={tag.colorHex}
-            tint={!searchTags.includes(tag.code)}
-            outline={!searchTags.includes(tag.code)}
-            onClick={() => {
-              setSearchTags((prev) =>
-                prev.includes(tag.code)
-                  ? prev.filter((code) => code !== tag.code)
-                  : [...prev, tag.code]
-              );
-            }}
-          />
-        ))}
+        <TagChipList searchTags={searchTags} setSearchTags={setSearchTags} />
       </Box>
       <Box display="flex" gap={1}>
         <CssTextField

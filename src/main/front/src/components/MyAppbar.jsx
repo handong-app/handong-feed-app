@@ -50,7 +50,6 @@ function MyAppbar() {
       >
         <Container maxWidth="xl">
           <Toolbar disableGutters sx={{ justifyContent: "center" }}>
-            <FeedIcon sx={{ display: { xs: "flex" }, mr: 1 }} />
             <Typography
               variant="h6"
               noWrap
