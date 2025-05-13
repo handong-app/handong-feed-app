@@ -5,16 +5,17 @@ meta {
 }
 
 get {
-  url: http://localhost:{{PORT}}/api/external/feed?limit=3&start&end&isFilterNew=1
+  url: http://localhost:{{PORT}}/api/external/feed?limit=10000&start=1744458456&end=1744516566&isFilterNew=0&onlyUnassignedFeeds=1
   body: none
   auth: inherit
 }
 
 params:query {
-  limit: 3
-  start: 
-  end: 
-  isFilterNew: 1
+  limit: 10000
+  start: 1744458456
+  end: 1744516566
+  isFilterNew: 0
+  onlyUnassignedFeeds: 1
 }
 
 tests {
