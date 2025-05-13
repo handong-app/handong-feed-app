@@ -125,8 +125,9 @@ export const calculateDiffChange = (oldValue, newValue) => {
 export function parseMealString(str) {
   if (typeof str !== "string") return str;
   // "운영없음" 등은 그대로 반환
-  if (str.includes("<br />")) {
-    return str.split("<br />");
+  const BR_REGEX = /<br\s*\/?>/i; // <br>, <br/>, <br /> 모두 매칭
+  if (BR_REGEX.test(str)) {
+    return str.split(BR_REGEX);
   }
   return [str];
 }
