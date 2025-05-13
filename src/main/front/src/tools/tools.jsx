@@ -130,3 +130,22 @@ export function parseMealString(str) {
   }
   return [str];
 }
+
+export function getCurrentWeekdayString(date = new Date()) {
+  // 2025년 3월 3일(월) 개강 기준
+  const semesterStart = new Date(2025, 2, 3); // 월은 0부터 시작 (2=3월)
+  const msPerDay = 1000 * 60 * 60 * 24;
+  const daysPassed = Math.floor((date - semesterStart) / msPerDay);
+  const week = Math.floor(daysPassed / 7) + 1;
+  const weekdays = [
+    "일요일",
+    "월요일",
+    "화요일",
+    "수요일",
+    "목요일",
+    "금요일",
+    "토요일",
+  ];
+  const weekday = weekdays[date.getDay()];
+  return `${week}주차 ${weekday}`;
+}
