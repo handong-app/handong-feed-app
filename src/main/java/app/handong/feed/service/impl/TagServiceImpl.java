@@ -63,7 +63,6 @@ public class TagServiceImpl implements TagService {
             tbTagReportRepository.save(TbTagReport.of(dto.getSubjectId(), dto.getMessage(), reportedBy));
             return true;
         } catch (Exception e) {
-            log.error("태그 신고 저장 중 오류 발생: {}", e.getMessage(), e);
             return false;
         }
     }
