@@ -3,6 +3,7 @@ import { Box, useTheme, useMediaQuery } from "@mui/material";
 import { AnimatePresence } from "framer-motion";
 import { Button } from "@mui/material";
 import FeedRecommendSlidePage from "./FeedRecommendSlidePage";
+import PropTypes from "prop-types";
 
 const FeedRecommendSlider = ({ feeds, getData }) => {
   const theme = useTheme();
@@ -51,7 +52,7 @@ const FeedRecommendSlider = ({ feeds, getData }) => {
     feeds.length - CARDS_PER_PAGE
   );
 
-  if (feeds.length === 0) {
+  if (!feeds || feeds.length === 0) {
     return <></>;
   }
 
@@ -154,3 +155,8 @@ const FeedRecommendSlider = ({ feeds, getData }) => {
 };
 
 export default FeedRecommendSlider;
+
+FeedRecommendSlider.propTypes = {
+  feeds: PropTypes.array.isRequired,
+  getData: PropTypes.func,
+};

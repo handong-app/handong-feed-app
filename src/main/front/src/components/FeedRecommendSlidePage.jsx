@@ -2,6 +2,7 @@ import { Card, CardContent, CardMedia, Typography } from "@mui/material";
 import { motion, usePresenceData } from "framer-motion";
 import { Link } from "react-router-dom";
 import GoToAllFeedButton from "./GoToAllFeedButton";
+import PropTypes from "prop-types";
 
 const FeedRecommendSlidePage = ({ feeds, cardsPerPage }) => {
   const direction = usePresenceData();
@@ -94,7 +95,7 @@ const FeedRecommendSlidePage = ({ feeds, cardsPerPage }) => {
         } else {
           return (
             <Card
-              key="no-feed"
+              key={`no-feed-${idx}`}
               sx={{
                 display: "flex",
                 flexDirection: "column",
@@ -126,3 +127,8 @@ const FeedRecommendSlidePage = ({ feeds, cardsPerPage }) => {
 };
 
 export default FeedRecommendSlidePage;
+
+FeedRecommendSlidePage.propTypes = {
+  feeds: PropTypes.array.isRequired,
+  cardsPerPage: PropTypes.number.isRequired,
+};

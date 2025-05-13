@@ -12,6 +12,7 @@ import {
   TableCell,
   TableBody,
 } from "@mui/material";
+import PropTypes from "prop-types";
 import { parseMealString } from "../tools/tools";
 
 function TodayMeal({ mealTab, handleTabChange, mealData }) {
@@ -96,3 +97,11 @@ function TodayMeal({ mealTab, handleTabChange, mealData }) {
 }
 
 export default TodayMeal;
+
+TodayMeal.propTypes = {
+  mealTab: PropTypes.number.isRequired,
+  handleTabChange: PropTypes.func.isRequired,
+  mealData: PropTypes.shape({
+    food: PropTypes.object.isRequired,
+  }).isRequired,
+};

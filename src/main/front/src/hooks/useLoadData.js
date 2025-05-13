@@ -31,7 +31,7 @@ const useLoadData = ({ type = "" } = {}) => {
     const data = await fetch(
       `/kafeed/scrolllist?afterSentAt=${lastTimestamp}&type=${type}&search=${
         squery || ""
-      }&tags=${Array.isArray(stags) ? stags.join(",") : ""}`
+      }&tags=${encodeURIComponent(Array.isArray(stags) ? stags.join(",") : "")}`
     );
     if (!Array.isArray(data)) return;
 

@@ -1,4 +1,5 @@
-import React from "react";
+import PropTypes from "prop-types";
+
 import { Box, Typography, Paper } from "@mui/material";
 
 function NoticeSection({ notices }) {
@@ -28,3 +29,12 @@ function NoticeSection({ notices }) {
 }
 
 export default NoticeSection;
+
+NoticeSection.propTypes = {
+  notices: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      title: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+};

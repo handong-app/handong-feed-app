@@ -30,7 +30,6 @@ function TagChipList({ searchTags = [], setSearchTags, ...props }) {
 }
 
 TagChipList.propTypes = {
-  tags: PropTypes.array.isRequired,
   searchTags: PropTypes.array.isRequired,
   setSearchTags: PropTypes.func.isRequired,
 };

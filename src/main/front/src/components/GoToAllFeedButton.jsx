@@ -1,4 +1,5 @@
 import { Button } from "@mui/material";
+import { Link } from "react-router-dom";
 
 const GoToAllFeedButton = () => (
   <Button
@@ -11,7 +12,8 @@ const GoToAllFeedButton = () => (
       px: 3,
       py: 1,
     }}
-    onClick={() => (window.location.href = "/all")}
+    component={Link}
+    to="/all"
   >
     모든 피드 보러가기
   </Button>

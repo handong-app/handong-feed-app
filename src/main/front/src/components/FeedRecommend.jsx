@@ -5,16 +5,21 @@ import TagChipList from "./TagChipList";
 import useLoadData from "../hooks/useLoadData";
 import GoToAllFeedButton from "./GoToAllFeedButton";
 
-function FeedRecommend({}) {
+function FeedRecommend() {
   const [searchTags, setSearchTags] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const [allFeeds, hasMore, search, loadData, doSearch] = useLoadData({});
 
-  const getData = async (startNew) => {
-    doSearch({ squery: "", stags: searchTags }).finally(() => {
+  const getData = async () => {
+    try {
+      await doSearch({ squery: "", stags: searchTags });
+    } catch (error) {
+      console.error("피드 데이터를 불러오는 중 오류가 발생했습니다:", error);
+      // 필요한 경우 오류 상태 처리
+    } finally {
       setLoading(false);
-    });
+    }
   };
 
   useEffect(() => {
