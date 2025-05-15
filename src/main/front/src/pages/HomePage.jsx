@@ -6,10 +6,13 @@ import NoticeSection from "../components/NoticeSection";
 import { mealData, notices } from "../constants";
 import MainDisplay from "../components/MainDisplay";
 import { getCurrentWeekdayString } from "../tools/tools";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 function HomePage() {
   const [mealTab, setMealTab] = useState(0);
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const showTestSections = params.get("test") === "true";
 
   const handleTabChange = (event, newValue) => {
     setMealTab(newValue);
@@ -52,17 +55,19 @@ function HomePage() {
       </Paper>
 
       {/* 오늘의 식단 부분 */}
-      {/* <TodayMeal
-        mealTab={mealTab}
-        handleTabChange={handleTabChange}
-        mealData={mealData}
-      /> */}
+      {showTestSections && (
+        <TodayMeal
+          mealTab={mealTab}
+          handleTabChange={handleTabChange}
+          mealData={mealData}
+        />
+      )}
 
       {/* 추천 피드 */}
       <FeedRecommend />
 
       {/* 히츠넷 공지 */}
-      {/* <NoticeSection notices={notices} /> */}
+      {showTestSections && <NoticeSection notices={notices} />}
     </MainDisplay>
   );
 }
