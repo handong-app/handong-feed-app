@@ -25,6 +25,11 @@ spring:
       username: ${DB_USERNAME:${DB_USERNAME_DEFAULT}}
       password: ${DB_PASSWORD:${DB_PASSWORD_DEFAULT}}
       driver-class-name: ${DB_CLASSNAME:${DB_CLASSNAME_DEFAULT}}
+      # HikariCP 설정
+      maximum-pool-size: 10
+      minimum-idle: 2
+      connection-timeout: 30000 # ms
+      idle-timeout: 600000 # ms
   jpa:
     defer-datasource-initialization: true
     hibernate.ddl-auto: update
