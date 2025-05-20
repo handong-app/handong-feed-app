@@ -90,14 +90,22 @@ function TodayMeal({
         <Table>
           <TableHead>
             <TableRow sx={{ backgroundColor: "#f5f5f5" }}>
-              <TableCell colSpan={mealHeaders.length || 1} align="center">
+              <TableCell
+                colSpan={mealHeaders.length || 1}
+                align="center"
+                sx={{ width: `${100 / (mealHeaders.length || 1)}%` }}
+              >
                 {currentKey}
               </TableCell>
             </TableRow>
             {!isStringType && (
               <TableRow>
                 {mealHeaders.map((header, idx) => (
-                  <TableCell align="center" key={idx}>
+                  <TableCell
+                    align="center"
+                    key={idx}
+                    sx={{ width: `${100 / mealHeaders.length}%` }}
+                  >
                     {header}
                   </TableCell>
                 ))}
@@ -107,7 +115,7 @@ function TodayMeal({
           <TableBody>
             <TableRow>
               {isStringType ? (
-                <TableCell align="center">
+                <TableCell align="center" sx={{ width: "100%" }}>
                   {parseMealString(currentMeal).map((line, i) => (
                     <Typography key={i} variant="body2" component="div">
                       {line}
@@ -116,8 +124,11 @@ function TodayMeal({
                 </TableCell>
               ) : (
                 mealValues.map((value, idx) => (
-                  <TableCell key={idx} align="center">
-                    {/* 메뉴가 <br />로 구분된 문자열이면 줄바꿈 처리 */}
+                  <TableCell
+                    key={idx}
+                    align="center"
+                    sx={{ width: `${100 / mealValues.length}%` }}
+                  >
                     {typeof value === "string"
                       ? parseMealString(value).map((line, i) => (
                           <Typography key={i} variant="body2" component="div">

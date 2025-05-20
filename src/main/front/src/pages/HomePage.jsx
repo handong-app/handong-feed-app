@@ -43,9 +43,6 @@ function HomePage() {
             <Typography variant="h4" fontWeight="bold" gutterBottom>
               {getCurrentWeekdayString()} 한동피드입니다!
             </Typography>
-            <Typography variant="h6" color="text.secondary">
-              식단 및 히즈넷 공지도 곧 업데이트 될 예정입니다 :)
-            </Typography>
             <Box mt={2} display="flex" gap={2}>
               <Button
                 variant="contained"
@@ -67,16 +64,18 @@ function HomePage() {
           </Box>
         </Box>
       </Paper>
-      {/* 오늘의 식단 부분 */}
 
+      {/* 오늘의 식단 부분 */}
       <TodayMeal
         mealTab={mealTab}
         handleTabChange={handleTabChange}
         mealData={archiveNewsletter?.data?.food}
         loading={archiveNewsletter === null}
       />
+
       {/* 추천 피드 */}
       <FeedRecommend />
+
       {/* 히츠넷 공지 */}
       <NoticeSection
         notices={archiveNewsletter?.data?.anon || []}
