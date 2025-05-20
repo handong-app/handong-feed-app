@@ -8,7 +8,7 @@ import app.handong.feed.dto.TagDto;
 import app.handong.feed.dto.TbadminDto;
 import app.handong.feed.exception.data.DuplicateTagCodeException;
 import app.handong.feed.exception.data.NotFoundException;
-import app.handong.feed.mapper.TbadminMapper;
+import app.handong.feed.mapper.main.TbadminMapper;
 import app.handong.feed.repository.ApiKeyRepository;
 import app.handong.feed.repository.TagRepository;
 import app.handong.feed.service.FirebaseService;
@@ -57,7 +57,7 @@ public class TbadminServiceImpl implements TbadminService {
     @Transactional
     public TbadminDto.ApiKeyCreateRespDto issueApiKey(String userId, TbadminDto.ApiKeyCreateReqDto req) {
         String rawKey = UUID.randomUUID().toString().replace("-", "") + generateRandomSuffix(8);
-        String hashedKey = hmacSha256(rawKey,  customProperties.getApiSecretKey());
+        String hashedKey = hmacSha256(rawKey, customProperties.getApiSecretKey());
 
         ApiKey apiKey = ApiKey.builder()
                 .apiKeyHash(hashedKey)
@@ -92,7 +92,8 @@ public class TbadminServiceImpl implements TbadminService {
                     apiKey.getCreatedAt(),
                     apiKey.getLastUsedAt(),
                     scopes
-            );   }).toList();
+            );
+        }).toList();
     }
 
     @Override

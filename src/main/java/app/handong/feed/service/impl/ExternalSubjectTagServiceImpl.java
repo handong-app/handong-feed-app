@@ -4,7 +4,7 @@ import app.handong.feed.domain.TbSubjectTag;
 import app.handong.feed.dto.TbSubjectTagDto;
 import app.handong.feed.exception.data.DuplicateEntityException;
 import app.handong.feed.exception.data.NotFoundException;
-import app.handong.feed.mapper.TbSubjectTagMapper;
+import app.handong.feed.mapper.main.TbSubjectTagMapper;
 import app.handong.feed.repository.TagRepository;
 import app.handong.feed.repository.TbSubjectTagRepository;
 import app.handong.feed.service.ExternalSubjectTagService;
@@ -45,7 +45,7 @@ public class ExternalSubjectTagServiceImpl implements ExternalSubjectTagService 
     }
 
     @Override
-    public TbSubjectTagDto.GetLatestForDateResDto readLatestForDate(){
+    public TbSubjectTagDto.GetLatestForDateResDto readLatestForDate() {
         return tbSubjectTagMapper.getLatestForDate();
     }
 

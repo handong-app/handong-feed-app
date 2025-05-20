@@ -1,4 +1,4 @@
-package app.handong.feed.mapper;
+package app.handong.feed.mapper.main;
 
 import app.handong.feed.dto.TbmessageDto;
 import org.apache.ibatis.annotations.Param;
@@ -24,10 +24,10 @@ public interface TbmessageMapper {
         return CompletableFuture.completedFuture(fileDetails(messageId));
     }
 
-    List<TbmessageDto.Detail> externalFeedGetAll( @Param("start") Long start,
-                                                  @Param("end") Long end,
-                                                  @Param("limit") Integer limit,
-                                                  @Param("filterNew") Boolean filterNew,
-                                                  @Param("onlyUnassignedFeeds") Boolean onlyUnassignedFeeds);
+    List<TbmessageDto.Detail> externalFeedGetAll(@Param("start") Long start,
+                                                 @Param("end") Long end,
+                                                 @Param("limit") Integer limit,
+                                                 @Param("filterNew") Boolean filterNew,
+                                                 @Param("onlyUnassignedFeeds") Boolean onlyUnassignedFeeds);
 
 }

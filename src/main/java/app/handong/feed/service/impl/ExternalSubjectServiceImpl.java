@@ -1,7 +1,7 @@
 package app.handong.feed.service.impl;
 
 import app.handong.feed.exception.data.NotFoundException;
-import app.handong.feed.mapper.TbsubjectMapper;
+import app.handong.feed.mapper.main.TbsubjectMapper;
 import app.handong.feed.service.ExternalSubjectService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

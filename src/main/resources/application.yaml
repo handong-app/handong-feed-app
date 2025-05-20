@@ -6,6 +6,8 @@ logging:
     com.thc.sprstudy: debug
     org.springframework.web.servlet: debug
     org.hibernate.type.descriptor.sql.BasicBinder: trace
+    org.mybatis: trace
+    app.handong.feed.mapper: trace
 
 spring:
   profiles:
@@ -14,9 +16,16 @@ spring:
     import: optional:file:.env[.properties]
   datasource:
     url: ${DB_HOST:${DB_HOST_DEFAULT}}/${DB_NAME:${DB_NAME_DEFAULT}}
+    jdbc-url: ${DB_HOST:${DB_HOST_DEFAULT}}/${DB_NAME:${DB_NAME_DEFAULT}} # 이건 수정 필요
     username: ${DB_USERNAME:${DB_USERNAME_DEFAULT}}
     password: ${DB_PASSWORD:${DB_PASSWORD_DEFAULT}}
     driver-class-name: ${DB_CLASSNAME:${DB_CLASSNAME_DEFAULT}}
+  archive-db:
+    hikari:
+      jdbc-url: ${DB_HOST:${DB_HOST_DEFAULT}}/${ARCHIVE_DB_NAME:${ARCHIVE_DB_NAME_DEFAULT}}
+      username: ${DB_USERNAME:${DB_USERNAME_DEFAULT}}
+      password: ${DB_PASSWORD:${DB_PASSWORD_DEFAULT}}
+      driver-class-name: ${DB_CLASSNAME:${DB_CLASSNAME_DEFAULT}}
   jpa:
     defer-datasource-initialization: true
     hibernate.ddl-auto: update
@@ -26,6 +35,7 @@ spring:
       hibernate.format_sql: true
       hibernate.default_batch_fetch_size: 100
       hibernate.jdbc.time_zone: Asia/Seoul
+      hibernate.dialect: org.hibernate.dialect.MariaDBDialect
     hibernate:
       naming:
         physical-strategy: app.handong.feed.TablePrefix
