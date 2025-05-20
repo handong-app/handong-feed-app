@@ -14,7 +14,7 @@ import {
   Skeleton,
 } from "@mui/material";
 import PropTypes from "prop-types";
-import { parseMealString } from "../tools/tools";
+import { splitHtmlBr } from "../tools/tools";
 
 function TodayMeal({
   mealTab,
@@ -71,7 +71,7 @@ function TodayMeal({
   return (
     <Paper sx={{ mb: 3, p: 2 }}>
       <Typography variant="h5" sx={{ mb: 1, fontWeight: "bold" }}>
-        🍖 {formattedMealDate}
+        🍖 {formattedMealDate} 식단
       </Typography>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
@@ -116,7 +116,7 @@ function TodayMeal({
             <TableRow>
               {isStringType ? (
                 <TableCell align="center" sx={{ width: "100%" }}>
-                  {parseMealString(currentMeal).map((line, i) => (
+                  {splitHtmlBr(currentMeal).map((line, i) => (
                     <Typography key={i} variant="body2" component="div">
                       {line}
                     </Typography>
@@ -130,7 +130,7 @@ function TodayMeal({
                     sx={{ width: `${100 / mealValues.length}%` }}
                   >
                     {typeof value === "string"
-                      ? parseMealString(value).map((line, i) => (
+                      ? splitHtmlBr(value).map((line, i) => (
                           <Typography key={i} variant="body2" component="div">
                             {line}
                           </Typography>

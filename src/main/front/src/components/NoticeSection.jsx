@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 
 import { Box, Typography, Paper } from "@mui/material";
+import { splitHtmlBr } from "../tools/tools";
 
 function NoticeSection({ notices, loading }) {
   if (loading) {
@@ -75,7 +76,7 @@ function NoticeSection({ notices, loading }) {
                 wordBreak: "break-all",
               }}
             >
-              {notice.content}
+              {splitHtmlBr(notice.content).join(" ")}
             </Typography>
           </Box>
         ))}

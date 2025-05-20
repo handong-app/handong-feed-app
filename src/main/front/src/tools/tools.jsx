@@ -122,7 +122,7 @@ export const calculateDiffChange = (oldValue, newValue) => {
   // return result || "No changes";
 };
 
-export function parseMealString(str) {
+export function splitHtmlBr(str) {
   if (typeof str !== "string") return str;
   // "운영없음" 등은 그대로 반환
   const BR_REGEX = /<br\s*\/?>/i; // <br>, <br/>, <br /> 모두 매칭
