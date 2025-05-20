@@ -31,7 +31,6 @@ public class MybatisMainConfig {
         return factory.getObject();
     }
 
-    @Primary
     @Bean
     public DataSourceTransactionManager mainTransactionManager(@Qualifier("mainDataSource") DataSource dataSource) {
         return new DataSourceTransactionManager(dataSource);

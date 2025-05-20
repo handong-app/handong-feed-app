@@ -36,9 +36,7 @@ spring:
       hibernate.default_batch_fetch_size: 100
       hibernate.jdbc.time_zone: Asia/Seoul
       hibernate.dialect: org.hibernate.dialect.MariaDBDialect
-    hibernate:
-      naming:
-        physical-strategy: app.handong.feed.TablePrefix
+      hibernate.physical_naming_strategy: app.handong.feed.TablePrefix
   thymeleaf:
     cache: false
   devtools:
