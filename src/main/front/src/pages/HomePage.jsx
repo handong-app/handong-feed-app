@@ -11,7 +11,6 @@ import { useFetchBe } from "../tools/api";
 function HomePage() {
   const fetch = useFetchBe();
 
-  const [mealTab, setMealTab] = useState(0);
   const [archiveNewsletter, setArchiveNewsletter] = useState(null);
 
   useEffect(() => {
@@ -22,10 +21,6 @@ function HomePage() {
       });
     });
   }, []);
-
-  const handleTabChange = (event, newValue) => {
-    setMealTab(newValue);
-  };
 
   // 추천 피드 페이지네이션 상태 추가
 
@@ -62,8 +57,6 @@ function HomePage() {
 
       {/* 오늘의 식단 부분 */}
       <TodayMeal
-        mealTab={mealTab}
-        handleTabChange={handleTabChange}
         mealData={archiveNewsletter?.data?.food}
         loading={archiveNewsletter === null}
       />

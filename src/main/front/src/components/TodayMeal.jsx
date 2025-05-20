@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Typography,
@@ -16,12 +16,16 @@ import {
 import PropTypes from "prop-types";
 import { splitHtmlBr } from "../tools/tools";
 
-function TodayMeal({
-  mealTab,
-  handleTabChange,
-  mealData: mealDataInput,
-  loading,
-}) {
+function TodayMeal({ mealData: mealDataInput, loading }) {
+  const [mealTab, setMealTab] = useState(
+    +localStorage.getItem("todayMealTab") || 0
+  );
+
+  // mealTab이 변경될 때마다 localStorage에 저장
+  useEffect(() => {
+    localStorage.setItem("todayMealTab", mealTab);
+  }, [mealTab]);
+
   if (loading || !mealDataInput) {
     return (
       <Paper sx={{ mb: 3, p: 2 }}>
@@ -76,7 +80,7 @@ function TodayMeal({
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
           value={mealTab}
-          onChange={handleTabChange}
+          onChange={(event, value) => setMealTab(value)}
           aria-label="meal tabs"
           variant="scrollable"
           scrollButtons="auto"
@@ -150,8 +154,6 @@ function TodayMeal({
 export default TodayMeal;
 
 TodayMeal.propTypes = {
-  mealTab: PropTypes.number.isRequired,
-  handleTabChange: PropTypes.func.isRequired,
   mealData: PropTypes.object, // mealData는 다양한 키를 가질 수 있으므로 object로 지정
   loading: PropTypes.bool, // loading prop도 명시
 };
