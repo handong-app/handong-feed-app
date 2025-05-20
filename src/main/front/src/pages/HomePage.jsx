@@ -3,10 +3,9 @@ import { Typography, Box, Paper, Button } from "@mui/material";
 import TodayMeal from "../components/TodayMeal";
 import FeedRecommend from "../components/FeedRecommend";
 import NoticeSection from "../components/NoticeSection";
-import { mealData, notices } from "../constants";
 import MainDisplay from "../components/MainDisplay";
 import { getCurrentWeekdayString } from "../tools/tools";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useFetchBe } from "../tools/api";
 
 function HomePage() {
@@ -14,10 +13,6 @@ function HomePage() {
 
   const [mealTab, setMealTab] = useState(0);
   const [archiveNewsletter, setArchiveNewsletter] = useState(null);
-
-  const location = useLocation();
-  const params = new URLSearchParams(location.search);
-  const showTestSections = params.get("test") === "true";
 
   useEffect(() => {
     fetch("/archive/newsletter").then((json) => {
