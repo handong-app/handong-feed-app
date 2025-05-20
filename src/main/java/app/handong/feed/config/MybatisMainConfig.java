@@ -14,6 +14,11 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 import javax.sql.DataSource;
 
+
+/**
+ * mainDataSource 빈은 DataSourceConfig에서 정의되며,
+ * JPA, MyBatis 등에서 공통으로 주입받아 사용합니다.
+ */
 @Configuration
 @MapperScan(
         basePackages = "app.handong.feed.mapper.main",
