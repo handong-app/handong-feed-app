@@ -14,12 +14,22 @@ function HomePage() {
   const [archiveNewsletter, setArchiveNewsletter] = useState(null);
 
   useEffect(() => {
-    fetch("/archive/newsletter").then((json) => {
-      setArchiveNewsletter({
-        ...json,
-        data: JSON.parse(json.data),
+    fetch("/archive/newsletter")
+      .then((json) => {
+        setArchiveNewsletter({
+          ...json,
+          data: JSON.parse(json.data),
+        });
+      })
+      .catch((err) => {
+        console.error("Failed to fetch archive newsletter", err);
+        setArchiveNewsletter({
+          data: {
+            food: null,
+            anon: null,
+          },
+        });
       });
-    });
   }, []);
 
   // 추천 피드 페이지네이션 상태 추가
