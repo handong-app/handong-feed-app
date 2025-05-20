@@ -18,9 +18,13 @@ public class ArchiveController {
     }
 
     @GetMapping("/newsletter")
-    @Operation(summary = "전체 태그 목록 조회")
+    @Operation(summary = "최근 뉴스레터 정보 조회")
     public ResponseEntity<ArchiveDto.NewsletterDto> getLastNewsletter() {
-        return ResponseEntity.ok(archiveService.getLastNewsletter());
+        ArchiveDto.NewsletterDto newsletter = archiveService.getLastNewsletter();
+        if (newsletter == null) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(newsletter);
     }
 
 }
