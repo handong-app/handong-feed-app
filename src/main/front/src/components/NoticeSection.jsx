@@ -42,7 +42,7 @@ function NoticeSection({ notices, loading }) {
       {notices
         .sort((a, b) => +b.view - +a.view)
         .map((notice) => (
-          <Box key={notice.id} sx={{ mb: 2 }}>
+          <Box key={notice.link} sx={{ mb: 2 }}>
             <Typography
               as="a"
               target="_blank"
@@ -50,10 +50,31 @@ function NoticeSection({ notices, loading }) {
               href={notice.link}
               variant="subtitle2"
               color="primary"
+              sx={{
+                display: "-webkit-box",
+                WebkitLineClamp: 1,
+                WebkitBoxOrient: "vertical",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "normal",
+                wordBreak: "break-all",
+              }}
             >
               {notice.title}
             </Typography>
-            <Typography variant="body2" component="div">
+            <Typography
+              variant="body2"
+              component="div"
+              sx={{
+                display: "-webkit-box",
+                WebkitLineClamp: 3,
+                WebkitBoxOrient: "vertical",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "normal",
+                wordBreak: "break-all",
+              }}
+            >
               {notice.content}
             </Typography>
           </Box>
@@ -67,8 +88,11 @@ export default NoticeSection;
 NoticeSection.propTypes = {
   notices: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.number.isRequired,
+      link: PropTypes.string.isRequired,
       title: PropTypes.string.isRequired,
+      content: PropTypes.string,
+      view: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     })
   ).isRequired,
+  loading: PropTypes.bool.isRequired,
 };
