@@ -28,8 +28,6 @@ function HomePage() {
     });
   }, []);
 
-  console.log("archiveNewsletter", archiveNewsletter);
-
   const handleTabChange = (event, newValue) => {
     setMealTab(newValue);
   };
@@ -69,22 +67,19 @@ function HomePage() {
           </Box>
         </Box>
       </Paper>
-
       {/* 오늘의 식단 부분 */}
-      {showTestSections && (
-        <TodayMeal
-          mealTab={mealTab}
-          handleTabChange={handleTabChange}
-          mealData={mealData}
-        />
-      )}
 
+      <TodayMeal
+        mealTab={mealTab}
+        handleTabChange={handleTabChange}
+        mealData={archiveNewsletter?.data?.food}
+        loading={archiveNewsletter === null}
+      />
       {/* 추천 피드 */}
       <FeedRecommend />
-
       {/* 히츠넷 공지 */}
       <NoticeSection
-        notices={archiveNewsletter?.data?.anon}
+        notices={archiveNewsletter?.data?.anon || []}
         loading={archiveNewsletter === null}
       />
     </MainDisplay>
