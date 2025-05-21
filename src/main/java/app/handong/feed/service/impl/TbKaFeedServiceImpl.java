@@ -4,7 +4,7 @@ import app.handong.feed.domain.TbKaFeed;
 import app.handong.feed.dto.TagDto;
 import app.handong.feed.dto.TbmessageDto;
 import app.handong.feed.exception.data.NotFoundException;
-import app.handong.feed.mapper.TbmessageMapper;
+import app.handong.feed.mapper.main.TbmessageMapper;
 import app.handong.feed.repository.TbKaFeedRepository;
 import app.handong.feed.repository.TbSubjectTagRepository;
 import app.handong.feed.repository.TbUserSearchRepository;
@@ -89,8 +89,8 @@ public class TbKaFeedServiceImpl implements TbKaFeedService {
 
     public List<TbmessageDto.Detail> scrollList(String type, int afterSentAt, String userId, String search, String[] searchTags) {
         String squery = search;
-        if(squery == null) squery = "";
-        else if(!squery.isEmpty()){
+        if (squery == null) squery = "";
+        else if (!squery.isEmpty()) {
             tbLoggerService.logSearchAsync(userId, type, search);
         }
         List<TbmessageDto.Detail> result = tbmessageMapper.scrollList(type, afterSentAt, userId, search, searchTags);

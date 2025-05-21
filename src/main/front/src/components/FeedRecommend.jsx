@@ -6,7 +6,20 @@ import useLoadData from "../hooks/useLoadData";
 import GoToAllFeedButton from "./GoToAllFeedButton";
 
 function FeedRecommend() {
-  const [searchTags, setSearchTags] = useState([]);
+  const todayMealTabStorage = localStorage.getItem("homeFeedRecommend") || 0;
+  const [searchTags, setSearchTags] = useState(() => {
+    let parsed = [];
+    try {
+      parsed = todayMealTabStorage ? JSON.parse(todayMealTabStorage) : [];
+      if (!Array.isArray(parsed)) {
+        parsed = [];
+      }
+    } catch (e) {
+      parsed = [];
+    }
+    return parsed;
+  });
+
   const [loading, setLoading] = useState(true);
 
   const [allFeeds, hasMore, search, loadData, doSearch] = useLoadData({});
@@ -25,6 +38,8 @@ function FeedRecommend() {
 
   useEffect(() => {
     getData();
+    // localstorage에 추가
+    localStorage.setItem("homeFeedRecommend", JSON.stringify(searchTags));
   }, [searchTags]);
 
   return (

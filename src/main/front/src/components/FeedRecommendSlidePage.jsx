@@ -21,16 +21,24 @@ const FeedRecommendSlidePage = ({ feeds, cardsPerPage }) => {
         gap: "16px",
         justifyContent: "flex-start",
         padding: 8,
+        width: "100%",
       }}
     >
       {Array.from({ length: cardsPerPage }).map((_, idx) => {
+        const cardWidth = `calc((100% - ${
+          (cardsPerPage - 1) * 16
+        }px) / ${cardsPerPage})`;
         if (feeds.length > idx) {
           const feed = feeds[idx];
           return (
             <Link
               to={`/kafeed/${feed.id}`}
               key={feed.id}
-              style={{ flex: 1, textDecoration: "none" }}
+              style={{
+                flex: `0 0 ${cardWidth}`,
+                maxWidth: cardWidth,
+                textDecoration: "none",
+              }}
             >
               <Card
                 sx={{
@@ -103,6 +111,8 @@ const FeedRecommendSlidePage = ({ feeds, cardsPerPage }) => {
                 flex: 1,
                 justifyContent: "center",
                 alignItems: "center",
+                minWidth: cardWidth,
+                maxWidth: cardWidth,
               }}
             >
               <CardContent

@@ -1,0 +1,17 @@
+meta {
+  name: Last Newsletter
+  type: http
+  seq: 1
+}
+
+get {
+  url: http://localhost:{{PORT}}/api/archive/newsletter
+  body: none
+  auth: inherit
+}
+
+assert {
+  res.body.id: isDefined
+  res.body.date: isDefined
+  res.body.data: isDefined
+}

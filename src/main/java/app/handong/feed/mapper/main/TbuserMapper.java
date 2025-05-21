@@ -1,4 +1,4 @@
-package app.handong.feed.mapper;
+package app.handong.feed.mapper.main;
 
 import app.handong.feed.dto.TbuserDto;
 import org.apache.ibatis.annotations.Mapper;

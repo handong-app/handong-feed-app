@@ -1,7 +1,7 @@
 package app.handong.feed.service.impl;
 
 import app.handong.feed.dto.TbsubjectDto;
-import app.handong.feed.mapper.TbsubjectMapper;
+import app.handong.feed.mapper.main.TbsubjectMapper;
 import app.handong.feed.service.TbsubjectService;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +15,7 @@ public class TbsubjectServiceImpl implements TbsubjectService {
         this.tbsubjectMapper = tbsubjectMapper;
     }
 
-    public TbsubjectDto.DetailResDto getDetail(TbsubjectDto.DetailReqDto param){
+    public TbsubjectDto.DetailResDto getDetail(TbsubjectDto.DetailReqDto param) {
         TbsubjectDto.DetailServDto detailServDto = tbsubjectMapper.getDetailById(param);
         return TbsubjectDto.DetailResDto.builder()
                 .subjectId(detailServDto.getSubjectId())

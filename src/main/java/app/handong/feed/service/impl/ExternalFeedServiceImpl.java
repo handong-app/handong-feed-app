@@ -2,7 +2,7 @@ package app.handong.feed.service.impl;
 
 import app.handong.feed.dto.ExternalDto;
 import app.handong.feed.dto.TbmessageDto;
-import app.handong.feed.mapper.TbmessageMapper;
+import app.handong.feed.mapper.main.TbmessageMapper;
 import app.handong.feed.service.ExternalFeedService;
 import org.springframework.stereotype.Service;
 

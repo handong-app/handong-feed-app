@@ -1,22 +1,36 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Typography, Box, Paper, Button } from "@mui/material";
 import TodayMeal from "../components/TodayMeal";
 import FeedRecommend from "../components/FeedRecommend";
 import NoticeSection from "../components/NoticeSection";
-import { mealData, notices } from "../constants";
 import MainDisplay from "../components/MainDisplay";
 import { getCurrentWeekdayString } from "../tools/tools";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useFetchBe } from "../tools/api";
 
 function HomePage() {
-  const [mealTab, setMealTab] = useState(0);
-  const location = useLocation();
-  const params = new URLSearchParams(location.search);
-  const showTestSections = params.get("test") === "true";
+  const fetch = useFetchBe();
 
-  const handleTabChange = (event, newValue) => {
-    setMealTab(newValue);
-  };
+  const [archiveNewsletter, setArchiveNewsletter] = useState(null);
+
+  useEffect(() => {
+    fetch("/archive/newsletter")
+      .then((json) => {
+        setArchiveNewsletter({
+          ...json,
+          data: JSON.parse(json.data),
+        });
+      })
+      .catch((err) => {
+        console.error("Failed to fetch archive newsletter", err);
+        setArchiveNewsletter({
+          data: {
+            food: null,
+            anon: null,
+          },
+        });
+      });
+  }, []);
 
   // 추천 피드 페이지네이션 상태 추가
 
@@ -28,9 +42,6 @@ function HomePage() {
           <Box>
             <Typography variant="h4" fontWeight="bold" gutterBottom>
               {getCurrentWeekdayString()} 한동피드입니다!
-            </Typography>
-            <Typography variant="h6" color="text.secondary">
-              식단 및 히즈넷 공지도 곧 업데이트 될 예정입니다 :)
             </Typography>
             <Box mt={2} display="flex" gap={2}>
               <Button
@@ -55,19 +66,19 @@ function HomePage() {
       </Paper>
 
       {/* 오늘의 식단 부분 */}
-      {showTestSections && (
-        <TodayMeal
-          mealTab={mealTab}
-          handleTabChange={handleTabChange}
-          mealData={mealData}
-        />
-      )}
+      <TodayMeal
+        mealData={archiveNewsletter?.data?.food}
+        loading={archiveNewsletter === null}
+      />
 
       {/* 추천 피드 */}
       <FeedRecommend />
 
       {/* 히츠넷 공지 */}
-      {showTestSections && <NoticeSection notices={notices} />}
+      <NoticeSection
+        notices={archiveNewsletter?.data?.anon || []}
+        loading={archiveNewsletter === null}
+      />
     </MainDisplay>
   );
 }

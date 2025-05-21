@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="app.handong.feed.mapper.TbuserMapper">
+<mapper namespace="app.handong.feed.mapper.main.TbuserMapper">
 
     <!-- 로그인 쿼리: 사용자 아이디와 비밀번호를 사용하여 인증 -->
     <select id="findByName" parameterType="String" resultType="app.handong.feed.dto.TbuserDto$DetailResDto">
