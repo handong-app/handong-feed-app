@@ -18,10 +18,12 @@ https://www.youtube.com/watch?v=xpXz107p8Gw
 
 [🛠 프로젝트 페이지](https://github.com/orgs/handong-app/projects/2/views/1) 에서 자세히 확인하실 수 있습니다.
 
-### 핵심 진행 중인 기능
+## 요구사항 포스터 (2025년 1학기)
 
-- [ ] LLM 기반 뉴스레터 자동 생성 (기획 완료, 프로토타입 테스트 중)
-- [ ] 학년별 인기글 자동 분류 시각화 (관리자 페이지 프로토타입 완료, 이용자 페이지 개발 중)
+**한동피드 2.0 UCC 영상 :** https://www.youtube.com/watch?v=vQBgVdgFwkI
+
+![2025-1-poster](https://github.com/user-attachments/assets/20d183ec-ac50-4696-a95d-5c4b19888bdf)
+
 
 ## 요구사항 포스터 (2024년 2학기)
 
