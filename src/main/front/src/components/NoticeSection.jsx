@@ -11,7 +11,7 @@ function NoticeSection({ notices, loading }) {
           📚 히즈넷 공지
         </Typography>
         <Box sx={{ backgroundColor: "#f5f5f5", p: 1, mb: 1 }}>
-          <Typography variant="subtitle1">전체 히츠넷 공지사항</Typography>
+          <Typography variant="subtitle1">전체 히즈넷 공지사항</Typography>
         </Box>
         <Typography variant="caption" gutterBottom display="block" mb={2}>
           * 조회수 기준으로 정렬되어 있습니다.
@@ -35,7 +35,7 @@ function NoticeSection({ notices, loading }) {
         📚 히즈넷 공지
       </Typography>
       <Box sx={{ backgroundColor: "#f5f5f5", p: 1, mb: 1 }}>
-        <Typography variant="subtitle1">전체 히츠넷 공지사항</Typography>
+        <Typography variant="subtitle1">전체 히즈넷 공지사항</Typography>
       </Box>
       <Typography variant="caption" gutterBottom display="block" mb={2}>
         * 조회수 기준으로 정렬되어 있습니다.
