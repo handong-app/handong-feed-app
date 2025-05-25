@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Box,
   Typography,
@@ -17,14 +17,24 @@ import PropTypes from "prop-types";
 import { splitHtmlBr } from "../tools/tools";
 
 function TodayMeal({ mealData: mealDataInput, loading }) {
-  const [mealTab, setMealTab] = useState(
-    +localStorage.getItem("todayMealTab") || 0
-  );
+  const [mealTab, setMealTab] = useState(0);
+
+  const { date: mealDate, ...mealData } = mealDataInput || {};
 
   // mealTab이 변경될 때마다 localStorage에 저장
   useEffect(() => {
-    localStorage.setItem("todayMealTab", mealTab);
-  }, [mealTab]);
+    if (!mealData || Object.keys(mealData).length === 0) return;
+    const newMealTab = Math.max(
+      0,
+      Object.keys(mealData).indexOf(localStorage.getItem("todayMealTab"))
+    );
+    if (mealTab !== newMealTab) setMealTab(newMealTab);
+  }, [mealDataInput]);
+
+  useEffect(() => {
+    if (!mealData || Object.keys(mealData).length === 0) return;
+    localStorage.setItem("todayMealTab", Object.keys(mealData)[mealTab]);
+  }, [mealTab, mealDataInput]);
 
   if (loading || !mealDataInput) {
     return (
@@ -52,8 +62,6 @@ function TodayMeal({ mealData: mealDataInput, loading }) {
       </Paper>
     );
   }
-
-  const { date: mealDate, ...mealData } = mealDataInput;
 
   // mealData의 key를 탭으로 사용
   const tabKeys = Object.keys(mealData);
