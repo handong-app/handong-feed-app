@@ -168,11 +168,6 @@ jobs:
           identity-id: "${{ secrets.INFISICAL_IDENTITY }}"
           secret-path: "/Handong-App-Deploy"
 
-      - name: Delay 30 seconds before deploy (Temp)
-        run: |
-          echo "Waiting 30 seconds before deploy..."
-          sleep 30
-
       - name: Send Deploy Request to DCA
         run: |
           curl --fail --request POST \
