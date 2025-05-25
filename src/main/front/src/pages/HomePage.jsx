@@ -74,7 +74,7 @@ function HomePage() {
       {/* 추천 피드 */}
       <FeedRecommend />
 
-      {/* 히츠넷 공지 */}
+      {/* 히즈넷 공지 */}
       <NoticeSection
         notices={archiveNewsletter?.data?.anon || []}
         loading={archiveNewsletter === null}
